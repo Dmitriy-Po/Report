@@ -37,7 +37,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxFilial = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
@@ -131,12 +131,12 @@
             this.label7.TabIndex = 10;
             this.label7.Text = "Структурное подразделение";
             // 
-            // textBox1
+            // textBoxFilial
             // 
-            this.textBox1.Location = new System.Drawing.Point(77, 130);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(316, 20);
-            this.textBox1.TabIndex = 3;
+            this.textBoxFilial.Location = new System.Drawing.Point(77, 130);
+            this.textBoxFilial.Name = "textBoxFilial";
+            this.textBoxFilial.Size = new System.Drawing.Size(316, 20);
+            this.textBoxFilial.TabIndex = 3;
             // 
             // textBox4
             // 
@@ -167,6 +167,7 @@
             this.button1.Size = new System.Drawing.Size(20, 20);
             this.button1.TabIndex = 17;
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -176,6 +177,7 @@
             this.button2.Size = new System.Drawing.Size(20, 20);
             this.button2.TabIndex = 18;
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -272,7 +274,7 @@
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.textBoxFilial);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -299,7 +301,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox textBox6;
@@ -315,5 +316,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button buttonSaveAndClose;
+        public System.Windows.Forms.TextBox textBoxFilial;
     }
 }

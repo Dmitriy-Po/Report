@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SQLite;
 using System.Windows.Forms;
 
 namespace Report
@@ -8,6 +9,12 @@ namespace Report
         public FormAddReport ()
         {
             InitializeComponent();
+        }
+
+        public string text
+        {
+            get { return textBoxFilial.Text; }
+            set { textBoxFilial.Text = value; }
         }
 
         private void label2_Click (object sender, EventArgs e)
@@ -26,6 +33,35 @@ namespace Report
         {
             ToolTip t = new ToolTip();
             t.SetToolTip(buttonSaveAndClose, "Сохранить и закрыть");
+        }
+
+        private void button1_Click (object sender, EventArgs e)
+        {
+            SQLiteConnection conn = new SQLiteConnection("Data Source=ReportDB.db; Version=3;");
+            SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Filial", conn);
+            FormContext fc = new FormContext();
+
+            conn.Open();
+            try
+            {
+                SQLiteDataReader r = cmd.ExecuteReader();
+                while (r.Read())
+                {
+                    fc.listBoxItem.Items.Add(r[1]+" | "+r[2]);
+                }
+                r.Close();
+            }
+            catch (SQLiteException ex)
+            {
+                System.Windows.Forms.MessageBox.Show(ex.Message);
+            }
+            conn.Close();
+            fc.ShowDialog();
+        }
+
+        private void button2_Click (object sender, EventArgs e)
+        {
+            
         }
     }
 }
