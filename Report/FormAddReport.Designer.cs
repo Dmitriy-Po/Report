@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent ()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAddReport));
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonSaveAndClose = new System.Windows.Forms.Button();
@@ -48,12 +47,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.comboBoxFilial = new System.Windows.Forms.ComboBox();
-            this.sQliteDBBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.comboBoxSpecial = new System.Windows.Forms.ComboBox();
             this.comboBoxSkill = new System.Windows.Forms.ComboBox();
-            this.sQliteDBBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.sQliteDBBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sQliteDBBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -213,16 +208,11 @@
             // 
             // comboBoxFilial
             // 
-            this.comboBoxFilial.DataSource = this.sQliteDBBindingSource1;
             this.comboBoxFilial.FormattingEnabled = true;
             this.comboBoxFilial.Location = new System.Drawing.Point(77, 131);
             this.comboBoxFilial.Name = "comboBoxFilial";
             this.comboBoxFilial.Size = new System.Drawing.Size(316, 21);
             this.comboBoxFilial.TabIndex = 27;
-            // 
-            // sQliteDBBindingSource
-            // 
-            this.sQliteDBBindingSource.DataSource = typeof(Report.SQliteDB);
             // 
             // comboBoxSpecial
             // 
@@ -239,10 +229,6 @@
             this.comboBoxSkill.Name = "comboBoxSkill";
             this.comboBoxSkill.Size = new System.Drawing.Size(316, 21);
             this.comboBoxSkill.TabIndex = 29;
-            // 
-            // sQliteDBBindingSource1
-            // 
-            this.sQliteDBBindingSource1.DataSource = typeof(Report.SQliteDB);
             // 
             // FormAddReport
             // 
@@ -273,8 +259,7 @@
             this.Name = "FormAddReport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Форма редактирования/добавления";
-            ((System.ComponentModel.ISupportInitialize)(this.sQliteDBBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sQliteDBBindingSource1)).EndInit();
+            this.Load += new System.EventHandler(this.FormAddReport_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -302,7 +287,5 @@
         public System.Windows.Forms.ComboBox comboBoxFilial;
         public System.Windows.Forms.ComboBox comboBoxSpecial;
         public System.Windows.Forms.ComboBox comboBoxSkill;
-        private System.Windows.Forms.BindingSource sQliteDBBindingSource;
-        private System.Windows.Forms.BindingSource sQliteDBBindingSource1;
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Report;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Windows.Forms;
 
@@ -9,7 +12,10 @@ namespace Report
         public FormAddReport ()
         {
             InitializeComponent();
-        }        
+        }
+        public List<Filial> ListFilial = new List<Filial>();
+        public ArrayList ListSkill = new ArrayList();
+        public ArrayList ListSpecial = new ArrayList();
 
         private void label2_Click (object sender, EventArgs e)
         {
@@ -50,7 +56,15 @@ namespace Report
             comboBoxSkill.ResetText();
         }
 
-        private void buttonSave_Click (object sender, EventArgs e)
+        public void buttonSave_Click (object sender, EventArgs e)
+        {
+            //кнопка для сохранения записи в БД
+            SQliteDB db = new SQliteDB();
+            db.Insert("ЧисленностьОбучающихся", ListFilial);
+                      
+        }
+
+        private void FormAddReport_Load (object sender, EventArgs e)
         {
 
         }

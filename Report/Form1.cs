@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Windows.Forms;
 
@@ -11,21 +13,29 @@ namespace Report
             InitializeComponent();
 
         }
+        
 
-        public void MySqlDataReader (string name_table, int num_col, ComboBox box)
+        public void SqlMyDataReader (string name_table, int num_col, ComboBox box, List<Filial> List)
         {
+            //заполнение combobox
             SQliteDB sql = new SQliteDB();
             SQLiteDataReader r = sql.Select(name_table);
             
             while (r.Read())
             {
-               box.Items.Add(r[num_col]);
-               //box.Items.
-            }            
+                box.Items.Add(r[num_col]);
+                List.Add(new Filial() {
+                    id =        r[0],
+                    desc =      r[1],
+                    full_desc = r[2]
+
+                }); 
+                             
+            }           
             r.Close();
            
         }
-
+        #region buttons
         private void exitToolStripMenuItem_Click (object sender, EventArgs e)
         {
             Close();
@@ -74,14 +84,14 @@ namespace Report
             ToolTip t = new ToolTip();
             t.SetToolTip(buttonDeleteSelected, "Удалить несколько");
         }
-
+        #endregion
         private void buttonAddNewString_Click (object sender, EventArgs e)
         {
-            FormAddReport form = new FormAddReport();
+            FormAddReport form = new FormAddReport();     
 
-           // MySqlDataReader("Filial", 0, form.comboBoxFilial);
-            MySqlDataReader("Квалификации", 1, form.comboBoxSkill);
-            MySqlDataReader("Специальности", 1, form.comboBoxSpecial);
+            SqlMyDataReader("Filial", 2, form.comboBoxFilial, form.ListFilial);
+            //SqlMyDataReader("Квалификации", 1, form.comboBoxSkill, form.ListSkill);
+            //SqlMyDataReader("Специальности", 1, form.comboBoxSpecial, form.ListSpecial);
 
             form.ShowDialog();
         }
