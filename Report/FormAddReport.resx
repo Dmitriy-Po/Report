@@ -181,15 +181,6 @@
         RK5CYII=
 </value>
   </data>
-  <data name="button1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAAAnElEQVQ4T6WNWwoCMQxFu6QB
-        d9SWPrYn4q+K+i3OKC7EBVwnoR9OE2GCFw4kJ5fWAfgLVVpQpQVVWlClBSm+klIC0VaO6AvR4r3HOD0Y
-        mpuWfSHmhBBwvlyx3e0ZmsmteqCUgsPxhPvzhds4MTSTo1vfXyxErfWdc0aMkX8laCZHt76/WFg4N8xs
-        fjCIfi+sqNKCKi2o0oIq1wP3AdnTui3bGb3WAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="button2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -210,15 +201,6 @@
         wOPnmQy7BnlzKwddlFEHZdRBGX8HxhsPOskudiBnsAAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAAAnElEQVQ4T6WNWwoCMQxFu6QB
-        d9SWPrYn4q+K+i3OKC7EBVwnoR9OE2GCFw4kJ5fWAfgLVVpQpQVVWlClBSm+klIC0VaO6AvR4r3HOD0Y
-        mpuWfSHmhBBwvlyx3e0ZmsmteqCUgsPxhPvzhds4MTSTo1vfXyxErfWdc0aMkX8laCZHt76/WFg4N8xs
-        fjCIfi+sqNKCKi2o0oIq1wP3AdnTui3bGb3WAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="button5.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -229,13 +211,10 @@
         wOPnmQy7BnlzKwddlFEHZdRBGX8HxhsPOskudiBnsAAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="button6.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAZdEVYdFNvZnR3YXJlAEFkb2JlIEltYWdlUmVhZHlxyWU8AAAAnElEQVQ4T6WNWwoCMQxFu6QB
-        d9SWPrYn4q+K+i3OKC7EBVwnoR9OE2GCFw4kJ5fWAfgLVVpQpQVVWlClBSm+klIC0VaO6AvR4r3HOD0Y
-        mpuWfSHmhBBwvlyx3e0ZmsmteqCUgsPxhPvzhds4MTSTo1vfXyxErfWdc0aMkX8laCZHt76/WFg4N8xs
-        fjCIfi+sqNKCKi2o0oIq1wP3AdnTui3bGb3WAAAAAElFTkSuQmCC
-</value>
-  </data>
+  <metadata name="sQliteDBBindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>194, 17</value>
+  </metadata>
+  <metadata name="sQliteDBBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

@@ -60,7 +60,7 @@
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.buttonSelect);
             this.Controls.Add(this.listBoxItem);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FormContext";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.ResumeLayout(false);

@@ -16,4 +16,3 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\bin\
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\System.Data.SQLite.xml
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
-C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormContext.resources

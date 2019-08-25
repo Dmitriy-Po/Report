@@ -9,13 +9,7 @@ namespace Report
         public FormAddReport ()
         {
             InitializeComponent();
-        }
-
-        public string text
-        {
-            get { return textBoxFilial.Text; }
-            set { textBoxFilial.Text = value; }
-        }
+        }        
 
         private void label2_Click (object sender, EventArgs e)
         {
@@ -37,31 +31,28 @@ namespace Report
 
         private void button1_Click (object sender, EventArgs e)
         {
-            SQLiteConnection conn = new SQLiteConnection("Data Source=ReportDB.db; Version=3;");
-            SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM Filial", conn);
-            FormContext fc = new FormContext();
-
-            conn.Open();
-            try
-            {
-                SQLiteDataReader r = cmd.ExecuteReader();
-                while (r.Read())
-                {
-                    fc.listBoxItem.Items.Add(r[1]+" | "+r[2]);
-                }
-                r.Close();
-            }
-            catch (SQLiteException ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.Message);
-            }
-            conn.Close();
-            fc.ShowDialog();
+            
+           
         }
 
         private void button2_Click (object sender, EventArgs e)
         {
-            
+            comboBoxFilial.ResetText();
+        }
+
+        private void button3_Click (object sender, EventArgs e)
+        {
+            comboBoxSpecial.ResetText();
+        }
+
+        private void button5_Click (object sender, EventArgs e)
+        {
+            comboBoxSkill.ResetText();
+        }
+
+        private void buttonSave_Click (object sender, EventArgs e)
+        {
+
         }
     }
 }

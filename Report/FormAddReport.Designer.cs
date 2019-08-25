@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent ()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAddReport));
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonSaveAndClose = new System.Windows.Forms.Button();
@@ -37,21 +38,22 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBoxFilial = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox6 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.textBox7 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.comboBoxFilial = new System.Windows.Forms.ComboBox();
+            this.sQliteDBBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.comboBoxSpecial = new System.Windows.Forms.ComboBox();
+            this.comboBoxSkill = new System.Windows.Forms.ComboBox();
+            this.sQliteDBBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.sQliteDBBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sQliteDBBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -63,6 +65,7 @@
             this.buttonSave.Size = new System.Drawing.Size(40, 40);
             this.buttonSave.TabIndex = 0;
             this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             this.buttonSave.MouseHover += new System.EventHandler(this.buttonSave_MouseHover);
             // 
             // buttonSaveAndClose
@@ -131,13 +134,6 @@
             this.label7.TabIndex = 10;
             this.label7.Text = "Структурное подразделение";
             // 
-            // textBoxFilial
-            // 
-            this.textBoxFilial.Location = new System.Drawing.Point(77, 130);
-            this.textBoxFilial.Name = "textBoxFilial";
-            this.textBoxFilial.Size = new System.Drawing.Size(316, 20);
-            this.textBoxFilial.TabIndex = 3;
-            // 
             // textBox4
             // 
             this.textBox4.Location = new System.Drawing.Point(312, 300);
@@ -159,20 +155,10 @@
             this.textBox6.Size = new System.Drawing.Size(149, 20);
             this.textBox6.TabIndex = 1;
             // 
-            // button1
-            // 
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(25, 130);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(20, 20);
-            this.button1.TabIndex = 17;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // button2
             // 
             this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(51, 130);
+            this.button2.Location = new System.Drawing.Point(28, 130);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(20, 20);
             this.button2.TabIndex = 18;
@@ -182,52 +168,22 @@
             // button3
             // 
             this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
-            this.button3.Location = new System.Drawing.Point(51, 178);
+            this.button3.Location = new System.Drawing.Point(28, 178);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(20, 20);
             this.button3.TabIndex = 21;
             this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
-            this.button4.Location = new System.Drawing.Point(25, 178);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(20, 20);
-            this.button4.TabIndex = 20;
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(77, 178);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(316, 20);
-            this.textBox3.TabIndex = 4;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button5
             // 
             this.button5.Image = ((System.Drawing.Image)(resources.GetObject("button5.Image")));
-            this.button5.Location = new System.Drawing.Point(51, 231);
+            this.button5.Location = new System.Drawing.Point(28, 229);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(20, 20);
             this.button5.TabIndex = 24;
             this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Image = ((System.Drawing.Image)(resources.GetObject("button6.Image")));
-            this.button6.Location = new System.Drawing.Point(25, 231);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(20, 20);
-            this.button6.TabIndex = 23;
-            this.button6.UseVisualStyleBackColor = true;
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(77, 231);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(316, 20);
-            this.textBox7.TabIndex = 5;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // label2
             // 
@@ -255,26 +211,56 @@
             this.textBox2.Size = new System.Drawing.Size(81, 20);
             this.textBox2.TabIndex = 8;
             // 
+            // comboBoxFilial
+            // 
+            this.comboBoxFilial.DataSource = this.sQliteDBBindingSource1;
+            this.comboBoxFilial.FormattingEnabled = true;
+            this.comboBoxFilial.Location = new System.Drawing.Point(77, 131);
+            this.comboBoxFilial.Name = "comboBoxFilial";
+            this.comboBoxFilial.Size = new System.Drawing.Size(316, 21);
+            this.comboBoxFilial.TabIndex = 27;
+            // 
+            // sQliteDBBindingSource
+            // 
+            this.sQliteDBBindingSource.DataSource = typeof(Report.SQliteDB);
+            // 
+            // comboBoxSpecial
+            // 
+            this.comboBoxSpecial.FormattingEnabled = true;
+            this.comboBoxSpecial.Location = new System.Drawing.Point(77, 179);
+            this.comboBoxSpecial.Name = "comboBoxSpecial";
+            this.comboBoxSpecial.Size = new System.Drawing.Size(316, 21);
+            this.comboBoxSpecial.TabIndex = 28;
+            // 
+            // comboBoxSkill
+            // 
+            this.comboBoxSkill.FormattingEnabled = true;
+            this.comboBoxSkill.Location = new System.Drawing.Point(77, 228);
+            this.comboBoxSkill.Name = "comboBoxSkill";
+            this.comboBoxSkill.Size = new System.Drawing.Size(316, 21);
+            this.comboBoxSkill.TabIndex = 29;
+            // 
+            // sQliteDBBindingSource1
+            // 
+            this.sQliteDBBindingSource1.DataSource = typeof(Report.SQliteDB);
+            // 
             // FormAddReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 421);
+            this.Controls.Add(this.comboBoxSkill);
+            this.Controls.Add(this.comboBoxSpecial);
+            this.Controls.Add(this.comboBoxFilial);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.textBox7);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.textBox3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox4);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.textBox6);
-            this.Controls.Add(this.textBoxFilial);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -287,6 +273,8 @@
             this.Name = "FormAddReport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Форма редактирования/добавления";
+            ((System.ComponentModel.ISupportInitialize)(this.sQliteDBBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sQliteDBBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -304,18 +292,17 @@
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button buttonSaveAndClose;
-        public System.Windows.Forms.TextBox textBoxFilial;
+        public System.Windows.Forms.ComboBox comboBoxFilial;
+        public System.Windows.Forms.ComboBox comboBoxSpecial;
+        public System.Windows.Forms.ComboBox comboBoxSkill;
+        private System.Windows.Forms.BindingSource sQliteDBBindingSource;
+        private System.Windows.Forms.BindingSource sQliteDBBindingSource1;
     }
 }

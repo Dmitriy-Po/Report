@@ -29,7 +29,9 @@ namespace Report
 
         public void buttonSelect_Click (object sender, EventArgs e)
         {
-            FormAddReport.text
+            FormAddReport fad = new FormAddReport();
+            fad.textBoxFilial.Text = "123131313";
+            Close();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SQLite;
 using System.Windows.Forms;
 
 namespace Report
@@ -9,6 +10,20 @@ namespace Report
         {
             InitializeComponent();
 
+        }
+
+        public void MySqlDataReader (string name_table, int num_col, ComboBox box)
+        {
+            SQliteDB sql = new SQliteDB();
+            SQLiteDataReader r = sql.Select(name_table);
+            
+            while (r.Read())
+            {
+               box.Items.Add(r[num_col]);
+               //box.Items.
+            }            
+            r.Close();
+           
         }
 
         private void exitToolStripMenuItem_Click (object sender, EventArgs e)
@@ -62,8 +77,13 @@ namespace Report
 
         private void buttonAddNewString_Click (object sender, EventArgs e)
         {
-            FormAddReport fr = new FormAddReport();            
-            fr.ShowDialog();
+            FormAddReport form = new FormAddReport();
+
+           // MySqlDataReader("Filial", 0, form.comboBoxFilial);
+            MySqlDataReader("Квалификации", 1, form.comboBoxSkill);
+            MySqlDataReader("Специальности", 1, form.comboBoxSpecial);
+
+            form.ShowDialog();
         }
     }
 }

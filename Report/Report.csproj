@@ -69,12 +69,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContextList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ContextList.Designer.cs">
-      <DependentUpon>ContextList.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,9 +83,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ContextList.resx">
-      <DependentUpon>ContextList.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="SQliteDB.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -108,6 +100,12 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\FormAddReport.datasource" />
+    <None Include="Properties\DataSources\FormListCountStudent.datasource" />
+    <None Include="Properties\DataSources\Program.datasource" />
+    <None Include="Properties\DataSources\Report.Properties.Resources.datasource" />
+    <None Include="Properties\DataSources\Report.Properties.Settings.datasource" />
+    <None Include="Properties\DataSources\SQliteDB.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
