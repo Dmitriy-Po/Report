@@ -10,12 +10,14 @@ namespace Report
     {
         public FormListCountStudent ()
         {
-            InitializeComponent();
+            InitializeComponent();            
 
         }
-        
+        public List<TableFilial>  ListFilial = new List<TableFilial>();
+        public List<TableSKill>   ListSkill = new List<TableSKill>();
+        public List<TableSpecial> ListSpecial = new List<TableSpecial>();
 
-        public void SqlMyDataReader (string name_table, int num_col, ComboBox box, List<Filial> List)
+        public void SqlMyDataReader (string name_table, int num_col, ComboBox box)
         {
             //заполнение combobox
             SQliteDB sql = new SQliteDB();
@@ -23,18 +25,13 @@ namespace Report
             
             while (r.Read())
             {
-                box.Items.Add(r[num_col]);
-                List.Add(new Filial() {
-                    id =        r[0],
-                    desc =      r[1],
-                    full_desc = r[2]
-
-                }); 
-                             
+                box.Items.Add(r[num_col]);                            
+                   
             }           
             r.Close();
            
         }
+        
         #region buttons
         private void exitToolStripMenuItem_Click (object sender, EventArgs e)
         {
@@ -87,13 +84,22 @@ namespace Report
         #endregion
         private void buttonAddNewString_Click (object sender, EventArgs e)
         {
+            //при нажатии на кнопку AddnewString - заполняются списки List и выпадающие списки combobox
             FormAddReport form = new FormAddReport();     
 
-            SqlMyDataReader("Filial", 2, form.comboBoxFilial, form.ListFilial);
-            //SqlMyDataReader("Квалификации", 1, form.comboBoxSkill, form.ListSkill);
-            //SqlMyDataReader("Специальности", 1, form.comboBoxSpecial, form.ListSpecial);
+            SqlMyDataReader("Filial", 2, form.comboBoxFilial);
+            SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
+            SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
 
             form.ShowDialog();
+        }
+
+        private void FormListCountStudent_Load(object sender, EventArgs e)
+        {
+            //заполнение коллекций
+            TableFilial.Fill(ListFilial);
+            TableSKill.Fill(ListSkill);
+            TableSpecial.Fill(ListSpecial);            
         }
     }
 }

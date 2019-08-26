@@ -26,7 +26,7 @@ namespace Report
             
             return r;                               
         }
-        public SQLiteDataReader Insert (string name_table, List<Filial> list)
+        public SQLiteDataReader Insert (string name_table, List<TableFilial> list)
         {
             string s = "INSERT INTO "+name_table+ "(стуктурное_подразделение_ВК, специальность_ВК, квалификация_ВК, очное, очно_заочное, заочное, год, студент_инвалид)"
                 +" VALUES ("+ list[0].full_desc +")";

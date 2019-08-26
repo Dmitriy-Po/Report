@@ -13,9 +13,7 @@ namespace Report
         {
             InitializeComponent();
         }
-        public List<Filial> ListFilial = new List<Filial>();
-        public ArrayList ListSkill = new ArrayList();
-        public ArrayList ListSpecial = new ArrayList();
+        
 
         private void label2_Click (object sender, EventArgs e)
         {
@@ -60,8 +58,10 @@ namespace Report
         {
             //кнопка для сохранения записи в БД
             SQliteDB db = new SQliteDB();
-            db.Insert("ЧисленностьОбучающихся", ListFilial);
-                      
+            //db.Insert("ЧисленностьОбучающихся", ListFilial);
+
+            //db.Insert("ЧисленностьОбучающихся", ListFilial, ListSpecial, ListSkill, combobox.selectedindex);
+
         }
 
         private void FormAddReport_Load (object sender, EventArgs e)
