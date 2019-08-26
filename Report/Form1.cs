@@ -10,12 +10,31 @@ namespace Report
     {
         public FormListCountStudent ()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            //заполнение коллекций
+            TableFilial.Fill(ListFilial);
+            TableSKill.Fill(ListSkill);
+            TableSpecial.Fill(ListSpecial);
 
         }
         public List<TableFilial>  ListFilial = new List<TableFilial>();
         public List<TableSKill>   ListSkill = new List<TableSKill>();
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
+
+        public void SaveStudent(int[] column)
+        {            
+            /*
+             * Кнопка сохранения записи в таблицу ЧисленностьОбучающихся
+             * 
+             * */
+            SQliteDB mydb = new SQliteDB();
+            mydb.Insert("ЧисленностьОбучающихся", 
+                new int[] {
+                    ListFilial[column[0]].id,
+                    ListSkill[column[1]].id,
+                    ListSpecial[column[2]].id
+                });
+        }
 
         public void SqlMyDataReader (string name_table, int num_col, ComboBox box)
         {
@@ -25,8 +44,7 @@ namespace Report
             
             while (r.Read())
             {
-                box.Items.Add(r[num_col]);                            
-                   
+                box.Items.Add(r[num_col]);                        
             }           
             r.Close();
            
@@ -84,7 +102,7 @@ namespace Report
         #endregion
         private void buttonAddNewString_Click (object sender, EventArgs e)
         {
-            //при нажатии на кнопку AddnewString - заполняются списки List и выпадающие списки combobox
+            //при нажатии на кнопку AddnewString - заполняются combobox
             FormAddReport form = new FormAddReport();     
 
             SqlMyDataReader("Filial", 2, form.comboBoxFilial);
@@ -94,12 +112,9 @@ namespace Report
             form.ShowDialog();
         }
 
-        private void FormListCountStudent_Load(object sender, EventArgs e)
+        public void FormListCountStudent_Load(object sender, EventArgs e)
         {
-            //заполнение коллекций
-            TableFilial.Fill(ListFilial);
-            TableSKill.Fill(ListSkill);
-            TableSpecial.Fill(ListSpecial);            
+            
         }
     }
 }

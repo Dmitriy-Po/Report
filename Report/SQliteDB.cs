@@ -26,13 +26,19 @@ namespace Report
             
             return r;                               
         }
-        public SQLiteDataReader Insert (string name_table, List<TableFilial> list)
+        public SQLiteDataReader Insert (string name_table, int[] num)
         {
-            string s = "INSERT INTO "+name_table+ "(стуктурное_подразделение_ВК, специальность_ВК, квалификация_ВК, очное, очно_заочное, заочное, год, студент_инвалид)"
-                +" VALUES ("+ list[0].full_desc +")";
-                        
+            //задача  - корректно собрать строку SQL
+            // строка создаётся по формату, требуется протестировать запрос sql.
+            StringBuilder commnadtext = new StringBuilder();
+            commnadtext.AppendFormat("INSERT INTO {0}(стуктурное_подразделение_ВК, специальность_ВК, квалификация_ВК, очное, очно_заочное, заочное, год, студент_инвалид)"+
+                "VALUES ({1}, {2}, {3})", name_table, num[0], num[1], num[2]);
 
-            SQLiteCommand comand = new SQLiteCommand(s, conn);           
+            //string s = "INSERT INTO "+name_table+ "(стуктурное_подразделение_ВК, специальность_ВК, квалификация_ВК, очное, очно_заочное, заочное, год, студент_инвалид)"
+            //    +" VALUES ("+  + ")";
+            
+
+            SQLiteCommand comand = new SQLiteCommand(commnadtext.ToString(), conn);           
 
             conn.Open();
             SQLiteDataReader reader = comand.ExecuteReader();

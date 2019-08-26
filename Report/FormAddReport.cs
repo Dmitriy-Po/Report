@@ -56,9 +56,21 @@ namespace Report
 
         public void buttonSave_Click (object sender, EventArgs e)
         {
-            //кнопка для сохранения записи в БД
-            SQliteDB db = new SQliteDB();
-            //db.Insert("ЧисленностьОбучающихся", ListFilial);
+            /* 
+             * Кнопка для сохранения записи в таблицу ЧисленностьОбучающихся.
+               Метод передаёт на форму FormListCountStudent 
+                индексы выбранных полей, в выпадающих списках.
+               По индексам выбирается элемент в коллекции. 
+             */
+            FormListCountStudent FormStudent = new FormListCountStudent();
+                
+                FormStudent.SaveStudent(new int[] {
+                comboBoxFilial.SelectedIndex,
+                comboBoxSpecial.SelectedIndex,
+                comboBoxSkill.SelectedIndex
+            });
+           
+            
 
             //db.Insert("ЧисленностьОбучающихся", ListFilial, ListSpecial, ListSkill, combobox.selectedindex);
 
