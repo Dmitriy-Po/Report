@@ -26,13 +26,14 @@ namespace Report
             
             return r;                               
         }
-        public SQLiteDataReader Insert (string name_table, int[] num)
+        public void Insert (string name_table, int[] num)
         {
             //задача  - корректно собрать строку SQL
             // строка создаётся по формату, требуется протестировать запрос sql.
             StringBuilder commnadtext = new StringBuilder();
             commnadtext.AppendFormat("INSERT INTO {0}(стуктурное_подразделение_ВК, специальность_ВК, квалификация_ВК, очное, очно_заочное, заочное, год, студент_инвалид)"+
-                "VALUES ({1}, {2}, {3})", name_table, num[0], num[1], num[2]);
+                "VALUES ({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", 
+                name_table, num[0], num[1], num[2], num[3], num[4], num[5], num[6], num[7]);
 
             //string s = "INSERT INTO "+name_table+ "(стуктурное_подразделение_ВК, специальность_ВК, квалификация_ВК, очное, очно_заочное, заочное, год, студент_инвалид)"
             //    +" VALUES ("+  + ")";
@@ -41,8 +42,10 @@ namespace Report
             SQLiteCommand comand = new SQLiteCommand(commnadtext.ToString(), conn);           
 
             conn.Open();
-            SQLiteDataReader reader = comand.ExecuteReader();
-            return reader;
+            SQLiteDataReader reader;
+            reader = comand.ExecuteReader();
+            //return reader;
+            conn.Close();
         }
     }
 }

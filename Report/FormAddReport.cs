@@ -13,32 +13,29 @@ namespace Report
         {
             InitializeComponent();
         }
-        
-
-        private void label2_Click (object sender, EventArgs e)
+        public void save()
         {
+            /* 
+             * Кнопка для сохранения записи в таблицу ЧисленностьОбучающихся.
+               Метод передаёт на форму FormListCountStudent 
+                индексы выбранных полей, в выпадающих списках.
+               По индексам выбирается элемент в коллекции. 
+             */
+            FormListCountStudent FormStudent = new FormListCountStudent();
 
+            FormStudent.SaveStudent(new int[] {
+                comboBoxFilial.SelectedIndex,
+                comboBoxSpecial.SelectedIndex,
+                comboBoxSkill.SelectedIndex,
+                Convert.ToInt32(textBoxОчное.Text),
+                Convert.ToInt32(textBoxОчно_заочное.Text),
+                Convert.ToInt32(textBoxЗаочное.Text),
+                Convert.ToInt32(textBoxYear.Text),
+                Convert.ToInt32(checkBoxStdInv.Checked)
+            });
         }
 
-        private void buttonSave_MouseHover (object sender, EventArgs e)
-        {
-        	//добавлен небольшой коментарий
-            ToolTip t = new ToolTip();
-            t.SetToolTip(buttonSave, "Сохранить");
-        }
-
-        private void buttonSaveAndClose_MouseHover (object sender, EventArgs e)
-        {
-            ToolTip t = new ToolTip();
-            t.SetToolTip(buttonSaveAndClose, "Сохранить и закрыть");
-        }
-
-        private void button1_Click (object sender, EventArgs e)
-        {
-            
-           
-        }
-
+        #region clearcomboboxes
         private void button2_Click (object sender, EventArgs e)
         {
             comboBoxFilial.ResetText();
@@ -53,32 +50,17 @@ namespace Report
         {
             comboBoxSkill.ResetText();
         }
-
+        #endregion
         public void buttonSave_Click (object sender, EventArgs e)
         {
-            /* 
-             * Кнопка для сохранения записи в таблицу ЧисленностьОбучающихся.
-               Метод передаёт на форму FormListCountStudent 
-                индексы выбранных полей, в выпадающих списках.
-               По индексам выбирается элемент в коллекции. 
-             */
-            FormListCountStudent FormStudent = new FormListCountStudent();
-                
-                FormStudent.SaveStudent(new int[] {
-                comboBoxFilial.SelectedIndex,
-                comboBoxSpecial.SelectedIndex,
-                comboBoxSkill.SelectedIndex
-            });
-           
-            
-
-            //db.Insert("ЧисленностьОбучающихся", ListFilial, ListSpecial, ListSkill, combobox.selectedindex);
-
+            save();//сохранить
         }
-
-        private void FormAddReport_Load (object sender, EventArgs e)
+        
+        private void buttonSaveAndClose_Click(object sender, EventArgs e)
         {
-
+            //сохранить и закрыть форму
+            save();
+            Close();
         }
     }
 }

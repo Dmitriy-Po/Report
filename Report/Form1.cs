@@ -15,11 +15,45 @@ namespace Report
             TableFilial.Fill(ListFilial);
             TableSKill.Fill(ListSkill);
             TableSpecial.Fill(ListSpecial);
-
+            FillDataGrid();            
+            
         }
         public List<TableFilial>  ListFilial = new List<TableFilial>();
         public List<TableSKill>   ListSkill = new List<TableSKill>();
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
+        
+        public void FillDataGrid()
+        {
+            string query = " SELECT " +
+            "Filial.full_desc as 'Структурное подразделение', " +
+            "Специальности.наименование as 'Специальность', " +
+            "Квалификации.наименование as 'Квалификация', " +
+            "ЧисленностьОбучающихся.очное as 'Очное', " +
+            "ЧисленностьОбучающихся.очно_заочное as 'Очно-заочное', " +
+            "ЧисленностьОбучающихся.заочное as 'Заочное', " +
+            "ЧисленностьОбучающихся.студент_инвалид as 'Студент инвалид' " +
+            "FROM ЧисленностьОбучающихся " +
+            "INNER JOIN Filial ON " +
+            "ЧисленностьОбучающихся.стуктурное_подразделение_ВК = Filial.id " +
+            "INNER JOIN Специальности ON " +
+            "ЧисленностьОбучающихся.специальность_ВК = Специальности.код " +
+            "INNER JOIN Квалификации ON " +
+            "ЧисленностьОбучающихся.квалификация_ВК = Квалификации.код";
+
+            //FormListCountStudent FLCS = new FormListCountStudent();
+            SQLiteConnection conn = new SQLiteConnection("Data Source=ReportDB.db; Version=3;");
+
+            SQLiteCommand cmd = new SQLiteCommand(query, conn);
+
+            conn.Open();
+            SQLiteDataReader r = cmd.ExecuteReader();
+            while (r.Read())
+            {
+                dataGridViewMain.Rows.Add(0, r[0], r[1], r[2], r[3], r[4], r[5], r[6]);
+            }
+            r.Close();
+            conn.Close();
+        }
 
         public void SaveStudent(int[] column)
         {            
@@ -32,7 +66,9 @@ namespace Report
                 new int[] {
                     ListFilial[column[0]].id,
                     ListSkill[column[1]].id,
-                    ListSpecial[column[2]].id
+                    ListSpecial[column[2]].id,
+                    column[3], column[4], column[5], column[6], column[7]
+                    
                 });
         }
 
@@ -115,6 +151,11 @@ namespace Report
         public void FormListCountStudent_Load(object sender, EventArgs e)
         {
             
+        }
+
+        private void бДToolStripMenuItem_Click(object sender, EventArgs e)
+        {            
+           
         }
     }
 }

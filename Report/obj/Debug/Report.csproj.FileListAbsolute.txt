@@ -19,7 +19,6 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\Report.exe.config
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.exe
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.pdb
-C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormListCountStudent.resources
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormAddReport.resources
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Properties.Resources.resources
@@ -34,3 +33,4 @@ C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\Syste
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\EntityFramework.xml
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\System.Data.SQLite.xml
+C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache

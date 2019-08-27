@@ -36,7 +36,7 @@
             this.buttonAddStingPattern = new System.Windows.Forms.Button();
             this.buttonEditString = new System.Windows.Forms.Button();
             this.buttonDeleteSelected = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewMain = new System.Windows.Forms.DataGridView();
             this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColumnStrUnit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSpecial = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -55,7 +55,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -133,12 +133,12 @@
             this.buttonDeleteSelected.UseVisualStyleBackColor = true;
             this.buttonDeleteSelected.MouseHover += new System.EventHandler(this.buttonDeleteSelected_MouseHover);
             // 
-            // dataGridView1
+            // dataGridViewMain
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewMain.AllowUserToAddRows = false;
+            this.dataGridViewMain.AllowUserToDeleteRows = false;
+            this.dataGridViewMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCheck,
             this.ColumnStrUnit,
             this.ColumnSpecial,
@@ -147,13 +147,13 @@
             this.Column6,
             this.Column7,
             this.ColumnStudent_inv});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 161);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(984, 351);
-            this.dataGridView1.TabIndex = 10;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.dataGridViewMain.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataGridViewMain.Location = new System.Drawing.Point(0, 161);
+            this.dataGridViewMain.Name = "dataGridViewMain";
+            this.dataGridViewMain.ReadOnly = true;
+            this.dataGridViewMain.Size = new System.Drawing.Size(984, 351);
+            this.dataGridViewMain.TabIndex = 10;
+            this.dataGridViewMain.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // ColumnCheck
             // 
@@ -263,8 +263,9 @@
             // бДToolStripMenuItem
             // 
             this.бДToolStripMenuItem.Name = "бДToolStripMenuItem";
-            this.бДToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
+            this.бДToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.бДToolStripMenuItem.Text = "БД";
+            this.бДToolStripMenuItem.Click += new System.EventHandler(this.бДToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -322,7 +323,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 512);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dataGridViewMain);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1000, 500);
@@ -330,7 +331,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Численность обучающихся";
             this.Load += new System.EventHandler(this.FormListCountStudent_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -349,7 +350,6 @@
         private System.Windows.Forms.Button buttonAddStingPattern;
         private System.Windows.Forms.Button buttonEditString;
         private System.Windows.Forms.Button buttonDeleteSelected;
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -368,6 +368,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripMenuItem настройкиToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem бДToolStripMenuItem;
+        public System.Windows.Forms.DataGridView dataGridViewMain;
     }
 }
 

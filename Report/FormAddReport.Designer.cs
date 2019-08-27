@@ -28,27 +28,29 @@
         /// </summary>
         private void InitializeComponent ()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAddReport));
             this.buttonSave = new System.Windows.Forms.Button();
             this.buttonSaveAndClose = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBoxStdInv = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBoxОчно_заочное = new System.Windows.Forms.TextBox();
+            this.textBoxОчное = new System.Windows.Forms.TextBox();
+            this.textBoxYear = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxЗаочное = new System.Windows.Forms.TextBox();
             this.comboBoxFilial = new System.Windows.Forms.ComboBox();
             this.comboBoxSpecial = new System.Windows.Forms.ComboBox();
             this.comboBoxSkill = new System.Windows.Forms.ComboBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // buttonSave
@@ -59,9 +61,10 @@
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(40, 40);
             this.buttonSave.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.buttonSave, "Сохранить");
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            this.buttonSave.MouseHover += new System.EventHandler(this.buttonSave_MouseHover);
+            
             // 
             // buttonSaveAndClose
             // 
@@ -71,8 +74,10 @@
             this.buttonSaveAndClose.Name = "buttonSaveAndClose";
             this.buttonSaveAndClose.Size = new System.Drawing.Size(40, 40);
             this.buttonSaveAndClose.TabIndex = 0;
+            this.toolTip1.SetToolTip(this.buttonSaveAndClose, "Сохранить и закрыть");
             this.buttonSaveAndClose.UseVisualStyleBackColor = true;
-            this.buttonSaveAndClose.MouseHover += new System.EventHandler(this.buttonSaveAndClose_MouseHover);
+            this.buttonSaveAndClose.Click += new System.EventHandler(this.buttonSaveAndClose_Click);
+            
             // 
             // label1
             // 
@@ -83,15 +88,15 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Календарный год";
             // 
-            // checkBox1
+            // checkBoxStdInv
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(282, 71);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(111, 17);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Студент инвалид";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBoxStdInv.AutoSize = true;
+            this.checkBoxStdInv.Location = new System.Drawing.Point(282, 71);
+            this.checkBoxStdInv.Name = "checkBoxStdInv";
+            this.checkBoxStdInv.Size = new System.Drawing.Size(111, 17);
+            this.checkBoxStdInv.TabIndex = 2;
+            this.checkBoxStdInv.Text = "Студент инвалид";
+            this.checkBoxStdInv.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -129,26 +134,26 @@
             this.label7.TabIndex = 10;
             this.label7.Text = "Структурное подразделение";
             // 
-            // textBox4
+            // textBoxОчно_заочное
             // 
-            this.textBox4.Location = new System.Drawing.Point(312, 300);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(81, 20);
-            this.textBox4.TabIndex = 7;
+            this.textBoxОчно_заочное.Location = new System.Drawing.Point(312, 300);
+            this.textBoxОчно_заочное.Name = "textBoxОчно_заочное";
+            this.textBoxОчно_заочное.Size = new System.Drawing.Size(81, 20);
+            this.textBoxОчно_заочное.TabIndex = 7;
             // 
-            // textBox5
+            // textBoxОчное
             // 
-            this.textBox5.Location = new System.Drawing.Point(312, 274);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(81, 20);
-            this.textBox5.TabIndex = 6;
+            this.textBoxОчное.Location = new System.Drawing.Point(312, 274);
+            this.textBoxОчное.Name = "textBoxОчное";
+            this.textBoxОчное.Size = new System.Drawing.Size(81, 20);
+            this.textBoxОчное.TabIndex = 6;
             // 
-            // textBox6
+            // textBoxYear
             // 
-            this.textBox6.Location = new System.Drawing.Point(127, 67);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(149, 20);
-            this.textBox6.TabIndex = 1;
+            this.textBoxYear.Location = new System.Drawing.Point(127, 67);
+            this.textBoxYear.Name = "textBoxYear";
+            this.textBoxYear.Size = new System.Drawing.Size(149, 20);
+            this.textBoxYear.TabIndex = 1;
             // 
             // button2
             // 
@@ -188,7 +193,7 @@
             this.label2.Size = new System.Drawing.Size(284, 13);
             this.label2.TabIndex = 25;
             this.label2.Text = "Количество студентов очной-заочной формы обучения";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+            
             // 
             // label3
             // 
@@ -199,12 +204,12 @@
             this.label3.TabIndex = 26;
             this.label3.Text = "Количество студентов заочной формы обучения";
             // 
-            // textBox2
+            // textBoxЗаочное
             // 
-            this.textBox2.Location = new System.Drawing.Point(312, 326);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(81, 20);
-            this.textBox2.TabIndex = 8;
+            this.textBoxЗаочное.Location = new System.Drawing.Point(312, 326);
+            this.textBoxЗаочное.Name = "textBoxЗаочное";
+            this.textBoxЗаочное.Size = new System.Drawing.Size(81, 20);
+            this.textBoxЗаочное.TabIndex = 8;
             // 
             // comboBoxFilial
             // 
@@ -238,20 +243,20 @@
             this.Controls.Add(this.comboBoxSkill);
             this.Controls.Add(this.comboBoxSpecial);
             this.Controls.Add(this.comboBoxFilial);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBoxЗаочное);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox4);
-            this.Controls.Add(this.textBox5);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.textBoxОчно_заочное);
+            this.Controls.Add(this.textBoxОчное);
+            this.Controls.Add(this.textBoxYear);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.checkBoxStdInv);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonSaveAndClose);
             this.Controls.Add(this.buttonSave);
@@ -259,7 +264,7 @@
             this.Name = "FormAddReport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Форма редактирования/добавления";
-            this.Load += new System.EventHandler(this.FormAddReport_Load);
+            
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -269,23 +274,24 @@
 
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBoxStdInv;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.TextBox textBox5;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox textBoxОчно_заочное;
+        private System.Windows.Forms.TextBox textBoxОчное;
+        private System.Windows.Forms.TextBox textBoxYear;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxЗаочное;
         private System.Windows.Forms.Button buttonSaveAndClose;
         public System.Windows.Forms.ComboBox comboBoxFilial;
         public System.Windows.Forms.ComboBox comboBoxSpecial;
         public System.Windows.Forms.ComboBox comboBoxSkill;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
