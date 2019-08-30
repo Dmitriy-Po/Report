@@ -4,14 +4,73 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Report
 {
     public partial class FormAddReport : Form
     {
-        public FormAddReport ()
+        public FormAddReport()
         {
             InitializeComponent();
+        }
+        public bool IsCorrect()
+        {
+            /*
+             * требуется сравнить данные из combobox  с данными в datagridview
+             * Возможно,  придётся испоьзовыать linq.
+             * */
+
+            //локальная переменная для определения корректного ввода ГОДА
+            int local_year = 0;
+
+            //если преобразование успешно, тогда продолжить заполнение форм
+            if (int.TryParse(textBoxYear.Text, out local_year))
+            {
+                try
+                {
+                    FormListCountStudent fa = new FormListCountStudent();
+                    /*
+                     * проверяем условие на совпадение строк со datagridview
+                     * если есть совпадение - значит строка уже существует и текущая запись дубликат
+                     * иначе выполнить сохранение
+                     * */
+
+                    var IsMatch = fa.ListCountStudent
+                    .Select(
+                            x => x.Filial.Contains(fa.ListFilial[comboBoxFilial.SelectedIndex].full_desc) &&
+                            x.Special.Contains(fa.ListSpecial[comboBoxSpecial.SelectedIndex].desc) &&
+                            x.year == local_year &&
+                            x.student_inv.Equals(checkBoxStdInv.Checked)
+
+                     ).Any(x => x.Equals(true));
+
+
+                    if (!IsMatch)//если нет совпадений
+                    {
+                        textBoxОчное.Text = (textBoxОчное.Text == "") ? "0" : textBoxОчное.Text;
+                        textBoxОчно_заочное.Text = (textBoxОчно_заочное.Text == "") ? "0" : textBoxОчно_заочное.Text;
+                        textBoxЗаочное.Text = (textBoxЗаочное.Text == "") ? "0" : textBoxЗаочное.Text;
+                        return true;
+                    }
+                    //иначе совпадения есть
+                    else
+                    {
+                        MessageBox.Show("Такая строка уже существует", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return false;
+                    }                    
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Заполните поле Календарный год", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;                
+            }
         }
         public void save()
         {
@@ -21,46 +80,58 @@ namespace Report
                 индексы выбранных полей, в выпадающих списках.
                По индексам выбирается элемент в коллекции. 
              */
-            FormListCountStudent FormStudent = new FormListCountStudent();
-
-            FormStudent.SaveStudent(new int[] {
-                comboBoxFilial.SelectedIndex,
-                comboBoxSpecial.SelectedIndex,
-                comboBoxSkill.SelectedIndex,
-                Convert.ToInt32(textBoxОчное.Text),
-                Convert.ToInt32(textBoxОчно_заочное.Text),
-                Convert.ToInt32(textBoxЗаочное.Text),
-                Convert.ToInt32(textBoxYear.Text),
-                Convert.ToInt32(checkBoxStdInv.Checked)
-            });
+            try
+            {
+                FormListCountStudent FormStudent = new FormListCountStudent();
+                FormStudent.SaveStudent(new int[] {
+                    comboBoxFilial.SelectedIndex,
+                    comboBoxSpecial.SelectedIndex,
+                    comboBoxSkill.SelectedIndex,
+                    Convert.ToInt32(textBoxОчное.Text),
+                    Convert.ToInt32(textBoxОчно_заочное.Text),
+                    Convert.ToInt32(textBoxЗаочное.Text),
+                    Convert.ToInt32(textBoxYear.Text),
+                    Convert.ToInt32(checkBoxStdInv.Checked)
+                });
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }   
         }
 
         #region clearcomboboxes
-        private void button2_Click (object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e)
         {
             comboBoxFilial.ResetText();
         }
 
-        private void button3_Click (object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
             comboBoxSpecial.ResetText();
         }
 
-        private void button5_Click (object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e)
         {
             comboBoxSkill.ResetText();
         }
         #endregion
-        public void buttonSave_Click (object sender, EventArgs e)
+        public void buttonSave_Click(object sender, EventArgs e)
         {
-            save();//сохранить
+            if (IsCorrect())
+            {
+                save();
+            }
         }
-        
+
         private void buttonSaveAndClose_Click(object sender, EventArgs e)
         {
             //сохранить и закрыть форму
-            save();
-            Close();
+            if (IsCorrect())
+            {
+                save();
+                Close();
+            }                      
         }
     }
 }

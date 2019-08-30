@@ -21,6 +21,7 @@ namespace Report
         public List<TableFilial>  ListFilial = new List<TableFilial>();
         public List<TableSKill>   ListSkill = new List<TableSKill>();
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
+        public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
         
         public void FillDataGrid()
         {
@@ -31,7 +32,9 @@ namespace Report
             "ЧисленностьОбучающихся.очное as 'Очное', " +
             "ЧисленностьОбучающихся.очно_заочное as 'Очно-заочное', " +
             "ЧисленностьОбучающихся.заочное as 'Заочное', " +
-            "ЧисленностьОбучающихся.студент_инвалид as 'Студент инвалид' " +
+            "ЧисленностьОбучающихся.студент_инвалид as 'Студент инвалид', " +
+            "ЧисленностьОбучающихся.код as 'id', "+
+            "ЧисленностьОбучающихся.год as 'year'"+
             "FROM ЧисленностьОбучающихся " +
             "INNER JOIN Filial ON " +
             "ЧисленностьОбучающихся.стуктурное_подразделение_ВК = Filial.id " +
@@ -40,16 +43,29 @@ namespace Report
             "INNER JOIN Квалификации ON " +
             "ЧисленностьОбучающихся.квалификация_ВК = Квалификации.код";
 
-            //FormListCountStudent FLCS = new FormListCountStudent();
+            
             SQLiteConnection conn = new SQLiteConnection("Data Source=ReportDB.db; Version=3;");
-
             SQLiteCommand cmd = new SQLiteCommand(query, conn);
+            
 
             conn.Open();
             SQLiteDataReader r = cmd.ExecuteReader();
             while (r.Read())
             {
-                dataGridViewMain.Rows.Add(0, r[0], r[1], r[2], r[3], r[4], r[5], r[6]);
+                dataGridViewMain.Rows.Add(0, r[8], r[0], r[1], r[2], r[3], r[4], r[5], r[6]);
+                ListCountStudent.Add(new TableCountStudent()
+                {
+                    Filial =         Convert.ToString(r[0]),
+                    Skill =          Convert.ToString(r[2]),
+                    Special =        Convert.ToString(r[1]),
+                    ochnoe =         Convert.ToInt32(r[3]),
+                    ochno_zaocjnoe = Convert.ToInt32(r[4]),
+                    zaochnoe =       Convert.ToInt32(r[5]),
+                    student_inv =    Convert.ToBoolean(r[6]),
+                    id =             Convert.ToInt32(r[7]),
+                    year =           Convert.ToInt32(r[8])
+
+                });
             }
             r.Close();
             conn.Close();
@@ -146,6 +162,7 @@ namespace Report
             SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
 
             form.ShowDialog();
+
         }
 
         public void FormListCountStudent_Load(object sender, EventArgs e)

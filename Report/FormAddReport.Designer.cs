@@ -64,7 +64,6 @@
             this.toolTip1.SetToolTip(this.buttonSave, "Сохранить");
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
-            
             // 
             // buttonSaveAndClose
             // 
@@ -77,7 +76,6 @@
             this.toolTip1.SetToolTip(this.buttonSaveAndClose, "Сохранить и закрыть");
             this.buttonSaveAndClose.UseVisualStyleBackColor = true;
             this.buttonSaveAndClose.Click += new System.EventHandler(this.buttonSaveAndClose_Click);
-            
             // 
             // label1
             // 
@@ -193,7 +191,6 @@
             this.label2.Size = new System.Drawing.Size(284, 13);
             this.label2.TabIndex = 25;
             this.label2.Text = "Количество студентов очной-заочной формы обучения";
-            
             // 
             // label3
             // 
@@ -264,7 +261,6 @@
             this.Name = "FormAddReport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Форма редактирования/добавления";
-            
             this.ResumeLayout(false);
             this.PerformLayout();
 
