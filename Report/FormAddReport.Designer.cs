@@ -138,6 +138,7 @@
             this.textBoxОчно_заочное.Name = "textBoxОчно_заочное";
             this.textBoxОчно_заочное.Size = new System.Drawing.Size(81, 20);
             this.textBoxОчно_заочное.TabIndex = 7;
+            this.textBoxОчно_заочное.Text = "0";
             // 
             // textBoxОчное
             // 
@@ -145,6 +146,7 @@
             this.textBoxОчное.Name = "textBoxОчное";
             this.textBoxОчное.Size = new System.Drawing.Size(81, 20);
             this.textBoxОчное.TabIndex = 6;
+            this.textBoxОчное.Text = "0";
             // 
             // textBoxYear
             // 
@@ -207,6 +209,7 @@
             this.textBoxЗаочное.Name = "textBoxЗаочное";
             this.textBoxЗаочное.Size = new System.Drawing.Size(81, 20);
             this.textBoxЗаочное.TabIndex = 8;
+            this.textBoxЗаочное.Text = "0";
             // 
             // comboBoxFilial
             // 

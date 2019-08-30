@@ -25,6 +25,8 @@ namespace Report
         
         public void FillDataGrid()
         {
+            //возможно стоит использовать datasource для получекния данных
+            //но пока действует по выборе из базы данных
             string query = " SELECT " +
             "Filial.full_desc as 'Структурное подразделение', " +
             "Специальности.наименование as 'Специальность', " +
@@ -50,6 +52,8 @@ namespace Report
 
             conn.Open();
             SQLiteDataReader r = cmd.ExecuteReader();
+
+
             while (r.Read())
             {
                 dataGridViewMain.Rows.Add(0, r[8], r[0], r[1], r[2], r[3], r[4], r[5], r[6]);
@@ -81,8 +85,8 @@ namespace Report
             mydb.Insert("ЧисленностьОбучающихся", 
                 new int[] {
                     ListFilial[column[0]].id,
-                    ListSkill[column[1]].id,
-                    ListSpecial[column[2]].id,
+                    ListSpecial[column[1]].id,
+                    ListSkill[column[2]].id,
                     column[3], column[4], column[5], column[6], column[7]
                     
                 });
@@ -131,7 +135,7 @@ namespace Report
 
         private void button2_Click (object sender, EventArgs e)
         {
-
+            
         }
 
         private void buttonAddStingPattern_MouseHover (object sender, EventArgs e)
@@ -171,8 +175,14 @@ namespace Report
         }
 
         private void бДToolStripMenuItem_Click(object sender, EventArgs e)
-        {            
-           
+        {
+            dataGridViewMain.Rows.Clear();
+            FillDataGrid();
+        }
+
+        private void dataGridViewMain_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            textBox1.Text = dataGridViewMain.CurrentRow.Index.ToString();
         }
     }
 }

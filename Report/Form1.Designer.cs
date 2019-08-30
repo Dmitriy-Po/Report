@@ -152,9 +152,9 @@
             this.dataGridViewMain.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridViewMain.Location = new System.Drawing.Point(0, 161);
             this.dataGridViewMain.Name = "dataGridViewMain";
-            this.dataGridViewMain.ReadOnly = true;
             this.dataGridViewMain.Size = new System.Drawing.Size(984, 351);
             this.dataGridViewMain.TabIndex = 10;
+            this.dataGridViewMain.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMain_CellClick);
             this.dataGridViewMain.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // textBox1
@@ -261,9 +261,9 @@
             // 
             this.ColumnCheck.HeaderText = "";
             this.ColumnCheck.Name = "ColumnCheck";
-            this.ColumnCheck.ReadOnly = true;
             this.ColumnCheck.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.ColumnCheck.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ColumnCheck.Width = 50;
             // 
             // ColumnYear
             // 

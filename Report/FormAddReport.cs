@@ -48,9 +48,7 @@ namespace Report
 
                     if (!IsMatch)//если нет совпадений
                     {
-                        textBoxОчное.Text = (textBoxОчное.Text == "") ? "0" : textBoxОчное.Text;
-                        textBoxОчно_заочное.Text = (textBoxОчно_заочное.Text == "") ? "0" : textBoxОчно_заочное.Text;
-                        textBoxЗаочное.Text = (textBoxЗаочное.Text == "") ? "0" : textBoxЗаочное.Text;
+                        //добавить функции очистки полей ввода                                               
                         return true;
                     }
                     //иначе совпадения есть
@@ -116,11 +114,12 @@ namespace Report
             comboBoxSkill.ResetText();
         }
         #endregion
+        
         public void buttonSave_Click(object sender, EventArgs e)
         {
             if (IsCorrect())
             {
-                save();
+                save();                
             }
         }
 
@@ -130,7 +129,7 @@ namespace Report
             if (IsCorrect())
             {
                 save();
-                Close();
+                Close();                
             }                      
         }
     }
