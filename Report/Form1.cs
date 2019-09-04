@@ -22,7 +22,14 @@ namespace Report
         public List<TableSKill>   ListSkill = new List<TableSKill>();
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
         public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
-        
+        public delegate void SaveOrUpdate();
+        public SaveOrUpdate saveORupdate;
+
+        public void RefreshDataGridCiew()
+        {
+            dataGridViewMain.Rows.Clear();
+            FillDataGrid();
+        }
         public void FillDataGrid()
         {
             //возможно стоит использовать datasource для получекния данных
@@ -56,7 +63,7 @@ namespace Report
 
             while (r.Read())
             {
-                dataGridViewMain.Rows.Add(0, r[8], r[0], r[1], r[2], r[3], r[4], r[5], r[6]);
+                dataGridViewMain.Rows.Add(0, r[8], r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]);
                 ListCountStudent.Add(new TableCountStudent()
                 {
                     Filial =         Convert.ToString(r[0]),
@@ -135,7 +142,9 @@ namespace Report
 
         private void button2_Click (object sender, EventArgs e)
         {
-            
+            FormAddReport form = new FormAddReport();
+            saveORupdate -= form.save;
+            saveORupdate += form.update;
         }
 
         private void buttonAddStingPattern_MouseHover (object sender, EventArgs e)
@@ -165,6 +174,8 @@ namespace Report
             SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
             SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
 
+            saveORupdate -= form.update;
+            saveORupdate += form.save;
             form.ShowDialog();
 
         }
@@ -176,13 +187,43 @@ namespace Report
 
         private void бДToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dataGridViewMain.Rows.Clear();
-            FillDataGrid();
+            RefreshDataGridCiew();
         }
 
         private void dataGridViewMain_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            textBox1.Text = dataGridViewMain.CurrentRow.Index.ToString();
+           // textBox1.Text = dataGridViewMain.CurrentRow.Index.ToString();
+           // dataGridViewMain.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+        }
+
+        private void buttonDeleteSelected_Click(object sender, EventArgs e)
+        {
+            //доделать проверку
+            //и попробовать сделать асинхронный метод
+            List<string> ListId = new List<string>();
+            SQliteDB q = new SQliteDB();         
+            foreach (DataGridViewRow rows in dataGridViewMain.Rows)
+            {
+                if (Convert.ToBoolean(rows.Cells[0].Value))
+                {
+                    ListId.Add(rows.Cells["ColumnID"].Value.ToString());
+                }
+            }
+            q.Delete(string.Join(",", ListId.ToArray()));
+            RefreshDataGridCiew();
+            
+        }
+
+        private void buttonEditString_Click(object sender, EventArgs e)
+        {
+            FormAddReport form = new FormAddReport();
+            saveORupdate -= form.save;
+            saveORupdate += form.update;
+        }
+
+        private void dataGridViewMain_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            
         }
     }
 }

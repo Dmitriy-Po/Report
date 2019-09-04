@@ -14,6 +14,7 @@ namespace Report
         {
             InitializeComponent();
         }
+         
         public bool IsCorrect()
         {
             /*
@@ -97,7 +98,11 @@ namespace Report
                 MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }   
         }
+        public void update()
+        {
+            //update set
 
+        }
         #region clearcomboboxes
         private void button2_Click(object sender, EventArgs e)
         {
@@ -117,18 +122,21 @@ namespace Report
         
         public void buttonSave_Click(object sender, EventArgs e)
         {
+            FormListCountStudent fa = new FormListCountStudent();
             if (IsCorrect())
             {
-                save();                
+                fa.saveORupdate();
+                //save();                
             }
         }
 
         private void buttonSaveAndClose_Click(object sender, EventArgs e)
         {
+            FormListCountStudent fa = new FormListCountStudent();
             //сохранить и закрыть форму
             if (IsCorrect())
             {
-                save();
+                fa.saveORupdate();
                 Close();                
             }                      
         }

@@ -47,5 +47,17 @@ namespace Report
             //return reader;
             conn.Close();
         }
+        public void Delete(string id)
+        {
+            SQLiteCommand command = new SQLiteCommand
+                ($"DELETE FROM ЧисленностьОбучающихся WHERE ЧисленностьОбучающихся.код in({id})", conn);
+            conn.Open();
+            command.ExecuteNonQuery();
+            conn.Close();
+        }
+        public void Update()
+        {
+
+        }
     }
 }
