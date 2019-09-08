@@ -15,8 +15,9 @@ namespace Report
             TableFilial.Fill(ListFilial);
             TableSKill.Fill(ListSkill);
             TableSpecial.Fill(ListSpecial);
-            FillDataGrid();            
+            FillDataGrid();
             
+
         }
         public List<TableFilial>  ListFilial = new List<TableFilial>();
         public List<TableSKill>   ListSkill = new List<TableSKill>();
@@ -24,7 +25,9 @@ namespace Report
         public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
         public delegate void SaveOrUpdate();
         public SaveOrUpdate saveORupdate;
+        public int SelectedRowID = 0;
 
+        #region select
         public void RefreshDataGridCiew()
         {
             dataGridViewMain.Rows.Clear();
@@ -98,7 +101,7 @@ namespace Report
                     
                 });
         }
-
+        #endregion
         public void SqlMyDataReader (string name_table, int num_col, ComboBox box)
         {
             //заполнение combobox
@@ -112,6 +115,7 @@ namespace Report
             r.Close();
            
         }
+        
         
         #region buttons
         private void exitToolStripMenuItem_Click (object sender, EventArgs e)
@@ -142,9 +146,9 @@ namespace Report
 
         private void button2_Click (object sender, EventArgs e)
         {
-            FormAddReport form = new FormAddReport();
-            saveORupdate -= form.save;
-            saveORupdate += form.update;
+            //FormAddReport form = new FormAddReport();
+            //saveORupdate -= form.save;
+            //saveORupdate += form.update;
         }
 
         private void buttonAddStingPattern_MouseHover (object sender, EventArgs e)
@@ -168,7 +172,7 @@ namespace Report
         private void buttonAddNewString_Click (object sender, EventArgs e)
         {
             //при нажатии на кнопку AddnewString - заполняются combobox
-            FormAddReport form = new FormAddReport();     
+            FormAddReport form = new FormAddReport();
 
             SqlMyDataReader("Filial", 2, form.comboBoxFilial);
             SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
@@ -216,9 +220,35 @@ namespace Report
 
         private void buttonEditString_Click(object sender, EventArgs e)
         {
+            //сделать проверку на количество выделенных строк. Должна быть только одна.
+            //пка что функция не определяет количество выделенных строк. - это будущий баг.
             FormAddReport form = new FormAddReport();
+
             saveORupdate -= form.save;
             saveORupdate += form.update;
+
+            SqlMyDataReader("Filial", 2, form.comboBoxFilial);
+            SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
+            SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
+
+            foreach (DataGridViewRow  row in dataGridViewMain.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[0].Value))
+                {
+                    form.textBoxYear.Text = row.Cells[1].Value.ToString();
+                    form.textBoxОчное.Text = row.Cells[5].Value.ToString();
+                    form.textBoxОчно_заочное.Text = row.Cells[6].Value.ToString();
+                    form.textBoxЗаочное.Text = row.Cells[7].Value.ToString();
+
+                    form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
+                    form.comboBoxSpecial.Text = row.Cells[3].Value.ToString();
+                    form.comboBoxSkill.Text = row.Cells[4].Value.ToString();
+                    form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;
+                    SelectedRowID = Convert.ToInt32(row.Cells[9].Value);
+                }
+            }
+            form.ShowDialog();
+            
         }
 
         private void dataGridViewMain_CellValueChanged(object sender, DataGridViewCellEventArgs e)

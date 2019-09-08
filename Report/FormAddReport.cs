@@ -14,7 +14,7 @@ namespace Report
         {
             InitializeComponent();
         }
-         
+        #region Проверка ввода данных 
         public bool IsCorrect()
         {
             /*
@@ -71,6 +71,8 @@ namespace Report
                 return false;                
             }
         }
+        #endregion
+        #region Функции сохранения и удаления
         public void save()
         {
             /* 
@@ -101,8 +103,23 @@ namespace Report
         public void update()
         {
             //update set
+            SQliteDB db = new SQliteDB();
+            FormListCountStudent fa = new FormListCountStudent();            
+            
+            db.Update(new int[] {
+                comboBoxFilial.SelectedIndex,
+                comboBoxSpecial.SelectedIndex,
+                comboBoxSkill.SelectedIndex,
+                Convert.ToInt32(textBoxОчное.Text),
+                Convert.ToInt32(textBoxОчно_заочное.Text),
+                Convert.ToInt32(textBoxЗаочное.Text),
+                Convert.ToInt32(textBoxYear.Text),
+                Convert.ToInt32(checkBoxStdInv.Checked),
+                fa.SelectedRowID
+            });
 
         }
+        #endregion
         #region clearcomboboxes
         private void button2_Click(object sender, EventArgs e)
         {

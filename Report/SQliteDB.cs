@@ -10,12 +10,8 @@ namespace Report
 {
     public class SQliteDB
 
-    {
-        //метод для переноса данных их БД в колелкцию
-        public void DataBaseToList ()
-        {            
-            
-        }
+    {        
+        
         public SQLiteConnection conn = new SQLiteConnection("Data Source=ReportDB.db; Version=3;");
         public SQLiteDataReader Select (string name_table)
         {            
@@ -55,9 +51,23 @@ namespace Report
             command.ExecuteNonQuery();
             conn.Close();
         }
-        public void Update()
+        public void Update(int[] args)
         {
+            SQLiteCommand command = new SQLiteCommand
+                ("UPDATE ЧисленностьОбучающихся SET "+
+                $"заочное = {args[5]},"+
+                $"очно_заочное = {args[4]},"+
+                $"очное = {args[3]},"+
+                $"студент_инвалид = {args[7]},"+
+                $"год = {args[6]},"+
+                $"квалификация_ВК = {args[2]}"+
+                $"специальность_ВК = {args[1]},"+
+                $"стуктурное_подразделение_ВК = {args[0]}"+
+                $"WHERE код = {args[8]}" , conn);
 
+            conn.Open();
+            command.ExecuteNonQuery();
+            conn.Close();
         }
     }
 }
