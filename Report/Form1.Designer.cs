@@ -51,12 +51,11 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.настройкиToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.бДToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.buttonRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -141,6 +140,9 @@
             // 
             this.dataGridViewMain.AllowUserToAddRows = false;
             this.dataGridViewMain.AllowUserToDeleteRows = false;
+            this.dataGridViewMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCheck,
@@ -153,7 +155,6 @@
             this.Column7,
             this.ColumnStudent_inv,
             this.ColumnID});
-            this.dataGridViewMain.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridViewMain.Location = new System.Drawing.Point(0, 161);
             this.dataGridViewMain.Name = "dataGridViewMain";
             this.dataGridViewMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -247,8 +248,7 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.настройкиToolStripMenuItem});
+            this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(984, 24);
@@ -271,21 +271,6 @@
             this.exitToolStripMenuItem.Text = "Выход";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // настройкиToolStripMenuItem
-            // 
-            this.настройкиToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.бДToolStripMenuItem});
-            this.настройкиToolStripMenuItem.Name = "настройкиToolStripMenuItem";
-            this.настройкиToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
-            this.настройкиToolStripMenuItem.Text = "Настройки";
-            // 
-            // бДToolStripMenuItem
-            // 
-            this.бДToolStripMenuItem.Name = "бДToolStripMenuItem";
-            this.бДToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
-            this.бДToolStripMenuItem.Text = "БД";
-            this.бДToolStripMenuItem.Click += new System.EventHandler(this.бДToolStripMenuItem_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -299,6 +284,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.buttonRefresh);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.label1);
@@ -335,6 +321,16 @@
             this.label2.Size = new System.Drawing.Size(96, 13);
             this.label2.TabIndex = 14;
             this.label2.Text = "Календарный год";
+            // 
+            // buttonRefresh
+            // 
+            this.buttonRefresh.Location = new System.Drawing.Point(271, 99);
+            this.buttonRefresh.Name = "buttonRefresh";
+            this.buttonRefresh.Size = new System.Drawing.Size(144, 23);
+            this.buttonRefresh.TabIndex = 16;
+            this.buttonRefresh.Text = "Обновить список";
+            this.buttonRefresh.UseVisualStyleBackColor = true;
+            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
             // 
             // FormListCountStudent
             // 
@@ -377,8 +373,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ToolStripMenuItem настройкиToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem бДToolStripMenuItem;
         public System.Windows.Forms.DataGridView dataGridViewMain;
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnCheck;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnYear;
@@ -390,6 +384,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnStudent_inv;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnID;
+        private System.Windows.Forms.Button buttonRefresh;
     }
 }
 

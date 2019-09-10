@@ -14,40 +14,31 @@ namespace Report
         {
             InitializeComponent();
         }
-        #region Проверка ввода данных 
-        public bool IsCorrect()
+        #region Проверка ввода данных
+        public bool IsMatch() //функция проверяет наличие дубликатов
         {
-            /*
-             * требуется сравнить данные из combobox  с данными в datagridview
-             * Возможно,  придётся испоьзовыать linq.
-             * */
-
             //локальная переменная для определения корректного ввода ГОДА
             int local_year = 0;
-
-            //если преобразование успешно, тогда продолжить заполнение форм
-            if (int.TryParse(textBoxYear.Text, out local_year))
+            FormListCountStudent fa = new FormListCountStudent();
+            /*
+             * проверяем условие на совпадение строк со datagridview
+             * если есть совпадение - значит строка уже существует и текущая запись дубликат
+             * иначе выполнить сохранение. 
+             * */
+            try
             {
-                try
+                if (int.TryParse(textBoxYear.Text, out local_year))
                 {
-                    FormListCountStudent fa = new FormListCountStudent();
-                    /*
-                     * проверяем условие на совпадение строк со datagridview
-                     * если есть совпадение - значит строка уже существует и текущая запись дубликат
-                     * иначе выполнить сохранение
-                     * */
+                    var is_match = fa.ListCountStudent
+                 .Select(
+                         x => x.Filial.Contains(fa.ListFilial[comboBoxFilial.SelectedIndex].full_desc) &&
+                         x.Special.Contains(fa.ListSpecial[comboBoxSpecial.SelectedIndex].desc) &&
+                         x.year == local_year &&
+                         x.student_inv.Equals(checkBoxStdInv.Checked)
 
-                    var IsMatch = fa.ListCountStudent
-                    .Select(
-                            x => x.Filial.Contains(fa.ListFilial[comboBoxFilial.SelectedIndex].full_desc) &&
-                            x.Special.Contains(fa.ListSpecial[comboBoxSpecial.SelectedIndex].desc) &&
-                            x.year == local_year &&
-                            x.student_inv.Equals(checkBoxStdInv.Checked)
+                  ).Any(x => x.Equals(true));
 
-                     ).Any(x => x.Equals(true));
-
-
-                    if (!IsMatch)//если нет совпадений
+                    if (!is_match)//если нет совпадений
                     {
                         //добавить функции очистки полей ввода                                               
                         return true;
@@ -57,19 +48,35 @@ namespace Report
                     {
                         MessageBox.Show("Такая строка уже существует", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return false;
-                    }                    
+                    }
                 }
-                catch (ArgumentOutOfRangeException)
+                else
                 {
-                    MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Заполните поле Календарный год", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
             }
-            else
+            catch (ArgumentOutOfRangeException)
             {
-                MessageBox.Show("Заполните поле Календарный год", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;                
+                MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning); ;
+                return false;
+            }            
+        } 
+        public bool IsCorrect()
+        {
+            try
+            {
+                Convert.ToInt32(textBoxОчное.Text);
+                Convert.ToInt32(textBoxЗаочное.Text);
+                Convert.ToInt32(textBoxОчно_заочное.Text);                
+                return true;                
             }
+            catch (FormatException)
+            {
+                MessageBox.Show("В полях количество, должно быть указанно положительное число или ноль");
+                return false;
+            }
+
         }
         #endregion
         #region Функции сохранения и удаления
@@ -98,14 +105,18 @@ namespace Report
             catch (FormatException)
             {
                 MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }   
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
         public void update()
         {
             //update set
             SQliteDB db = new SQliteDB();
-            FormListCountStudent fa = new FormListCountStudent();            
-            
+            FormListCountStudent fa = new FormListCountStudent();
+
             db.Update(new int[] {
                 comboBoxFilial.SelectedIndex,
                 comboBoxSpecial.SelectedIndex,
@@ -115,7 +126,7 @@ namespace Report
                 Convert.ToInt32(textBoxЗаочное.Text),
                 Convert.ToInt32(textBoxYear.Text),
                 Convert.ToInt32(checkBoxStdInv.Checked),
-                fa.SelectedRowID
+                fa.ReturnId()
             });
 
         }
@@ -140,22 +151,50 @@ namespace Report
         public void buttonSave_Click(object sender, EventArgs e)
         {
             FormListCountStudent fa = new FormListCountStudent();
-            if (IsCorrect())
+            // -1 это добавление новой строки
+            if (fa.SelectedRowID == -1)
             {
-                fa.saveORupdate();
-                //save();                
+                if (IsCorrect())
+                {
+                    if (IsMatch())
+                    {
+                        save();
+                    }
+                }
+            }
+            else
+            {
+                if (IsCorrect())
+                {
+                    update();
+                }
             }
         }
 
         private void buttonSaveAndClose_Click(object sender, EventArgs e)
         {
-            FormListCountStudent fa = new FormListCountStudent();
             //сохранить и закрыть форму
-            if (IsCorrect())
+            FormListCountStudent fa = new FormListCountStudent();            
+            // -1 это добавление новой строки
+            if (fa.ReturnId() == -1)
             {
-                fa.saveORupdate();
-                Close();                
-            }                      
+                if (IsCorrect())
+                {
+                    if (IsMatch())
+                    {
+                        save();
+                        Close();
+                    }
+                }
+            }
+            else
+            {
+                if (IsCorrect())
+                {
+                    update();
+                    Close();
+                }
+            }
         }
     }
 }

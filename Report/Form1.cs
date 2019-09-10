@@ -25,9 +25,14 @@ namespace Report
         public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
         public delegate void SaveOrUpdate();
         public SaveOrUpdate saveORupdate;
-        public int SelectedRowID = 0;
+        int rowId = 0;
+        public int SelectedRowID { get { return rowId; } set { rowId = value; } }
 
         #region select
+        public int ReturnId()
+        {
+            return SelectedRowID;
+        }        
         public void RefreshDataGridCiew()
         {
             dataGridViewMain.Rows.Clear();
@@ -100,6 +105,7 @@ namespace Report
                     column[3], column[4], column[5], column[6], column[7]
                     
                 });
+            
         }
         #endregion
         public void SqlMyDataReader (string name_table, int num_col, ComboBox box)
@@ -177,9 +183,11 @@ namespace Report
             SqlMyDataReader("Filial", 2, form.comboBoxFilial);
             SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
             SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
-
+            
             saveORupdate -= form.update;
             saveORupdate += form.save;
+
+            rowId = -1;
             form.ShowDialog();
 
         }
@@ -218,7 +226,7 @@ namespace Report
             
         }
 
-        private void buttonEditString_Click(object sender, EventArgs e)
+        public void buttonEditString_Click(object sender, EventArgs e)
         {
             //сделать проверку на количество выделенных строк. Должна быть только одна.
             //пка что функция не определяет количество выделенных строк. - это будущий баг.
@@ -241,10 +249,10 @@ namespace Report
                     form.textBoxЗаочное.Text = row.Cells[7].Value.ToString();
 
                     form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
-                    form.comboBoxSpecial.Text = row.Cells[3].Value.ToString();
-                    form.comboBoxSkill.Text = row.Cells[4].Value.ToString();
+                    form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
+                    form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
                     form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;
-                    SelectedRowID = Convert.ToInt32(row.Cells[9].Value);
+                    rowId = Convert.ToInt32(row.Cells[9].Value);
                 }
             }
             form.ShowDialog();
@@ -254,6 +262,11 @@ namespace Report
         private void dataGridViewMain_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             
+        }
+
+        private void buttonRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshDataGridCiew();
         }
     }
 }

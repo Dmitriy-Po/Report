@@ -27,6 +27,7 @@ namespace Report
             //задача  - корректно собрать строку SQL
             // строка создаётся по формату, требуется протестировать запрос sql.
             StringBuilder commnadtext = new StringBuilder();
+            FormListCountStudent fa = new FormListCountStudent();
             commnadtext.AppendFormat("INSERT INTO {0}(стуктурное_подразделение_ВК, специальность_ВК, квалификация_ВК, очное, очно_заочное, заочное, год, студент_инвалид)"+
                 "VALUES ({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", 
                 name_table, num[0], num[1], num[2], num[3], num[4], num[5], num[6], num[7]);
@@ -42,6 +43,7 @@ namespace Report
             reader = comand.ExecuteReader();
             //return reader;
             conn.Close();
+           
         }
         public void Delete(string id)
         {
@@ -60,9 +62,9 @@ namespace Report
                 $"очное = {args[3]},"+
                 $"студент_инвалид = {args[7]},"+
                 $"год = {args[6]},"+
-                $"квалификация_ВК = {args[2]}"+
+                $"квалификация_ВК = {args[2]},"+
                 $"специальность_ВК = {args[1]},"+
-                $"стуктурное_подразделение_ВК = {args[0]}"+
+                $"стуктурное_подразделение_ВК = {args[0]} "+
                 $"WHERE код = {args[8]}" , conn);
 
             conn.Open();

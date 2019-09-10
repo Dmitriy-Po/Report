@@ -51,6 +51,11 @@
             this.comboBoxSpecial = new System.Windows.Forms.ComboBox();
             this.comboBoxSkill = new System.Windows.Forms.ComboBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -150,9 +155,9 @@
             // 
             // textBoxYear
             // 
-            this.textBoxYear.Location = new System.Drawing.Point(127, 67);
+            this.textBoxYear.Location = new System.Drawing.Point(146, 68);
             this.textBoxYear.Name = "textBoxYear";
-            this.textBoxYear.Size = new System.Drawing.Size(149, 20);
+            this.textBoxYear.Size = new System.Drawing.Size(130, 20);
             this.textBoxYear.TabIndex = 1;
             // 
             // button2
@@ -235,11 +240,71 @@
             this.comboBoxSkill.Size = new System.Drawing.Size(316, 21);
             this.comboBoxSkill.TabIndex = 29;
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label8.ForeColor = System.Drawing.Color.Red;
+            this.label8.Location = new System.Drawing.Point(180, 9);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(234, 15);
+            this.label8.TabIndex = 30;
+            this.label8.Text = "* - Обязательное для заполнения поле";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.ForeColor = System.Drawing.Color.Red;
+            this.label9.Location = new System.Drawing.Point(60, 134);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(17, 24);
+            this.label9.TabIndex = 31;
+            this.label9.Text = "*";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.ForeColor = System.Drawing.Color.Red;
+            this.label10.Location = new System.Drawing.Point(60, 182);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(17, 24);
+            this.label10.TabIndex = 32;
+            this.label10.Text = "*";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.ForeColor = System.Drawing.Color.Red;
+            this.label11.Location = new System.Drawing.Point(60, 233);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(17, 24);
+            this.label11.TabIndex = 33;
+            this.label11.Text = "*";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label12.ForeColor = System.Drawing.Color.Red;
+            this.label12.Location = new System.Drawing.Point(123, 68);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(17, 24);
+            this.label12.TabIndex = 34;
+            this.label12.Text = "*";
+            // 
             // FormAddReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(419, 421);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.comboBoxSkill);
             this.Controls.Add(this.comboBoxSpecial);
             this.Controls.Add(this.comboBoxFilial);
@@ -292,5 +357,10 @@
         public System.Windows.Forms.TextBox textBoxОчное;
         public System.Windows.Forms.TextBox textBoxYear;
         public System.Windows.Forms.TextBox textBoxЗаочное;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
     }
 }
