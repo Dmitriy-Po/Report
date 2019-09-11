@@ -71,8 +71,18 @@ namespace Report
             command.ExecuteNonQuery();
             conn.Close();
         }
-        public bool IfExists(int[] args)
+        public bool IfExists(string[] args)
         {
+            FormListCountStudent FormStudent = new FormListCountStudent();
+
+            var id = FormStudent.ListCountStudent
+                .Where(x => x.Filial.Contains(args[1]));
+                    //x.Special.Contains(args[2]))
+                    //x.student_inv.Equals(args[3]) &&
+                    //x.year == Convert.ToInt32(args[0]))
+                //.Select(y => y.id);
+
+
             SQLiteCommand command_exists = new SQLiteCommand
                 ("SELECT * FROM ЧисленностьОбучающихся WHERE " +
                     $"ЧисленностьОбучающихся.год = {args[0]} AND "+

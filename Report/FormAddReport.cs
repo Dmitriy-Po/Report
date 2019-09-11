@@ -149,26 +149,7 @@ namespace Report
         
         public void buttonSave_Click(object sender, EventArgs e)
         {
-            FormListCountStudent fa = new FormListCountStudent();
-            // -1 это добавление новой строки
-            
-            //if (fa.SelectedRowID == -1)
-            //{
-            //    if (IsCorrect())
-            //    {
-            //        if (IsMatch())
-            //        {
-            //            save();
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    if (IsCorrect())
-            //    {
-            //        update();
-            //    }
-            //}
+
         }
 
         private void buttonSaveAndClose_Click(object sender, EventArgs e)
@@ -177,11 +158,15 @@ namespace Report
             SQliteDB db = new SQliteDB();
             FormListCountStudent FormStudent = new FormListCountStudent();
 
-            
+
             //если строка не существует, тогда сохранение, иначе обновление
-            if (db.IfExists(new int[] 
-                { Convert.ToInt32(textBoxYear.Text),  FormStudent.ListFilial[comboBoxFilial.SelectedIndex].id,
-                    FormStudent.ListSpecial[comboBoxSpecial.SelectedIndex].id,  Convert.ToInt32(checkBoxStdInv.ThreeState)}))
+            if (db.IfExists(new string[]
+                {
+                    textBoxYear.Text,
+                    FormStudent.ListFilial[comboBoxFilial.SelectedIndex].desc,
+                    FormStudent.ListSpecial[comboBoxSpecial.SelectedIndex].desc,
+                    checkBoxStdInv.ThreeState.ToString()
+                }))
             {
                 if (IsCorrect())
                 {
