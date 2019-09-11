@@ -65,11 +65,36 @@ namespace Report
                 $"квалификация_ВК = {args[2]},"+
                 $"специальность_ВК = {args[1]},"+
                 $"стуктурное_подразделение_ВК = {args[0]} "+
-                $"WHERE код = {args[8]}" , conn);
+                $"WHERE код = {args[8]}" , conn);//задача в получении кода записи
 
             conn.Open();
             command.ExecuteNonQuery();
             conn.Close();
+        }
+        public bool IfExists(int[] args)
+        {
+            SQLiteCommand command_exists = new SQLiteCommand
+                ("SELECT * FROM ЧисленностьОбучающихся WHERE " +
+                    $"ЧисленностьОбучающихся.год = {args[0]} AND "+
+                    $"ЧисленностьОбучающихся.стуктурное_подразделение_ВК = {args[1]} AND "+
+                    $"ЧисленностьОбучающихся.специальность_ВК = {args[2]} AND "+
+                    $"ЧисленностьОбучающихся.студент_инвалид = {args[3]}" , conn);
+            /*
+             * false - записи не существует, тогда insert
+             * true - запись существует, тогда update
+             * */
+            bool flag = false;
+            conn.Open();
+
+            SQLiteDataReader r = command_exists.ExecuteReader();
+            while (r.Read())
+            {
+                return flag = true; 
+            }
+
+            conn.Close();
+            return flag;            
+
         }
     }
 }

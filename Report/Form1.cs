@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Report
@@ -24,15 +25,10 @@ namespace Report
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
         public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
         public delegate void SaveOrUpdate();
-        public SaveOrUpdate saveORupdate;
-        int rowId = 0;
-        public int SelectedRowID { get { return rowId; } set { rowId = value; } }
+        public SaveOrUpdate saveORupdate;        
+        
 
-        #region select
-        public int ReturnId()
-        {
-            return SelectedRowID;
-        }        
+        #region select                
         public void RefreshDataGridCiew()
         {
             dataGridViewMain.Rows.Clear();
@@ -186,8 +182,7 @@ namespace Report
             
             saveORupdate -= form.update;
             saveORupdate += form.save;
-
-            rowId = -1;
+            
             form.ShowDialog();
 
         }
@@ -251,8 +246,7 @@ namespace Report
                     form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
                     form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
                     form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
-                    form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;
-                    rowId = Convert.ToInt32(row.Cells[9].Value);
+                    form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;                    
                 }
             }
             form.ShowDialog();

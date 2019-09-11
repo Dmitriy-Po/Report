@@ -125,8 +125,7 @@ namespace Report
                 Convert.ToInt32(textBoxОчно_заочное.Text),
                 Convert.ToInt32(textBoxЗаочное.Text),
                 Convert.ToInt32(textBoxYear.Text),
-                Convert.ToInt32(checkBoxStdInv.Checked),
-                fa.ReturnId()
+                Convert.ToInt32(checkBoxStdInv.Checked),               
             });
 
         }
@@ -152,31 +151,45 @@ namespace Report
         {
             FormListCountStudent fa = new FormListCountStudent();
             // -1 это добавление новой строки
-            if (fa.SelectedRowID == -1)
-            {
-                if (IsCorrect())
-                {
-                    if (IsMatch())
-                    {
-                        save();
-                    }
-                }
-            }
-            else
-            {
-                if (IsCorrect())
-                {
-                    update();
-                }
-            }
+            
+            //if (fa.SelectedRowID == -1)
+            //{
+            //    if (IsCorrect())
+            //    {
+            //        if (IsMatch())
+            //        {
+            //            save();
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if (IsCorrect())
+            //    {
+            //        update();
+            //    }
+            //}
         }
 
         private void buttonSaveAndClose_Click(object sender, EventArgs e)
         {
-            //сохранить и закрыть форму
-            FormListCountStudent fa = new FormListCountStudent();            
-            // -1 это добавление новой строки
-            if (fa.ReturnId() == -1)
+            //сохранить и закрыть форму            
+            SQliteDB db = new SQliteDB();
+            FormListCountStudent FormStudent = new FormListCountStudent();
+
+            
+            //если строка не существует, тогда сохранение, иначе обновление
+            if (db.IfExists(new int[] 
+                { Convert.ToInt32(textBoxYear.Text),  FormStudent.ListFilial[comboBoxFilial.SelectedIndex].id,
+                    FormStudent.ListSpecial[comboBoxSpecial.SelectedIndex].id,  Convert.ToInt32(checkBoxStdInv.ThreeState)}))
+            {
+                if (IsCorrect())
+                {
+                    update();
+                    Close();                    
+                }
+            }
+            else
             {
                 if (IsCorrect())
                 {
@@ -185,14 +198,6 @@ namespace Report
                         save();
                         Close();
                     }
-                }
-            }
-            else
-            {
-                if (IsCorrect())
-                {
-                    update();
-                    Close();
                 }
             }
         }
