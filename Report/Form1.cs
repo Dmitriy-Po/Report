@@ -23,9 +23,7 @@ namespace Report
         public List<TableFilial>  ListFilial = new List<TableFilial>();
         public List<TableSKill>   ListSkill = new List<TableSKill>();
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
-        public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
-        public delegate void SaveOrUpdate();
-        public SaveOrUpdate saveORupdate;        
+        public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();            
         
 
         #region select                
@@ -179,10 +177,7 @@ namespace Report
             SqlMyDataReader("Filial", 2, form.comboBoxFilial);
             SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
             SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
-            
-            saveORupdate -= form.update;
-            saveORupdate += form.save;
-            
+                        
             form.ShowDialog();
 
         }
@@ -220,21 +215,20 @@ namespace Report
             RefreshDataGridCiew();
             
         }
-
+        
+                
         public void buttonEditString_Click(object sender, EventArgs e)
         {
             //сделать проверку на количество выделенных строк. Должна быть только одна.
-            //пка что функция не определяет количество выделенных строк. - это будущий баг.
+            //пока что функция не определяет количество выделенных строк. - это будущий баг.
             FormAddReport form = new FormAddReport();
-
-            saveORupdate -= form.save;
-            saveORupdate += form.update;
-
+            
             SqlMyDataReader("Filial", 2, form.comboBoxFilial);
             SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
             SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
-
-            foreach (DataGridViewRow  row in dataGridViewMain.Rows)
+                        
+            //выбирается всегда последний элемент списка
+            foreach (DataGridViewRow row in dataGridViewMain.Rows)
             {
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
@@ -246,7 +240,8 @@ namespace Report
                     form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
                     form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
                     form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
-                    form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;                    
+                    form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;
+                    form.GetCurrentrow_ID = Convert.ToInt32(row.Cells[9].Value);
                 }
             }
             form.ShowDialog();

@@ -5,6 +5,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Report
 {
@@ -12,12 +13,12 @@ namespace Report
 
     {        
         
-        public SQLiteConnection conn = new SQLiteConnection("Data Source=ReportDB.db; Version=3;");
+        public SQLiteConnection ConnectionDB = new SQLiteConnection("Data Source=ReportDB.db; Version=3;");
         public SQLiteDataReader Select (string name_table)
         {            
-            SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM "+name_table, conn);            
+            SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM "+name_table, ConnectionDB);            
 
-            conn.Open();
+            ConnectionDB.Open();
             SQLiteDataReader r = cmd.ExecuteReader();
             
             return r;                               
@@ -36,75 +37,41 @@ namespace Report
             //    +" VALUES ("+  + ")";
             
 
-            SQLiteCommand comand = new SQLiteCommand(commnadtext.ToString(), conn);           
+            SQLiteCommand comand = new SQLiteCommand(commnadtext.ToString(), ConnectionDB);           
 
-            conn.Open();
+            ConnectionDB.Open();
             SQLiteDataReader reader;
             reader = comand.ExecuteReader();
             //return reader;
-            conn.Close();
+            ConnectionDB.Close();
            
         }
         public void Delete(string id)
         {
             SQLiteCommand command = new SQLiteCommand
-                ($"DELETE FROM ЧисленностьОбучающихся WHERE ЧисленностьОбучающихся.код in({id})", conn);
-            conn.Open();
+                ($"DELETE FROM ЧисленностьОбучающихся WHERE ЧисленностьОбучающихся.код in({id})", ConnectionDB);
+            ConnectionDB.Open();
             command.ExecuteNonQuery();
-            conn.Close();
+            ConnectionDB.Close();
         }
-        public void Update(int[] args)
+        public void Update(TableCountStudent table)
         {
             SQLiteCommand command = new SQLiteCommand
-                ("UPDATE ЧисленностьОбучающихся SET "+
-                $"заочное = {args[5]},"+
-                $"очно_заочное = {args[4]},"+
-                $"очное = {args[3]},"+
-                $"студент_инвалид = {args[7]},"+
-                $"год = {args[6]},"+
-                $"квалификация_ВК = {args[2]},"+
-                $"специальность_ВК = {args[1]},"+
-                $"стуктурное_подразделение_ВК = {args[0]} "+
-                $"WHERE код = {args[8]}" , conn);//задача в получении кода записи
+                ("UPDATE ЧисленностьОбучающихся SET " +
+                $"заочное = {table.zaochnoe}," +
+                $"очно_заочное = {table.ochno_zaocjnoe}," +
+                $"очное = {table.ochnoe}," +
+                $"студент_инвалид = {table.ochnoe}," +
+                $"год = {table.year}," +
+                $"квалификация_ВК = {table.Skill}," +
+                $"специальность_ВК = {table.Special}," +
+                $"стуктурное_подразделение_ВК = {table.Filial} " +
+                $"WHERE код = {table.id}", ConnectionDB);
 
-            conn.Open();
+            ConnectionDB.Open();
             command.ExecuteNonQuery();
-            conn.Close();
+            ConnectionDB.Close();
         }
-        public bool IfExists(string[] args)
-        {
-            FormListCountStudent FormStudent = new FormListCountStudent();
-
-            var id = FormStudent.ListCountStudent
-                .Where(x => x.Filial.Contains(args[1]));
-                    //x.Special.Contains(args[2]))
-                    //x.student_inv.Equals(args[3]) &&
-                    //x.year == Convert.ToInt32(args[0]))
-                //.Select(y => y.id);
-
-
-            SQLiteCommand command_exists = new SQLiteCommand
-                ("SELECT * FROM ЧисленностьОбучающихся WHERE " +
-                    $"ЧисленностьОбучающихся.год = {args[0]} AND "+
-                    $"ЧисленностьОбучающихся.стуктурное_подразделение_ВК = {args[1]} AND "+
-                    $"ЧисленностьОбучающихся.специальность_ВК = {args[2]} AND "+
-                    $"ЧисленностьОбучающихся.студент_инвалид = {args[3]}" , conn);
-            /*
-             * false - записи не существует, тогда insert
-             * true - запись существует, тогда update
-             * */
-            bool flag = false;
-            conn.Open();
-
-            SQLiteDataReader r = command_exists.ExecuteReader();
-            while (r.Read())
-            {
-                return flag = true; 
-            }
-
-            conn.Close();
-            return flag;            
-
-        }
+        
     }
 }

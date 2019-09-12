@@ -10,6 +10,11 @@ namespace Report
 {
     public partial class FormAddReport : Form
     {
+        public int GetCurrentrow_ID
+        {
+            get;
+            set;
+        }
         public FormAddReport()
         {
             InitializeComponent();
@@ -111,22 +116,24 @@ namespace Report
                 MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-        public void update()
+        public void update(TableCountStudent info)
         {
             //update set
             SQliteDB db = new SQliteDB();
             FormListCountStudent fa = new FormListCountStudent();
+            db.Update(info);
 
-            db.Update(new int[] {
-                comboBoxFilial.SelectedIndex,
-                comboBoxSpecial.SelectedIndex,
-                comboBoxSkill.SelectedIndex,
-                Convert.ToInt32(textBoxОчное.Text),
-                Convert.ToInt32(textBoxОчно_заочное.Text),
-                Convert.ToInt32(textBoxЗаочное.Text),
-                Convert.ToInt32(textBoxYear.Text),
-                Convert.ToInt32(checkBoxStdInv.Checked),               
-            });
+            //db.Update(new int[] {
+            //    comboBoxFilial.SelectedIndex,
+            //    comboBoxSpecial.SelectedIndex,
+            //    comboBoxSkill.SelectedIndex,
+            //    Convert.ToInt32(textBoxОчное.Text),
+            //    Convert.ToInt32(textBoxОчно_заочное.Text),
+            //    Convert.ToInt32(textBoxЗаочное.Text),
+            //    Convert.ToInt32(textBoxYear.Text),
+            //    Convert.ToInt32(checkBoxStdInv.Checked),
+            //    id               
+            //});
 
         }
         #endregion
@@ -154,24 +161,21 @@ namespace Report
 
         private void buttonSaveAndClose_Click(object sender, EventArgs e)
         {
-            //сохранить и закрыть форму            
-            SQliteDB db = new SQliteDB();
+            //сохранить и закрыть форму        
             FormListCountStudent FormStudent = new FormListCountStudent();
 
+            var current_row = FormStudent.ListCountStudent
+                    .Where(x => x.id == GetCurrentrow_ID)
+                    .Select(x => x).ToList();
+            
 
-            //если строка не существует, тогда сохранение, иначе обновление
-            if (db.IfExists(new string[]
-                {
-                    textBoxYear.Text,
-                    FormStudent.ListFilial[comboBoxFilial.SelectedIndex].desc,
-                    FormStudent.ListSpecial[comboBoxSpecial.SelectedIndex].desc,
-                    checkBoxStdInv.ThreeState.ToString()
-                }))
+            //если строка существует, тогда обновление, иначе сохранение
+            if (current_row.Count > 0)
             {
                 if (IsCorrect())
                 {
-                    update();
-                    Close();                    
+                    update(current_row);
+                    Close();
                 }
             }
             else
@@ -180,7 +184,7 @@ namespace Report
                 {
                     if (IsMatch())
                     {
-                        save();
+                        //save();
                         Close();
                     }
                 }
