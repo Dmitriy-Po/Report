@@ -56,16 +56,21 @@ namespace Report
         }
         public void Update(TableCountStudent table)
         {
+            FormListCountStudent form = new FormListCountStudent();
+            var id_skill    = form.ListSkill.Where(x => x.desc == table.Skill).Select(x => x).ToList();
+            var id_special  = form.ListSpecial.Where(x => x.desc == table.Special).Select(x => x).ToList();
+            var id_filial   = form.ListFilial.Where(x => x.full_desc == table.Filial).Select(x => x).ToList();
+
             SQLiteCommand command = new SQLiteCommand
                 ("UPDATE ЧисленностьОбучающихся SET " +
-                $"заочное = {table.zaochnoe}," +
-                $"очно_заочное = {table.ochno_zaocjnoe}," +
-                $"очное = {table.ochnoe}," +
-                $"студент_инвалид = {table.ochnoe}," +
-                $"год = {table.year}," +
-                $"квалификация_ВК = {table.Skill}," +
-                $"специальность_ВК = {table.Special}," +
-                $"стуктурное_подразделение_ВК = {table.Filial} " +
+                $"заочное = {table.zaochnoe}, " +
+                $"очно_заочное = {table.ochno_zaocjnoe}, " +
+                $"очное = {table.ochnoe}, " +
+                $"студент_инвалид = {table.student_inv}, " +
+                $"год = {table.year}, " +
+                $"квалификация_ВК = {id_skill[0].id}, " +
+                $"специальность_ВК = {id_special[0].id}, " +
+                $"стуктурное_подразделение_ВК = {id_filial[0].id} " +
                 $"WHERE код = {table.id}", ConnectionDB);
 
             ConnectionDB.Open();

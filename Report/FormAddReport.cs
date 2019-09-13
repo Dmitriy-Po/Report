@@ -42,10 +42,10 @@ namespace Report
                          x.student_inv.Equals(checkBoxStdInv.Checked)
 
                   ).Any(x => x.Equals(true));
-
+                                        
                     if (!is_match)//если нет совпадений
                     {
-                        //добавить функции очистки полей ввода                                               
+                        //тогда сохранение                                               
                         return true;
                     }
                     //иначе совпадения есть
@@ -121,6 +121,17 @@ namespace Report
             //update set
             SQliteDB db = new SQliteDB();
             FormListCountStudent fa = new FormListCountStudent();
+
+            //в момент обновления, берутся текущие данные из выпадающий списков
+            info.Filial     = fa.ListFilial[comboBoxFilial.SelectedIndex].full_desc;
+            info.Special    = fa.ListSpecial[comboBoxSpecial.SelectedIndex].desc;
+            info.Skill      = fa.ListSkill[comboBoxSkill.SelectedIndex].desc;
+            info.ochnoe     = Convert.ToInt32(textBoxОчное.Text);
+            info.zaochnoe   = Convert.ToInt32(textBoxЗаочное.Text);
+            info.ochno_zaocjnoe = Convert.ToInt32(textBoxОчно_заочное.Text);
+            info.year           = Convert.ToInt32(textBoxYear.Text);
+            info.student_inv    = checkBoxStdInv.Checked;
+
             db.Update(info);
 
             //db.Update(new int[] {
@@ -164,29 +175,27 @@ namespace Report
             //сохранить и закрыть форму        
             FormListCountStudent FormStudent = new FormListCountStudent();
 
-            var current_row = FormStudent.ListCountStudent
+            /*Существует проблема: при редактировании есть возможность создать дубликат
+             * программа никак не отреагирет, а просто обновит запись*/
+
+            //поиск в коллекции, посик поля с идентификатором записи
+            var ID_current_row = FormStudent.ListCountStudent
                     .Where(x => x.id == GetCurrentrow_ID)
                     .Select(x => x).ToList();
             
-
-            //если строка существует, тогда обновление, иначе сохранение
-            if (current_row.Count > 0)
+            if (ID_current_row[0].id > 0)
             {
-                if (IsCorrect())
-                {
-                    update(current_row);
-                    Close();
-                }
+                /*здесь нет проверки на дубликаты*/
+                update(ID_current_row[0]);
+                Close();
             }
             else
             {
-                if (IsCorrect())
+                /*здест есть проверка на дубликаты*/
+                if (IsMatch())
                 {
-                    if (IsMatch())
-                    {
-                        //save();
-                        Close();
-                    }
+                    save();
+                    Close();
                 }
             }
         }
