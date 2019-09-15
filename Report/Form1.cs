@@ -17,7 +17,11 @@ namespace Report
             TableSKill.Fill(ListSkill);
             TableSpecial.Fill(ListSpecial);
             FillDataGrid();
-            
+            FillComboBoxes();
+            comboBoxFil.SelectedIndexChanged += (s, e) => DataFilter();
+            comboBoxSpec.SelectedIndexChanged += (s, e) => DataFilter();
+            textBoxYear.TextChanged += (s, e) => DataFilter();
+            checkBoxStudent_inv.Click += (s, e) => DataFilter();
 
         }
         public List<TableFilial>  ListFilial = new List<TableFilial>();
@@ -25,6 +29,64 @@ namespace Report
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
         public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();            
         
+        public void FillComboBoxes ()
+        {
+            SqlMyDataReader("Filial", 2, comboBoxFil);            
+            SqlMyDataReader("Специальности", 1, comboBoxSpec);
+            //comboBoxFil.Items.Insert(0, "Все филиалы");
+            //comboBoxSpec.Items.Insert(0, "Все специальности");
+            comboBoxFil.SelectedIndex = 0;
+            comboBoxSpec.SelectedIndex = 0;
+            textBoxYear.Text = DateTime.Today.Year.ToString();
+        }
+        public void DataFilter ()
+        {
+            try
+            {
+                var newlist = ListCountStudent
+                        .Where(x => x.Filial.Contains(comboBoxFil.SelectedItem.ToString()) &&
+                                    x.Special.Contains(comboBoxSpec.SelectedItem.ToString()) &&
+                                    x.year == Convert.ToInt32(textBoxYear.Text) &&
+                                    x.student_inv.Equals(checkBoxStudent_inv.Checked))
+                        .Select(x => x).Distinct().ToList();
+
+                dataGridViewMain.Rows.Clear();
+                for (int i = 0; i < newlist.Count(); i++)
+                {
+                    dataGridViewMain.Rows.Add(0,
+                        newlist[i].year,
+                        newlist[i].Filial,
+                        newlist[i].Special,
+                        newlist[i].Skill,
+                        newlist[i].ochnoe,
+                        newlist[i].zaochnoe,
+                        newlist[i].ochno_zaocjnoe,
+                        newlist[i].student_inv
+                        );
+                }
+            }
+            catch (FormatException)
+            {
+                return;
+            }
+        }
+        public bool CountSelectedRows (string s)
+        {
+            UInt32 count = 0;            
+            foreach (DataGridViewRow row in dataGridViewMain.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[0].Value))
+                {
+                    count++;
+                }
+            }
+            if (count > 1 || count == 0)
+            {
+                MessageBox.Show($"Выберите ОДНУ строку для операции: [{s}]", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+            else return true;
+        }
 
         #region select                
         public void RefreshDataGridCiew()
@@ -145,10 +207,32 @@ namespace Report
         }
 
         private void button2_Click (object sender, EventArgs e)
-        {
-            //FormAddReport form = new FormAddReport();
-            //saveORupdate -= form.save;
-            //saveORupdate += form.update;
+        {            
+            if (CountSelectedRows("Создать по шаблону"))
+            {
+                FormAddReport form = new FormAddReport();
+                SqlMyDataReader("Filial", 2, form.comboBoxFilial);
+                SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
+                SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
+
+                foreach (DataGridViewRow row in dataGridViewMain.Rows)
+                {
+                    if (Convert.ToBoolean(row.Cells[0].Value))
+                    {
+                        form.textBoxYear.Text = row.Cells[1].Value.ToString();
+                        form.textBoxОчное.Text = row.Cells[5].Value.ToString();
+                        form.textBoxОчно_заочное.Text = row.Cells[6].Value.ToString();
+                        form.textBoxЗаочное.Text = row.Cells[7].Value.ToString();
+
+                        form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
+                        form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
+                        form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
+                        form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;
+                    }
+                }
+                form.ShowDialog(); 
+            }
+
         }
 
         private void buttonAddStingPattern_MouseHover (object sender, EventArgs e)
@@ -177,9 +261,8 @@ namespace Report
             SqlMyDataReader("Filial", 2, form.comboBoxFilial);
             SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
             SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
-                        
-            form.ShowDialog();
 
+            form.ShowDialog();
         }
 
         public void FormListCountStudent_Load(object sender, EventArgs e)
@@ -203,7 +286,7 @@ namespace Report
             //доделать проверку
             //и попробовать сделать асинхронный метод
             List<string> ListId = new List<string>();
-            SQliteDB q = new SQliteDB();         
+            SQliteDB q = new SQliteDB();
             foreach (DataGridViewRow rows in dataGridViewMain.Rows)
             {
                 if (Convert.ToBoolean(rows.Cells[0].Value))
@@ -212,39 +295,41 @@ namespace Report
                 }
             }
             q.Delete(string.Join(",", ListId.ToArray()));
-            RefreshDataGridCiew();
-            
+            RefreshDataGridCiew();            
         }
-        
-                
+
+
         public void buttonEditString_Click(object sender, EventArgs e)
         {
-            //сделать проверку на количество выделенных строк. Должна быть только одна.
-            //пока что функция не определяет количество выделенных строк. - это будущий баг.
-            FormAddReport form = new FormAddReport();
-            
-            SqlMyDataReader("Filial", 2, form.comboBoxFilial);
-            SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
-            SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
-                        
-            //выбирается всегда последний элемент списка
-            foreach (DataGridViewRow row in dataGridViewMain.Rows)
+            if (CountSelectedRows("Редактирования"))
             {
-                if (Convert.ToBoolean(row.Cells[0].Value))
-                {
-                    form.textBoxYear.Text = row.Cells[1].Value.ToString();
-                    form.textBoxОчное.Text = row.Cells[5].Value.ToString();
-                    form.textBoxОчно_заочное.Text = row.Cells[6].Value.ToString();
-                    form.textBoxЗаочное.Text = row.Cells[7].Value.ToString();
+                //сделать проверку на количество выделенных строк. Должна быть только одна.
+                //пока что функция не определяет количество выделенных строк. - это будущий баг.
+                FormAddReport form = new FormAddReport();
 
-                    form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
-                    form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
-                    form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
-                    form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;
-                    form.GetCurrentrow_ID = Convert.ToInt32(row.Cells[9].Value);
+                SqlMyDataReader("Filial", 2, form.comboBoxFilial);
+                SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
+                SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
+
+                //выбирается всегда последний элемент списка
+                foreach (DataGridViewRow row in dataGridViewMain.Rows)
+                {
+                    if (Convert.ToBoolean(row.Cells[0].Value))
+                    {
+                        form.textBoxYear.Text = row.Cells[1].Value.ToString();
+                        form.textBoxОчное.Text = row.Cells[5].Value.ToString();
+                        form.textBoxОчно_заочное.Text = row.Cells[6].Value.ToString();
+                        form.textBoxЗаочное.Text = row.Cells[7].Value.ToString();
+
+                        form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
+                        form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
+                        form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
+                        form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;
+                        form.GetCurrentrow_ID = Convert.ToInt32(row.Cells[9].Value);
+                    }
                 }
+                form.ShowDialog(); 
             }
-            form.ShowDialog();
             
         }
 
