@@ -20,7 +20,42 @@ namespace Report
             InitializeComponent();
         }
         #region Проверка ввода данных
-        public bool IsMatch() //функция проверяет наличие дубликатов
+        public bool NO_Dublicate_ForUpdateRecord(List<TableCountStudent> editable_row)
+        {
+            //Функция для проверки на дубликаты при редактировании строки
+            // - чтобы при редактировании не было возможности создать будликат записи.
+            //Требуется сверять значения, каждый раз при сохранении редактиуемой строки,
+            //в полях на форме с записями в коллекции ListCountStudent
+            FormListCountStudent fa = new FormListCountStudent();
+            
+            //поиск дубликатов
+            var duplicate = fa.ListCountStudent
+                 .Where(x => x.Filial.Contains(comboBoxFilial.SelectedItem.ToString()) &&
+                 x.Special.Contains(comboBoxSpecial.SelectedItem.ToString()) &&
+                 x.year == Convert.ToInt32(textBoxYear.Text) &&
+                 x.student_inv.Equals(checkBoxStdInv.Checked)).Select(x => x.id);
+
+            //если переменная duplicate совпадает с редактируемой строкой, 
+            //тогда это текущая редактируемая строка, и сохранение возможно.
+            try
+            {
+                if (editable_row[0].id == duplicate.ElementAt(0))
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("Такая строка уже существует");
+                    return false;
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return true;
+            }
+
+        }
+        public bool IsMatch() //функция проверяет наличие дубликатов при добавлении новой записи
         {
             //локальная переменная для определения корректного ввода ГОДА
             int local_year = 0;
@@ -85,7 +120,7 @@ namespace Report
         }
         #endregion
         #region Функции сохранения и удаления
-        public void save()
+        public bool save()
         {
             /* 
              * Кнопка для сохранения записи в таблицу ЧисленностьОбучающихся.
@@ -93,10 +128,12 @@ namespace Report
                 индексы выбранных полей, в выпадающих списках.
                По индексам выбирается элемент в коллекции. 
              */
-            try
+            if (comboBoxSkill.SelectedIndex >= 0)
             {
-                FormListCountStudent FormStudent = new FormListCountStudent();
-                FormStudent.SaveStudent(new int[] {
+                try
+                {
+                    FormListCountStudent FormStudent = new FormListCountStudent();
+                    FormStudent.SaveStudent(new int[] {
                     comboBoxFilial.SelectedIndex,
                     comboBoxSpecial.SelectedIndex,
                     comboBoxSkill.SelectedIndex,
@@ -106,14 +143,23 @@ namespace Report
                     Convert.ToInt32(textBoxYear.Text),
                     Convert.ToInt32(checkBoxStdInv.Checked)
                 });
+                    return true;
+                }
+                catch (FormatException)
+                {
+                    MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
             }
-            catch (FormatException)
+            else
             {
                 MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                MessageBox.Show("Заполните все обязательные поля", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
         }
         public void update(TableCountStudent info)
@@ -122,7 +168,7 @@ namespace Report
             SQliteDB db = new SQliteDB();
             FormListCountStudent fa = new FormListCountStudent();
 
-            //в момент обновления, берутся текущие данные из выпадающий списков
+            //в момент обновления (сохранения), берутся текущие данные из выпадающий списков
             info.Filial     = fa.ListFilial[comboBoxFilial.SelectedIndex].full_desc;
             info.Special    = fa.ListSpecial[comboBoxSpecial.SelectedIndex].desc;
             info.Skill      = fa.ListSkill[comboBoxSkill.SelectedIndex].desc;
@@ -182,21 +228,31 @@ namespace Report
             var ID_current_row = FormStudent.ListCountStudent
                     .Where(x => x.id == GetCurrentrow_ID)
                     .Select(x => x).ToList();
-            
-            if (ID_current_row[0].id > 0)
+
+            try
             {
-                /*здесь нет проверки на дубликаты*/
-                update(ID_current_row[0]);
-                Close();
-            }
-            else
-            {
-                /*здест есть проверка на дубликаты*/
-                if (IsMatch())
+                if (ID_current_row.Count > 0)
                 {
-                    save();
-                    Close();
+                    if (NO_Dublicate_ForUpdateRecord(ID_current_row))
+                    {
+                        update(ID_current_row[0]);
+                        Close();
+                    }
                 }
+                else
+                {
+                    if (IsMatch())
+                    {
+                        if (save())
+                        {
+                            Close();
+                        }  
+                    }
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return;
             }
         }
     }

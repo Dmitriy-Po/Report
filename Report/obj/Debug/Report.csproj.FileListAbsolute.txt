@@ -15,7 +15,6 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\bin\
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\EntityFramework.xml
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\System.Data.SQLite.xml
-C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\Report.exe.config
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.exe
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.pdb
@@ -52,3 +51,4 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\Repo
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\Report\obj\Debug\Report.Properties.Resources.resources
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\Report\obj\Debug\Report.csproj.GenerateResource.Cache
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache

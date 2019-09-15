@@ -85,11 +85,11 @@ namespace Report
         }
 
         public void SaveStudent(int[] column)
-        {            
+        {
             /*
              * Кнопка сохранения записи в таблицу ЧисленностьОбучающихся
              * 
-             * */
+             * */            
             SQliteDB mydb = new SQliteDB();
             mydb.Insert("ЧисленностьОбучающихся", 
                 new int[] {
