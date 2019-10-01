@@ -16,7 +16,7 @@ namespace Report
         {
             SQliteDB sql = new SQliteDB();
             SQLiteDataReader r = sql.Select("Filial");
-
+            
             while (r.Read())
             {
                 mylist.Add(new TableFilial()

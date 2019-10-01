@@ -88,6 +88,9 @@
     <Compile Include="TableSkill.cs" />
     <Compile Include="SQliteDB.cs" />
     <Compile Include="TableSpecial.cs" />
+    <Compile Include="БазовыеНормативыЗатрат.cs" />
+    <Compile Include="БазовыйНормативЗатратСтоимостнойГруппы.cs" />
+    <Compile Include="КорректирующийКоэффицентБазовогоНорматива.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
