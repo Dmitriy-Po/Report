@@ -342,5 +342,11 @@ namespace Report
         {
             RefreshDataGridCiew();
         }
+
+        private void базовыеНормативыЗатратToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormБазовыеНормативыЗатрат f = new FormБазовыеНормативыЗатрат();
+            f.ShowDialog();
+        }
     }
 }

@@ -7,22 +7,26 @@ using System.Threading.Tasks;
 namespace Report
 {
     //Базовый Норматив Затрат Стоимостной Группы
-    class BaseCostGroupCostRatio
-    {
+    class БазовыйНормативЗатратСтоимостнойГруппы
+    {        
+        public СтоимостнаяГруппаКалендарногоГода СтоимостнаяГруппа { get; set; }
 
-        public BaseCostGroupCostRatio ()
+        public БазовыйНормативЗатратСтоимостнойГруппы() { }
+
+        public БазовыйНормативЗатратСтоимостнойГруппы (decimal[] values)
         {
-            Bacalavriat = default(decimal);
-            Magistr     = default(decimal);
-            Aspirant    = default(decimal);
-            SPO         = default(decimal);
-            Year        = default(string);
+            Бакалавриат_Специалитет = values[0];
+            Магистратура            = values[1];
+            Аспирантура             = values[2];
+            SPO                     = values[3];
+            Year                    = СтоимостнаяГруппа.КалендарныйГод;         
+            
         }
-        decimal Bacalavriat { get; set; }
-        decimal Magistr { get; set; }
-        decimal Aspirant { get; set; }
+        decimal Бакалавриат_Специалитет { get; set; }
+        decimal Магистратура { get; set; }
+        decimal Аспирантура { get; set; }
         decimal SPO { get; set; }
         string Year { get; set; }
-        //добавить ассоциацию с классом СтоимостнаяГруппаКалендарногоГода
+        
     }
 }

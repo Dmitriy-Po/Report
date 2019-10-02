@@ -6,13 +6,20 @@ using System.Threading.Tasks;
 
 namespace Report
 {
-    //КорректирующийКоэффицентБазовогоНорматива
-    class BaseRatioCorrectionFactor
+    class КорректирующийКоэффицентБазовогоНорматива
     {
-        public BaseRatioCorrectionFactor ()
+        public КорректирующиеКоэффиценты КорректирующиеКоэффицент { get; set; }
+
+        public КорректирующийКоэффицентБазовогоНорматива(string year)
         {
-            Year = default(string);
+            КалендарныйГод = year;
+            //КорректирующиеКоэффиценты = new КорректирующиеКоэффиценты(koef);
         }
-         string Year { get; set; }
+
+        public КорректирующийКоэффицентБазовогоНорматива ()
+        {            
+            КалендарныйГод = default(string);
+        }
+        string КалендарныйГод { get; set; }
     }
 }
