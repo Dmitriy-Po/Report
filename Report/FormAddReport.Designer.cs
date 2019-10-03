@@ -56,6 +56,22 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.textBoxBacalavr = new System.Windows.Forms.TextBox();
+            this.textBoxMagistr = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.richTextBoxFullDesc = new System.Windows.Forms.RichTextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.comboBoxGroups = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBoxAspirant = new System.Windows.Forms.TextBox();
+            this.textBoxSPO = new System.Windows.Forms.TextBox();
+            this.richTextBoxComment = new System.Windows.Forms.RichTextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -245,7 +261,7 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(180, 9);
+            this.label8.Location = new System.Drawing.Point(159, 24);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(234, 15);
             this.label8.TabIndex = 30;
@@ -295,11 +311,158 @@
             this.label12.TabIndex = 34;
             this.label12.Text = "*";
             // 
+            // textBoxBacalavr
+            // 
+            this.textBoxBacalavr.Location = new System.Drawing.Point(192, 222);
+            this.textBoxBacalavr.Name = "textBoxBacalavr";
+            this.textBoxBacalavr.Size = new System.Drawing.Size(75, 20);
+            this.textBoxBacalavr.TabIndex = 38;
+            this.textBoxBacalavr.Text = "0.0";
+            // 
+            // textBoxMagistr
+            // 
+            this.textBoxMagistr.Location = new System.Drawing.Point(192, 248);
+            this.textBoxMagistr.Name = "textBoxMagistr";
+            this.textBoxMagistr.Size = new System.Drawing.Size(75, 20);
+            this.textBoxMagistr.TabIndex = 39;
+            this.textBoxMagistr.Text = "0.0";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label14);
+            this.groupBox1.Controls.Add(this.richTextBoxComment);
+            this.groupBox1.Controls.Add(this.textBoxSPO);
+            this.groupBox1.Controls.Add(this.textBoxAspirant);
+            this.groupBox1.Controls.Add(this.label19);
+            this.groupBox1.Controls.Add(this.label18);
+            this.groupBox1.Controls.Add(this.label17);
+            this.groupBox1.Controls.Add(this.label15);
+            this.groupBox1.Controls.Add(this.label16);
+            this.groupBox1.Controls.Add(this.comboBoxGroups);
+            this.groupBox1.Controls.Add(this.label13);
+            this.groupBox1.Controls.Add(this.richTextBoxFullDesc);
+            this.groupBox1.Controls.Add(this.textBoxBacalavr);
+            this.groupBox1.Controls.Add(this.textBoxMagistr);
+            this.groupBox1.Location = new System.Drawing.Point(399, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(273, 478);
+            this.groupBox1.TabIndex = 40;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Базовый норматив";
+            // 
+            // richTextBoxFullDesc
+            // 
+            this.richTextBoxFullDesc.Location = new System.Drawing.Point(6, 50);
+            this.richTextBoxFullDesc.Name = "richTextBoxFullDesc";
+            this.richTextBoxFullDesc.Size = new System.Drawing.Size(261, 96);
+            this.richTextBoxFullDesc.TabIndex = 0;
+            this.richTextBoxFullDesc.Text = "";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(6, 33);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(99, 13);
+            this.label13.TabIndex = 41;
+            this.label13.Text = "Полное описание:";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(6, 172);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(45, 13);
+            this.label16.TabIndex = 43;
+            this.label16.Text = "Группа:";
+            this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // comboBoxGroups
+            // 
+            this.comboBoxGroups.FormattingEnabled = true;
+            this.comboBoxGroups.Location = new System.Drawing.Point(57, 169);
+            this.comboBoxGroups.Name = "comboBoxGroups";
+            this.comboBoxGroups.Size = new System.Drawing.Size(210, 21);
+            this.comboBoxGroups.TabIndex = 42;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 225);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(147, 13);
+            this.label15.TabIndex = 37;
+            this.label15.Text = "Бакалавриат, Специалитет:";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(6, 251);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(81, 13);
+            this.label17.TabIndex = 44;
+            this.label17.Text = "Магистратура:";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(6, 277);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(75, 13);
+            this.label18.TabIndex = 45;
+            this.label18.Text = "Аспирантура:";
+            this.label18.Click += new System.EventHandler(this.label18_Click);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(6, 303);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(33, 13);
+            this.label19.TabIndex = 46;
+            this.label19.Text = "СПО:";
+            // 
+            // textBoxAspirant
+            // 
+            this.textBoxAspirant.Location = new System.Drawing.Point(192, 274);
+            this.textBoxAspirant.Name = "textBoxAspirant";
+            this.textBoxAspirant.Size = new System.Drawing.Size(75, 20);
+            this.textBoxAspirant.TabIndex = 47;
+            this.textBoxAspirant.Text = "0.0";
+            // 
+            // textBoxSPO
+            // 
+            this.textBoxSPO.Location = new System.Drawing.Point(192, 300);
+            this.textBoxSPO.Name = "textBoxSPO";
+            this.textBoxSPO.Size = new System.Drawing.Size(75, 20);
+            this.textBoxSPO.TabIndex = 48;
+            this.textBoxSPO.Text = "0.0";
+            // 
+            // richTextBoxComment
+            // 
+            this.richTextBoxComment.Location = new System.Drawing.Point(6, 376);
+            this.richTextBoxComment.Name = "richTextBoxComment";
+            this.richTextBoxComment.Size = new System.Drawing.Size(261, 96);
+            this.richTextBoxComment.TabIndex = 49;
+            this.richTextBoxComment.Text = "";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 360);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(80, 13);
+            this.label14.TabIndex = 50;
+            this.label14.Text = "Комментарий:";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // FormAddReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 421);
+            this.ClientSize = new System.Drawing.Size(684, 496);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
@@ -326,9 +489,13 @@
             this.Controls.Add(this.buttonSaveAndClose);
             this.Controls.Add(this.buttonSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximumSize = new System.Drawing.Size(700, 530);
+            this.MinimumSize = new System.Drawing.Size(700, 530);
             this.Name = "FormAddReport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Форма редактирования/добавления";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -362,5 +529,20 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textBoxBacalavr;
+        private System.Windows.Forms.TextBox textBoxMagistr;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.RichTextBox richTextBoxFullDesc;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox comboBoxGroups;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.RichTextBox richTextBoxComment;
+        private System.Windows.Forms.TextBox textBoxSPO;
+        private System.Windows.Forms.TextBox textBoxAspirant;
     }
 }

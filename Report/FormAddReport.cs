@@ -132,6 +132,19 @@ namespace Report
             {
                 try
                 {
+                    //БазовыеНормативыЗатрат BS = new БазовыеНормативыЗатрат(
+                    //    comboBoxGroups.SelectedText,
+                    //    textBoxYear.Text,
+                    //    new decimal[] {
+                    //        Convert.ToDecimal(textBoxBacalavr.Text),
+                    //        Convert.ToDecimal(textBoxMagistr.Text),
+                    //        Convert.ToDecimal(textBoxAspirant.Text),
+                    //        Convert.ToDecimal(textBoxSPO.Text)
+                    //    });
+                    //BS.FullDesc = richTextBoxFullDesc.Text;
+                    //BS.Comment = richTextBoxComment.Text;
+
+
                     FormListCountStudent FormStudent = new FormListCountStudent();
                     FormStudent.SaveStudent(new int[] {
                     comboBoxFilial.SelectedIndex,
@@ -220,9 +233,7 @@ namespace Report
         {
             //сохранить и закрыть форму        
             FormListCountStudent FormStudent = new FormListCountStudent();
-
-            /*Существует проблема: при редактировании есть возможность создать дубликат
-             * программа никак не отреагирет, а просто обновит запись*/
+            
 
             //поиск в коллекции, посик поля с идентификатором записи
             var ID_current_row = FormStudent.ListCountStudent
@@ -254,6 +265,11 @@ namespace Report
             {
                 return;
             }
+        }
+
+        private void label18_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
