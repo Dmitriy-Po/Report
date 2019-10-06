@@ -9,15 +9,15 @@ namespace Report
     class КорректирующиеКоэффиценты
     {
         ЗначениеКоэффицента Значение_к;
-        public КорректирующиеКоэффиценты(decimal koef)
+        public КорректирующиеКоэффиценты(decimal значениекоэффицента, string формаобучения, string год)
         {
-            Значение_к = new ЗначениеКоэффицента(koef);
+            Значение_к = new ЗначениеКоэффицента(значениекоэффицента, формаобучения, год);
         }
-        public decimal GetCoeff() => Значение_к.Коэффицент;
-        string Наименование { get; set; }
-        string ПолноеНаименование { get; set; }
-        string Уточнение { get; set; }
-        string Комментарий { get; set; }
-        bool СтудентИнвалид { get; set; }
+        //return
+        public string Наименование { get; set; }
+        public string ПолноеНаименование { get; set; }
+        public string Уточнение { get; set; }
+        public string Комментарий { get; set; }
+        public bool СтудентИнвалид { get; set; }
     }
 }

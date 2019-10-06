@@ -53,3 +53,7 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\Repo
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormБазовыеНормативыЗатрат.resources
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormБазовыеНормативыЗатрат.resources
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormБНЗ_Добавление.resources
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Form_КК_Добавление.resources
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormКоэффиценты.resources

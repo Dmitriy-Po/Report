@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Data.SQLite;
 using System.Linq;
 using System.Windows.Forms;
@@ -120,11 +120,10 @@ namespace Report
             SQLiteConnection conn = new SQLiteConnection("Data Source=ReportDB.db; Version=3;");
             SQLiteCommand cmd = new SQLiteCommand(query, conn);
             
-
+            
             conn.Open();
             SQLiteDataReader r = cmd.ExecuteReader();
-
-
+            
             while (r.Read())
             {
                 dataGridViewMain.Rows.Add(0, r[8], r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]);
@@ -340,12 +339,24 @@ namespace Report
 
         private void buttonRefresh_Click(object sender, EventArgs e)
         {
-            RefreshDataGridCiew();
+            //RefreshDataGridCiew();
+            SQliteDB q = new SQliteDB();
+            DataContext x = new DataContext("Data Source=ReportDB.db;");
+
+            //var table = from t in x.GetTable<TableFilial>()
+            //            where t.id > 5
+            //            select t;
         }
 
         private void базовыеНормативыЗатратToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FormБазовыеНормативыЗатрат f = new FormБазовыеНормативыЗатрат();
+            f.ShowDialog();
+        }
+
+        private void корректирующиеКоэффицентыToolStripMenuItem_Click (object sender, EventArgs e)
+        {
+            FormКоэффиценты f = new FormКоэффиценты();
             f.ShowDialog();
         }
     }

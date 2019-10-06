@@ -77,6 +77,7 @@ namespace Report
             command.ExecuteNonQuery();
             ConnectionDB.Close();
         }
+        public string GetConnection () => ConnectionDB.ConnectionString;
         
     }
 }
