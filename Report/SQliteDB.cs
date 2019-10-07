@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.SQLite;
+﻿using System.Data.SQLite;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+
 
 namespace Report
 {
@@ -17,10 +13,10 @@ namespace Report
         public SQLiteDataReader Select (string name_table)
         {            
             SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM "+name_table, ConnectionDB);            
-
+            /*добавить ограничение на выборку элементов из бд, равной 10.*/
             ConnectionDB.Open();
             SQLiteDataReader r = cmd.ExecuteReader();
-            
+
             return r;                               
         }
         public void Insert (string name_table, int[] num)

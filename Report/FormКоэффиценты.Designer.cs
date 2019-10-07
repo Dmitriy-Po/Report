@@ -29,13 +29,8 @@
         private void InitializeComponent ()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormКоэффиценты));
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.buttonDeleteSelected = new System.Windows.Forms.Button();
-            this.buttonEditString = new System.Windows.Forms.Button();
-            this.buttonAddStingPattern = new System.Windows.Forms.Button();
-            this.buttonAddNewString = new System.Windows.Forms.Button();
+            this.comboBoxYear = new System.Windows.Forms.ComboBox();
+            this.dataGridViewCoeff = new System.Windows.Forms.DataGridView();
             this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,23 +38,29 @@
             this.ColumnValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.label1 = new System.Windows.Forms.Label();
+            this.buttonDeleteSelected = new System.Windows.Forms.Button();
+            this.buttonEditString = new System.Windows.Forms.Button();
+            this.buttonAddStingPattern = new System.Windows.Forms.Button();
+            this.buttonAddNewString = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCoeff)).BeginInit();
             this.SuspendLayout();
             // 
-            // comboBox1
+            // comboBoxYear
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(15, 25);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(321, 21);
-            this.comboBox1.TabIndex = 23;
+            this.comboBoxYear.FormattingEnabled = true;
+            this.comboBoxYear.Location = new System.Drawing.Point(15, 25);
+            this.comboBoxYear.Name = "comboBoxYear";
+            this.comboBoxYear.Size = new System.Drawing.Size(321, 21);
+            this.comboBoxYear.TabIndex = 23;
+            this.comboBoxYear.SelectionChangeCommitted += new System.EventHandler(this.comboBox1_SelectionChangeCommitted);
             // 
-            // dataGridView1
+            // dataGridViewCoeff
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewCoeff.AllowUserToAddRows = false;
+            this.dataGridViewCoeff.AllowUserToDeleteRows = false;
+            this.dataGridViewCoeff.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewCoeff.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.check,
             this.ColumnName,
             this.ColumnFullName,
@@ -67,12 +68,56 @@
             this.ColumnValue,
             this.ColumnYear,
             this.ColumnComment});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 113);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(679, 287);
-            this.dataGridView1.TabIndex = 22;
+            this.dataGridViewCoeff.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataGridViewCoeff.Location = new System.Drawing.Point(0, 113);
+            this.dataGridViewCoeff.Name = "dataGridViewCoeff";
+            this.dataGridViewCoeff.ReadOnly = true;
+            this.dataGridViewCoeff.Size = new System.Drawing.Size(679, 287);
+            this.dataGridViewCoeff.TabIndex = 22;
+            // 
+            // check
+            // 
+            this.check.HeaderText = "";
+            this.check.Name = "check";
+            this.check.ReadOnly = true;
+            this.check.Width = 50;
+            // 
+            // ColumnName
+            // 
+            this.ColumnName.HeaderText = "Наименование";
+            this.ColumnName.Name = "ColumnName";
+            this.ColumnName.ReadOnly = true;
+            // 
+            // ColumnFullName
+            // 
+            this.ColumnFullName.HeaderText = "Полное наименование";
+            this.ColumnFullName.MinimumWidth = 50;
+            this.ColumnFullName.Name = "ColumnFullName";
+            this.ColumnFullName.ReadOnly = true;
+            // 
+            // ColumnDetail
+            // 
+            this.ColumnDetail.HeaderText = "Уточнение";
+            this.ColumnDetail.Name = "ColumnDetail";
+            this.ColumnDetail.ReadOnly = true;
+            // 
+            // ColumnValue
+            // 
+            this.ColumnValue.HeaderText = "Значение коэффицента";
+            this.ColumnValue.Name = "ColumnValue";
+            this.ColumnValue.ReadOnly = true;
+            // 
+            // ColumnYear
+            // 
+            this.ColumnYear.HeaderText = "Календарный год";
+            this.ColumnYear.Name = "ColumnYear";
+            this.ColumnYear.ReadOnly = true;
+            // 
+            // ColumnComment
+            // 
+            this.ColumnComment.HeaderText = "Комментарий";
+            this.ColumnComment.Name = "ColumnComment";
+            this.ColumnComment.ReadOnly = true;
             // 
             // label1
             // 
@@ -125,57 +170,13 @@
             this.buttonAddNewString.UseVisualStyleBackColor = true;
             this.buttonAddNewString.Click += new System.EventHandler(this.buttonAddNewString_Click);
             // 
-            // check
-            // 
-            this.check.HeaderText = "";
-            this.check.Name = "check";
-            this.check.ReadOnly = true;
-            this.check.Width = 50;
-            // 
-            // ColumnName
-            // 
-            this.ColumnName.HeaderText = "Наименование";
-            this.ColumnName.Name = "ColumnName";
-            this.ColumnName.ReadOnly = true;
-            // 
-            // ColumnFullName
-            // 
-            this.ColumnFullName.HeaderText = "Полное наименование";
-            this.ColumnFullName.MinimumWidth = 50;
-            this.ColumnFullName.Name = "ColumnFullName";
-            this.ColumnFullName.ReadOnly = true;
-            // 
-            // ColumnDetail
-            // 
-            this.ColumnDetail.HeaderText = "Уточнение";
-            this.ColumnDetail.Name = "ColumnDetail";
-            this.ColumnDetail.ReadOnly = true;
-            // 
-            // ColumnValue
-            // 
-            this.ColumnValue.HeaderText = "Значение коэффицента";
-            this.ColumnValue.Name = "ColumnValue";
-            this.ColumnValue.ReadOnly = true;
-            // 
-            // ColumnYear
-            // 
-            this.ColumnYear.HeaderText = "Календарный год";
-            this.ColumnYear.Name = "ColumnYear";
-            this.ColumnYear.ReadOnly = true;
-            // 
-            // ColumnComment
-            // 
-            this.ColumnComment.HeaderText = "Комментарий";
-            this.ColumnComment.Name = "ColumnComment";
-            this.ColumnComment.ReadOnly = true;
-            // 
             // FormКоэффиценты
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(679, 400);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.comboBoxYear);
+            this.Controls.Add(this.dataGridViewCoeff);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonDeleteSelected);
             this.Controls.Add(this.buttonEditString);
@@ -183,7 +184,8 @@
             this.Controls.Add(this.buttonAddNewString);
             this.Name = "FormКоэффиценты";
             this.Text = "Корректирующие коэффиценты";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.FormКоэффиценты_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCoeff)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,8 +193,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ComboBox comboBoxYear;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonDeleteSelected;
         private System.Windows.Forms.Button buttonEditString;
@@ -205,5 +206,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnValue;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnComment;
+        public System.Windows.Forms.DataGridView dataGridViewCoeff;
     }
 }

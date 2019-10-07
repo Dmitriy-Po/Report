@@ -18,6 +18,8 @@ namespace Report
             TableSpecial.Fill(ListSpecial);
             FillDataGrid();
             FillComboBoxes();
+
+            /*---------------------------------------------------------*/
             comboBoxFil.SelectedIndexChanged += (s, e) => DataFilter();
             comboBoxSpec.SelectedIndexChanged += (s, e) => DataFilter();
             textBoxYear.TextChanged += (s, e) => DataFilter();

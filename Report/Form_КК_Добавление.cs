@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Report.Classes;
 using System.Windows.Forms;
 
 namespace Report
@@ -16,24 +10,13 @@ namespace Report
         {
             InitializeComponent();
         }
+        void IsDuplicate()
+        {
+
+        }
 
         private void buttonSaveAndClose_Click (object sender, EventArgs e)
-        {
-            //создаётся корректирующий коэффицент
-            КорректирующиеКоэффиценты к = 
-                new КорректирующиеКоэффиценты(
-
-                    Convert.ToDecimal(textBoxCoeff.Text),           //значение
-                    comboBoxFormEducation.SelectedItem.ToString(),  //форма обучения
-                    comboBoxYear.SelectedItem.ToString()            //календарный год
-                    );
-
-            к.Наименование       = textBoxDesc.Text;
-            к.ПолноеНаименование = textBoxFullDesc.Text;
-            к.Уточнение          = textBoxDetail.Text;
-            к.Комментарий        = textBoxComment.Text;
-            к.СтудентИнвалид     = checkBoxStdInv.Checked; 
-
+        {            
         }
     }
 }
