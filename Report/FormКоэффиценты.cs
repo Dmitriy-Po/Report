@@ -13,59 +13,39 @@ namespace Report
         public FormКоэффиценты ()
         {
             InitializeComponent();
-            FormEducation.Fill(ListEducation);          
+            FormEducation.Fill(ListEducation);
+            КорректирующиеКоэффиценты.Fill(ListCoef);
         }
         public List<FormEducation> ListEducation = new List<FormEducation>();
+        public List<КорректирующиеКоэффиценты> ListCoef = new List<КорректирующиеКоэффиценты>();
+
+
+
 
         private void buttonAddNewString_Click (object sender, EventArgs e)
         {
-            Form_КК_Добавление f = new Form_КК_Добавление();
-            f.comboBoxFormEducation.Items.AddRange
-                (ListEducation.Select(x => x.Desc).ToArray());
+            Form_КК_Добавление f = new Form_КК_Добавление();            
             f.ShowDialog();
         }
 
         private void FormКоэффиценты_Load(object sender, EventArgs e)
         {
-            int y = DateTime.Now.Year;
-            for (int i = y-3; i <= y; i++)
-            {
-                comboBoxYear.Items.Add(i);
-            }
-            
-            ////создаётся корректирующий коэффицент
-            //КорректирующиеКоэффиценты к =
-            //    new КорректирующиеКоэффиценты(
-
-            //        3.15m,                                      //значение
-            //        new Classes.ClassFormEducation("Очная"),    //форма обучения
-            //        "2019"                                      //календарный год
-            //        );
-
-            //к.Наименование = "Затраты на ЗП";
-            //к.ПолноеНаименование = "полное наименование";
-            //к.Уточнение = "уточнение";
-            //к.Комментарий = "комментарий";
-            //к.СтудентИнвалид = false;
-
-            //Mylist.Add(к);
-
-            //foreach (var item in Mylist)
-            //{
-            //    dataGridViewCoeff.Rows.Add(0, Mylist[0].Наименование,
-            //    Mylist[0].ПолноеНаименование, Mylist[0].Уточнение, Mylist[0].GetCoef(),
-            //    Mylist[0].GetYear(), Mylist[0].GetForm());
-            //}
-            //FormListCountStudent formcount = new FormListCountStudent();
-            //Form_КК_Добавление t = new Form_КК_Добавление();
-            //formcount.SqlMyDataReader("FORM", 1, t.comboBoxFormEducation);
-
-
+            //заполнение cpmbobox датами из коллекции коэффицентов                       
+            comboBoxYear.Items.AddRange
+                (ListCoef.Select(z => z.GetYear()).Distinct().ToArray());            
         }
 
         private void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            
+            //выборка из коллекции на основе выпадающего списка по годам.
+            dataGridViewCoeff.Rows.Clear();
+            foreach (var item in ListCoef.Where(x => Convert.ToDateTime(x.GetYear())
+                        == Convert.ToDateTime(comboBoxYear.SelectedItem))
+                        .Select(x => x.GetCoef()))
+            {
+                dataGridViewCoeff.Rows.Add(0, item); 
+            }
+                
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Report.Classes;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Report
 {
@@ -17,6 +18,15 @@ namespace Report
 
         private void buttonSaveAndClose_Click (object sender, EventArgs e)
         {            
+        }
+
+        private void Form_КК_Добавление_Load(object sender, EventArgs e)
+        {
+            FormКоэффиценты c = new FormКоэффиценты();
+            comboBoxFormEducation.Items.AddRange
+                (c.ListEducation.Select(x => x.Desc).ToArray());
+
+            comboBoxYear.Items.AddRange(c.ListCoef.Select(y => y.GetYear()).ToArray());
         }
     }
 }

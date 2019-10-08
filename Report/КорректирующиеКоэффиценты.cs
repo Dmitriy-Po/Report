@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 
 namespace Report
@@ -6,20 +7,52 @@ namespace Report
     class КорректирующиеКоэффиценты
     {
         ЗначениеКоэффицента Значение_к;
+        
         public КорректирующиеКоэффиценты(decimal значениекоэффицента, Classes.FormEducation формаобучения, string год)
         {            
             Значение_к = new ЗначениеКоэффицента(значениекоэффицента, год);
             Значение_к.ФормаОбучения = формаобучения;
         }
-        public void Fill(List<КорректирующиеКоэффиценты> list)
+        public static void Fill(List<КорректирующиеКоэффиценты> list)
         {
-            SQliteDB db = new SQliteDB();
-            SQLiteDataReader reader = db.Select("КорректирующиеКоэффиценты");
+            string q = "SELECT "+
+                "КорректирующиеКоэффиценты.Наименование, "+
+                "КорректирующиеКоэффиценты.ПолноеНаименование, "+
+                "КорректирующиеКоэффиценты.Уточнение,"+
+                "КорректирующиеКоэффиценты.Комментарий,"+
+                "КорректирующиеКоэффиценты.СтудентИнвалид,"+                
+                "ЗначениеКоэффицента.Значение, "+
+                "ЗначениеКоэффицента.КаледндарныйГод,"+                
+                "ФормаОбучения.код, "+
+                "ФормаОбучения.наименование as 'Форма Обучения'"+                
+                "FROM ЗначениеКоэффицента "+
+                "INNER JOIN КорректирующиеКоэффиценты ON "+
+                "ЗначениеКоэффицента.Корректирующие_ВК = КорректирующиеКоэффиценты.код "+
+                "INNER JOIN ФормаОбучения ON "+
+                "ЗначениеКоэффицента.ФормаОбучения_ВК = ФормаОбучения.код";
+
+            SQliteDB db = new SQliteDB();            
+
+            SQLiteCommand Command = new SQLiteCommand(q, db.ConnectionDB);
+            db.ConnectionDB.Open();
+
+
+            SQLiteDataReader reader = Command.ExecuteReader();
 
             while (reader.Read())
-            {
-                list.Add(new КорректирующиеКоэффиценты())                
+            {                
+                list.Add(new КорректирующиеКоэффиценты(Convert.ToDecimal(reader[5]),
+                    new Classes.FormEducation(
+                        Convert.ToInt32(reader[7]), reader[8].ToString()), reader[6].ToString())
+                {
+                    Наименование = reader[0].ToString(),
+                    ПолноеНаименование = reader[1].ToString(),
+                    Уточнение = reader[2].ToString(),
+                    Комментарий = reader[3].ToString(),
+                    СтудентИнвалид = Convert.ToBoolean(reader[4])
+                });                                
             }
+            db.ConnectionDB.Close();
         }
 
         public decimal GetCoef() => Значение_к.Коэффицент;

@@ -221,6 +221,7 @@
             this.Name = "Form_КК_Добавление";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Добавление/Редактирование";
+            this.Load += new System.EventHandler(this.Form_КК_Добавление_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -241,9 +242,9 @@
         private System.Windows.Forms.TextBox textBoxCoeff;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBoxYear;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox checkBoxStdInv;
         public System.Windows.Forms.ComboBox comboBoxFormEducation;
+        public System.Windows.Forms.ComboBox comboBoxYear;
     }
 }
