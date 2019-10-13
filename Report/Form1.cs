@@ -72,7 +72,7 @@ namespace Report
                 return;
             }
         }
-        public bool CountSelectedRows (string s)
+        public bool CountSelectedRows (string tooltip)
         {
             UInt32 count = 0;            
             foreach (DataGridViewRow row in dataGridViewMain.Rows)
@@ -84,7 +84,7 @@ namespace Report
             }
             if (count > 1 || count == 0)
             {
-                MessageBox.Show($"Выберите ОДНУ строку для операции: [{s}]", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Выберите ОДНУ строку для операции: [{tooltip}]", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return false;
             }
             else return true;

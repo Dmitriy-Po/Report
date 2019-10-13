@@ -7,7 +7,8 @@ namespace Report
     class КорректирующиеКоэффиценты
     {
         ЗначениеКоэффицента Значение_к;
-        
+
+        public КорректирующиеКоэффиценты () { }
         public КорректирующиеКоэффиценты(decimal значениекоэффицента, Classes.FormEducation формаобучения, string год)
         {            
             Значение_к = new ЗначениеКоэффицента(значениекоэффицента, год);
@@ -24,7 +25,9 @@ namespace Report
                 "ЗначениеКоэффицента.Значение, "+
                 "ЗначениеКоэффицента.КаледндарныйГод,"+                
                 "ФормаОбучения.код, "+
-                "ФормаОбучения.наименование as 'Форма Обучения'"+                
+                "ФормаОбучения.наименование as 'Форма Обучения', "+
+                "КорректирующиеКоэффиценты.код " +
+                
                 "FROM ЗначениеКоэффицента "+
                 "INNER JOIN КорректирующиеКоэффиценты ON "+
                 "ЗначениеКоэффицента.Корректирующие_ВК = КорректирующиеКоэффиценты.код "+
@@ -45,6 +48,7 @@ namespace Report
                     new Classes.FormEducation(
                         Convert.ToInt32(reader[7]), reader[8].ToString()), reader[6].ToString())
                 {
+                    id = Convert.ToInt32(reader[9]),
                     Наименование = reader[0].ToString(),
                     ПолноеНаименование = reader[1].ToString(),
                     Уточнение = reader[2].ToString(),
@@ -55,6 +59,7 @@ namespace Report
             db.ConnectionDB.Close();
         }
 
+        public int id { get; set; }
         public decimal GetCoef() => Значение_к.Коэффицент;
         public string GetYear() => Значение_к.КалендарныйГод;
         public string GetForm() => Значение_к.ФормаОбучения.Desc;

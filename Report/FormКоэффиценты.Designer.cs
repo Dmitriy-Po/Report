@@ -38,6 +38,7 @@
             this.ColumnValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonDeleteSelected = new System.Windows.Forms.Button();
             this.buttonEditString = new System.Windows.Forms.Button();
@@ -67,19 +68,19 @@
             this.ColumnDetail,
             this.ColumnValue,
             this.ColumnYear,
-            this.ColumnComment});
+            this.ColumnComment,
+            this.id});
             this.dataGridViewCoeff.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridViewCoeff.Location = new System.Drawing.Point(0, 113);
             this.dataGridViewCoeff.Name = "dataGridViewCoeff";
-            this.dataGridViewCoeff.ReadOnly = true;
-            this.dataGridViewCoeff.Size = new System.Drawing.Size(679, 287);
+            this.dataGridViewCoeff.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewCoeff.Size = new System.Drawing.Size(758, 287);
             this.dataGridViewCoeff.TabIndex = 22;
             // 
             // check
             // 
             this.check.HeaderText = "";
             this.check.Name = "check";
-            this.check.ReadOnly = true;
             this.check.Width = 50;
             // 
             // ColumnName
@@ -119,6 +120,12 @@
             this.ColumnComment.Name = "ColumnComment";
             this.ColumnComment.ReadOnly = true;
             // 
+            // id
+            // 
+            this.id.HeaderText = "Column_id";
+            this.id.Name = "id";
+            this.id.Visible = false;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -137,6 +144,7 @@
             this.buttonDeleteSelected.Size = new System.Drawing.Size(40, 40);
             this.buttonDeleteSelected.TabIndex = 20;
             this.buttonDeleteSelected.UseVisualStyleBackColor = true;
+            this.buttonDeleteSelected.Click += new System.EventHandler(this.buttonDeleteSelected_Click);
             // 
             // buttonEditString
             // 
@@ -147,6 +155,7 @@
             this.buttonEditString.Size = new System.Drawing.Size(40, 40);
             this.buttonEditString.TabIndex = 19;
             this.buttonEditString.UseVisualStyleBackColor = true;
+            this.buttonEditString.Click += new System.EventHandler(this.buttonEditString_Click);
             // 
             // buttonAddStingPattern
             // 
@@ -157,6 +166,7 @@
             this.buttonAddStingPattern.Size = new System.Drawing.Size(40, 40);
             this.buttonAddStingPattern.TabIndex = 18;
             this.buttonAddStingPattern.UseVisualStyleBackColor = true;
+            this.buttonAddStingPattern.Click += new System.EventHandler(this.buttonAddStingPattern_Click);
             // 
             // buttonAddNewString
             // 
@@ -174,7 +184,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(679, 400);
+            this.ClientSize = new System.Drawing.Size(758, 400);
             this.Controls.Add(this.comboBoxYear);
             this.Controls.Add(this.dataGridViewCoeff);
             this.Controls.Add(this.label1);
@@ -183,6 +193,7 @@
             this.Controls.Add(this.buttonAddStingPattern);
             this.Controls.Add(this.buttonAddNewString);
             this.Name = "FormКоэффиценты";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Корректирующие коэффиценты";
             this.Load += new System.EventHandler(this.FormКоэффиценты_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCoeff)).EndInit();
@@ -199,6 +210,7 @@
         private System.Windows.Forms.Button buttonEditString;
         private System.Windows.Forms.Button buttonAddStingPattern;
         private System.Windows.Forms.Button buttonAddNewString;
+        public System.Windows.Forms.DataGridView dataGridViewCoeff;
         private System.Windows.Forms.DataGridViewCheckBoxColumn check;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFullName;
@@ -206,6 +218,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnValue;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColumnComment;
-        public System.Windows.Forms.DataGridView dataGridViewCoeff;
+        private System.Windows.Forms.DataGridViewTextBoxColumn id;
     }
 }

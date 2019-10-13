@@ -1,4 +1,5 @@
-﻿using System.Data.SQLite;
+﻿using System;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 
@@ -18,6 +19,15 @@ namespace Report
             SQLiteDataReader r = cmd.ExecuteReader();
 
             return r;                               
+        }
+        public SQLiteDataReader Select_any_query (string any_query)
+        {
+            SQLiteCommand cmd = new SQLiteCommand(any_query, ConnectionDB);
+            /*добавить ограничение на выборку элементов из бд, равной 10.*/
+            ConnectionDB.Open();
+            SQLiteDataReader r = cmd.ExecuteReader();
+
+            return r;
         }
         public void Insert (string name_table, int[] num)
         {
@@ -41,6 +51,17 @@ namespace Report
             //return reader;
             ConnectionDB.Close();
            
+        }
+        public void Insert_New (string TableName, string columns, object values)
+        {
+            string query_insert = $"INSERT INTO {TableName} ({columns}) VALUES ('{values}')";            
+
+            SQLiteCommand command = new SQLiteCommand(query_insert, ConnectionDB);
+
+            ConnectionDB.Open();
+            command.ExecuteReader();            
+            ConnectionDB.Close();
+            
         }
         public void Delete(string id)
         {

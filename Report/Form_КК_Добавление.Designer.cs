@@ -116,6 +116,7 @@
             this.buttonSave.Size = new System.Drawing.Size(40, 40);
             this.buttonSave.TabIndex = 11;
             this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // textBoxComment
             // 
@@ -139,7 +140,7 @@
             this.textBoxCoeff.Name = "textBoxCoeff";
             this.textBoxCoeff.Size = new System.Drawing.Size(52, 20);
             this.textBoxCoeff.TabIndex = 21;
-            this.textBoxCoeff.Text = "000.00";
+            this.textBoxCoeff.Text = "00.00";
             // 
             // label5
             // 
@@ -228,23 +229,22 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBoxFullDesc;
-        private System.Windows.Forms.TextBox textBoxDetail;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBoxDesc;
         private System.Windows.Forms.Button buttonSaveAndClose;
         private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.TextBox textBoxComment;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBoxCoeff;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.CheckBox checkBoxStdInv;
         public System.Windows.Forms.ComboBox comboBoxFormEducation;
         public System.Windows.Forms.ComboBox comboBoxYear;
+        public System.Windows.Forms.TextBox textBoxDesc;
+        public System.Windows.Forms.TextBox textBoxFullDesc;
+        public System.Windows.Forms.TextBox textBoxDetail;
+        public System.Windows.Forms.TextBox textBoxComment;
+        public System.Windows.Forms.TextBox textBoxCoeff;
+        public System.Windows.Forms.CheckBox checkBoxStdInv;
     }
 }
