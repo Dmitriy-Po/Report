@@ -39,6 +39,7 @@ namespace Report
                         ListCoef.Where(x => x.id == Convert.ToInt32(row.Cells["id"].Value))
                         .Select(x => x.GetForm())
                         .ElementAt(0);
+                    f.DataRow = row;
                 }
             }
             f.ShowDialog();

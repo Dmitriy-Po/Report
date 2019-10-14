@@ -54,24 +54,43 @@ namespace Report
                 string.Join(", ", col),
                 string.Join("', '", val));
         }
-        void IsDuplicate ()
+        bool IsDuplicate ()
         {
             FormКоэффиценты fk = new FormКоэффиценты();
 
             var duplicat_id = fk.ListCoef.Where(
                 x => x.Наименование.Equals(textBoxDesc.Text, StringComparison.OrdinalIgnoreCase) &&
-                     x.GetForm().Equals(comboBoxFormEducation.SelectedItem.ToString(), StringComparison.OrdinalIgnoreCase) &&
+                     x.GetForm().Equals(comboBoxFormEducation.Text, StringComparison.OrdinalIgnoreCase) &&
                      x.СтудентИнвалид.Equals(checkBoxStdInv.Checked) &&
-                     x.GetYear().Equals(comboBoxYear.SelectedItem) &&
+                     x.GetYear().Substring(6,4).Equals(comboBoxYear.Text) &&
                      x.GetCoef() == Math.Round(Convert.ToDecimal(textBoxCoeff.Text), 2))
-                     .Select(x => x.id);          
-            //сделать проверку на дубликаты
-            duplicat_id.ElementAt(0);
+                     .Select(x => x.id);
+
+            /*  если id в выбранной строке, в столбце 'id', в DataGrid, совпадает с
+             * элементов в коллекции ListCoef, по параметрам, указанным выше (стр.: 61-67)
+             * тогда - это текущая редактуремая строка, и сохранение возможно!
+             * Фокус в том, что при нажатии кнопки Редактировать, переменная DataGrid получает, из столбца 'id'
+             * идентификатор строки (записи в бд). А при нажати кнопки Создать по шаблону, переменная DataGrid
+             * идентификатор не получает. Вот и вся магия :) 
+             * */
+            if (Convert.ToInt32(DataRow.Cells["id"].Value) == duplicat_id.ElementAt(0))
+            {
+                return true; //true - дубликат, можно сохранять, в режиме редактирования.
+            }
+            else return false; // false - дубликат, нельзя сохранить в режиме Создать по шаблону.
         }
 
         private void buttonSaveAndClose_Click (object sender, EventArgs e)
         {
-            IsDuplicate();
+            if (IsDuplicate())
+            {
+                MessageBox.Show("Редактирование");
+            }
+            else if (!IsDuplicate())
+            {
+                MessageBox.Show("Дубликат");
+            }
+            else MessageBox.Show("Test");
         }
 
         private void Form_КК_Добавление_Load(object sender, EventArgs e)
