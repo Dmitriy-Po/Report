@@ -12,11 +12,14 @@ namespace Report
         {
             InitializeComponent();
         }
-        public DataGridViewRow DataRow { get; set; }
+        public DataGridViewRow CurrentDataRow { get; set; }
 
 
 
+        void UpdateRecord (int id)
+        {
 
+        }
         void InsertRecord ()
         {
             //Функция добавляет запись в базу данных
@@ -54,43 +57,59 @@ namespace Report
                 string.Join(", ", col),
                 string.Join("', '", val));
         }
-        bool IsDuplicate ()
+        bool IsEditingMode (out int id)
         {
             FormКоэффиценты fk = new FormКоэффиценты();
 
-            var duplicat_id = fk.ListCoef.Where(
+            //Редактируемая строка, взятая из коллекции ListCoef.
+            var DuplicateId = fk.ListCoef.Where(
                 x => x.Наименование.Equals(textBoxDesc.Text, StringComparison.OrdinalIgnoreCase) &&
                      x.GetForm().Equals(comboBoxFormEducation.Text, StringComparison.OrdinalIgnoreCase) &&
                      x.СтудентИнвалид.Equals(checkBoxStdInv.Checked) &&
-                     x.GetYear().Substring(6,4).Equals(comboBoxYear.Text) &&
+                     x.GetYear().Substring(6, 4).Equals(comboBoxYear.Text) &&
                      x.GetCoef() == Math.Round(Convert.ToDecimal(textBoxCoeff.Text), 2))
                      .Select(x => x.id);
 
-            /*  если id в выбранной строке, в столбце 'id', в DataGrid, совпадает с
-             * элементов в коллекции ListCoef, по параметрам, указанным выше (стр.: 61-67)
-             * тогда - это текущая редактуремая строка, и сохранение возможно!
+            //будликат - исходя из выбранных полей на форме.
+            bool Duplicate = fk.ListCoef.Select(
+                x => x.Наименование.Equals(textBoxDesc.Text, StringComparison.OrdinalIgnoreCase) &&
+                     x.GetForm().Equals(comboBoxFormEducation.Text, StringComparison.OrdinalIgnoreCase) &&
+                     x.СтудентИнвалид.Equals(checkBoxStdInv.Checked) &&
+                     x.GetYear().Substring(6, 4).Equals(comboBoxYear.Text) &&
+                     x.GetCoef() == Math.Round(Convert.ToDecimal(textBoxCoeff.Text), 2))
+                    .Any(x => x.Equals(true));
+
+            /*Если выбранная (из DataGrid) редактируемая строка совпадает, по параметрам 
+             * <указанным в поях формы>, с строкой в коллекции  ListCoef, тогда 
+                    - это текущая редактиремая строка и сохраненеи возможно.
+                Строки в DataGrid и ListCoef сравниваются по полю id.    
+
              * Фокус в том, что при нажатии кнопки Редактировать, переменная DataGrid получает, из столбца 'id'
              * идентификатор строки (записи в бд). А при нажати кнопки Создать по шаблону, переменная DataGrid
              * идентификатор не получает. Вот и вся магия :) 
              * */
-            if (Convert.ToInt32(DataRow.Cells["id"].Value) == duplicat_id.ElementAt(0))
+
+            if (Duplicate)
             {
-                return true; //true - дубликат, можно сохранять, в режиме редактирования.
+                if (Convert.ToInt32(CurrentDataRow.Cells["id"].Value) == DuplicateId.ElementAt(0))
+                {
+                    id = DuplicateId.ElementAt(0);
+                    return true;
+                }
+                else { id = 0; return false; };
             }
-            else return false; // false - дубликат, нельзя сохранить в режиме Создать по шаблону.
+            else { id = 0; return true; };
         }
 
         private void buttonSaveAndClose_Click (object sender, EventArgs e)
         {
-            if (IsDuplicate())
+            SQliteDB db = new SQliteDB();
+            int id = 0;
+            if (IsEditingMode(out id))
             {
-                MessageBox.Show("Редактирование");
+                db.Insert_New()
             }
-            else if (!IsDuplicate())
-            {
-                MessageBox.Show("Дубликат");
-            }
-            else MessageBox.Show("Test");
+            else MessageBox.Show("Такая строка уже существует");
         }
 
         private void Form_КК_Добавление_Load(object sender, EventArgs e)
@@ -107,7 +126,7 @@ namespace Report
 
         private void buttonSave_Click (object sender, EventArgs e)
         {
-            IsDuplicate();
+            //IsEditingMode();
         }
     }
 }

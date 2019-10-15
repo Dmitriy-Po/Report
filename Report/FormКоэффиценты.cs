@@ -20,7 +20,7 @@ namespace Report
         public List<КорректирующиеКоэффиценты> ListCoef = new List<КорректирующиеКоэффиценты>();
 
 
-        void FillComponents ()
+        void FillComponents (bool IsEditingMode)
         {
             //заполение компонентов на форме Коэфицентов добавления, из datagrid
             Form_КК_Добавление f = new Form_КК_Добавление();
@@ -39,7 +39,12 @@ namespace Report
                         ListCoef.Where(x => x.id == Convert.ToInt32(row.Cells["id"].Value))
                         .Select(x => x.GetForm())
                         .ElementAt(0);
-                    f.DataRow = row;
+
+                    if (IsEditingMode)
+                    {
+                        f.CurrentDataRow = row;    //получение строки для использования в функции IsDuplicate.
+                    }
+                    else f.CurrentDataRow = null;  //null - для режима Создать по шаблону.
                 }
             }
             f.ShowDialog();
@@ -98,7 +103,7 @@ namespace Report
         {
             if (CountSelectedRows("Добавить по шаблону"))
             {
-                FillComponents();
+                FillComponents(false);
             }
             
         }
@@ -107,7 +112,7 @@ namespace Report
         {
             if (CountSelectedRows("Редактирования"))
             {
-                FillComponents(); 
+                FillComponents(true); 
             }
         }
 
