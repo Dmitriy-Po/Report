@@ -13,49 +13,73 @@ namespace Report
             InitializeComponent();
         }
         public DataGridViewRow CurrentDataRow { get; set; }
-
-
-
-        void UpdateRecord (int id)
+        string[] ValuesOfCoef()
         {
-
-        }
-        void InsertRecord ()
-        {
-            //Функция добавляет запись в базу данных
             SQliteDB db = new SQliteDB();
-            int[] id = new int[2];
+            FormКоэффиценты form_coef = new FormКоэффиценты();
+            int[] id = new int[2];            
 
-            string[] colums = { "Наименование", "ПолноеНаименование", "Комментарий", "Уточнение", "СтудентИнвалид" };
-            object[] values = { textBoxDesc.Text, textBoxFullDesc.Text, textBoxComment.Text, textBoxDetail.Text, Convert.ToInt16(checkBoxStdInv.Checked) };
-
-            db.Insert_New("КорректирующиеКоэффиценты",
-                string.Join(", ", colums),
-                string.Join("', '", values));
-
-            #region получение внешних ключей
-            SQLiteDataReader reader = db.Select_any_query("SELECT MAX(ФормаОбучения.код) as f, MAX(КорректирующиеКоэффиценты.код) as k" +
-                    " FROM ФормаОбучения, КорректирующиеКоэффиценты");
+            #region получение id - последней записи в бд.
+            SQLiteDataReader reader = db.Select_any_query("SELECT MAX(КорректирующиеКоэффиценты.код) as last_id" +
+                    " FROM КорректирующиеКоэффиценты");
 
             while (reader.Read())
             {
                 id[0] = reader.GetInt32(0);
-                id[1] = reader.GetInt32(1);
             }
             reader.Close();
             db.ConnectionDB.Close();
 
             #endregion
+            //запись из коллекции - формы обучения.
+            id[1] = form_coef.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.Text)).Select(x => x.id).ElementAt(0);
+
             string[] val = { Math.Round( Convert.ToDecimal(textBoxCoeff.Text), 2 ).ToString(),
-                Convert.ToString(comboBoxYear.SelectedItem)+"-01-01", id[1].ToString(), id[0].ToString() };
+                comboBoxYear.Text +"-01-01", id[0].ToString(), id[1].ToString() };
 
-            val[0] = val[0].Replace(",", "."); //замена символа запятой на точку, по формату
+            val[0] = val[0].Replace(",", "."); //замена символа запятой на точку
 
-            string[] col = { "Значение", "КаледндарныйГод", "Корректирующие_ВК", "ФормаОбучения_ВК" };
+            return val;
+
+        }
+
+        void UpdateRecord (int id)//обновление
+        {
+            SQliteDB db = new SQliteDB();
+            FormКоэффиценты form_coef = new FormКоэффиценты();
+
+            string[] FieldsCorrCoef = { "Наименование", "ПолноеНаименование", "Комментарий", "Уточнение", "СтудентИнвалид" };
+            object[] ValuesOfCorrCoef = { textBoxDesc.Text, textBoxFullDesc.Text, textBoxComment.Text, textBoxDetail.Text, Convert.ToInt16(checkBoxStdInv.Checked) };
+
+            db.Update_new("КорректирующиеКоэффиценты", FieldsCorrCoef, ValuesOfCorrCoef, id.ToString());
+
+            string[] FieldsCoef = { "Значение", "КаледндарныйГод", "Корректирующие_ВК", "ФормаОбучения_ВК" };
+
+            int id_formEducation = form_coef.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.Text)).Select(x => x.id).ElementAt(0);
+            string[] ValuesOfCoeff = { textBoxCoeff.Text, comboBoxYear.Text, id.ToString(),  id_formEducation.ToString()};
+
+            db.Update_new("ЗначениеКоэффицента",
+                    FieldsCoef, ValuesOfCoeff, id.ToString());
+
+        }
+        void InsertRecord ()//сохранение
+        {
+            //Функция добавляет запись в базу данных
+            SQliteDB db = new SQliteDB();
+
+            string[] ColumnsCorrCoef = { "Наименование", "ПолноеНаименование", "Комментарий", "Уточнение", "СтудентИнвалид" };
+            object[] ValuesOfCorrCoef = { textBoxDesc.Text, textBoxFullDesc.Text, textBoxComment.Text, textBoxDetail.Text, Convert.ToInt16(checkBoxStdInv.Checked) };
+
+            db.Insert_New("КорректирующиеКоэффиценты",
+                string.Join(", ", ColumnsCorrCoef),
+                string.Join("', '", ValuesOfCorrCoef));
+
+            string[] ColumnsValueCoef = { "Значение", "КаледндарныйГод", "Корректирующие_ВК", "ФормаОбучения_ВК" };
+            string[] ValueCoef = ValuesOfCoef();
 
             db.Insert_New("ЗначениеКоэффицента",
-                string.Join(", ", col),
-                string.Join("', '", val));
+                string.Join(", ", ColumnsValueCoef),
+                string.Join("', '", ValueCoef));
         }
         bool IsEditingMode (out int id)
         {
@@ -107,7 +131,9 @@ namespace Report
             int id = 0;
             if (IsEditingMode(out id))
             {
-                db.Insert_New()
+                //db.Insert_New()
+                //InsertRecord();
+                UpdateRecord(id);
             }
             else MessageBox.Show("Такая строка уже существует");
         }

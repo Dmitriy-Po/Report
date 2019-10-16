@@ -178,7 +178,7 @@ namespace Report
             info.year           = Convert.ToInt32(textBoxYear.Text);
             info.student_inv    = checkBoxStdInv.Checked;
 
-            db.Update(info);
+            db.Update_TableCountStudent(info);
 
             //db.Update(new int[] {
             //    comboBoxFilial.SelectedIndex,

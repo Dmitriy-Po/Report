@@ -71,7 +71,7 @@ namespace Report
             command.ExecuteNonQuery();
             ConnectionDB.Close();
         }
-        public void Update(TableCountStudent table)
+        public void Update_TableCountStudent(TableCountStudent table)
         {
             FormListCountStudent form = new FormListCountStudent();
             var id_skill    = form.ListSkill.Where(x => x.desc == table.Skill).Select(x => x).ToList();
@@ -93,6 +93,15 @@ namespace Report
             ConnectionDB.Open();
             command.ExecuteNonQuery();
             ConnectionDB.Close();
+        }
+        public void Update_new(string NameTable, string[] column, object[] values, string condition)
+        { 
+            string q = string.Empty;
+            for (int i = 0; i < column.Length; i++)
+            {
+                q += $"{column[i]} = {values[i]} ";
+            }
+            string query = $"UPDATE {NameTable} SET {q} WHERE = {condition}";
         }
         public string GetConnection () => ConnectionDB.ConnectionString;
         
