@@ -9,10 +9,10 @@ namespace Report.Classes
 {
     public class FormEducation
     {
-        public FormEducation(int id, string s)
+        public FormEducation(int id, string description)
         {
             this.id = id;
-            Desc = s;
+            Desc = description;
         }
         public int id { get; set; }
         public string Desc { get; set; }

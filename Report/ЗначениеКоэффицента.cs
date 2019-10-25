@@ -8,11 +8,13 @@ namespace Report
 {
     class ЗначениеКоэффицента
     {
-        public ЗначениеКоэффицента(decimal c, string y)
+        public ЗначениеКоэффицента(decimal c, string y, int id)
         {
             Коэффицент = c;
-            КалендарныйГод = y;            
+            КалендарныйГод = y;
+            this.id = id;            
         }
+        public int id { get; set; }
         public decimal Коэффицент { get; set; }
         public string КалендарныйГод { get; set; }
         public Classes.FormEducation ФормаОбучения { get; set; }

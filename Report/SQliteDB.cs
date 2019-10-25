@@ -63,10 +63,10 @@ namespace Report
             ConnectionDB.Close();
             
         }
-        public void Delete(string id)
+        public void Delete(string table, string column, string id)
         {
             SQLiteCommand command = new SQLiteCommand
-                ($"DELETE FROM ЧисленностьОбучающихся WHERE ЧисленностьОбучающихся.код in({id})", ConnectionDB);
+                ($"DELETE FROM {table} WHERE {column} in({id})", ConnectionDB);
             ConnectionDB.Open();
             command.ExecuteNonQuery();
             ConnectionDB.Close();
@@ -95,13 +95,20 @@ namespace Report
             ConnectionDB.Close();
         }
         public void Update_new(string NameTable, string[] column, object[] values, string condition)
-        { 
-            string q = string.Empty;
+        {
+            string[] q = new string[column.Length];
+
             for (int i = 0; i < column.Length; i++)
             {
-                q += $"{column[i]} = {values[i]} ";
+                q[i] += $"{column[i]} = '{values[i]}'";
             }
-            string query = $"UPDATE {NameTable} SET {q} WHERE = {condition}";
+            string query = $"UPDATE {NameTable} SET {string.Join(", ", q)} {condition}";
+
+            SQLiteCommand command = new SQLiteCommand(query, ConnectionDB);
+
+            ConnectionDB.Open();
+            command.ExecuteNonQuery();
+            ConnectionDB.Close();
         }
         public string GetConnection () => ConnectionDB.ConnectionString;
         

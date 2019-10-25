@@ -295,7 +295,7 @@ namespace Report
                     ListId.Add(rows.Cells["ColumnID"].Value.ToString());
                 }
             }
-            q.Delete(string.Join(",", ListId.ToArray()));
+            q.Delete("ЧисленностьОбучающихся", "ЧисленностьОбучающихся.код", string.Join(",", ListId.ToArray()));
             RefreshDataGridCiew();            
         }
 
