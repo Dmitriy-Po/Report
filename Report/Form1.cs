@@ -4,6 +4,7 @@ using System.Data.Linq;
 using System.Data.SQLite;
 using System.Linq;
 using System.Windows.Forms;
+using Report.Forms;
 
 namespace Report
 {
@@ -360,6 +361,12 @@ namespace Report
         {
             FormКоэффиценты f = new FormКоэффиценты();
             f.ShowDialog();
+        }
+
+        private void сформироватьОтчётToolStripMenuItem_Click (object sender, EventArgs e)
+        {
+            FormСозданиеОтчёта report = new FormСозданиеОтчёта();
+            report.ShowDialog();
         }
     }
 }

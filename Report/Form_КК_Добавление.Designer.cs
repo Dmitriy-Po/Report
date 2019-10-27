@@ -145,7 +145,7 @@
             this.groupBox1.Controls.Add(this.comboBoxYear);
             this.groupBox1.Location = new System.Drawing.Point(12, 150);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(380, 150);
+            this.groupBox1.Size = new System.Drawing.Size(380, 131);
             this.groupBox1.TabIndex = 30;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Коэффицент";
@@ -154,7 +154,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 312);
+            this.ClientSize = new System.Drawing.Size(404, 293);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.label1);

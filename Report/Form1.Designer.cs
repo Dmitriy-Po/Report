@@ -60,6 +60,8 @@
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.отчётToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сформироватьОтчётToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -255,7 +257,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.нормативыToolStripMenuItem,
-            this.коэффицентыToolStripMenuItem});
+            this.коэффицентыToolStripMenuItem,
+            this.отчётToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(984, 24);
@@ -369,6 +372,21 @@
             this.label2.TabIndex = 14;
             this.label2.Text = "Календарный год";
             // 
+            // отчётToolStripMenuItem
+            // 
+            this.отчётToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.сформироватьОтчётToolStripMenuItem});
+            this.отчётToolStripMenuItem.Name = "отчётToolStripMenuItem";
+            this.отчётToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.отчётToolStripMenuItem.Text = "Отчёт";
+            // 
+            // сформироватьОтчётToolStripMenuItem
+            // 
+            this.сформироватьОтчётToolStripMenuItem.Name = "сформироватьОтчётToolStripMenuItem";
+            this.сформироватьОтчётToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.сформироватьОтчётToolStripMenuItem.Text = "Сформировать отчёт...";
+            this.сформироватьОтчётToolStripMenuItem.Click += new System.EventHandler(this.сформироватьОтчётToolStripMenuItem_Click);
+            // 
             // FormListCountStudent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -426,6 +444,8 @@
         private System.Windows.Forms.ToolStripMenuItem базовыеНормативыЗатратToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem коэффицентыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem корректирующиеКоэффицентыToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem отчётToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem сформироватьОтчётToolStripMenuItem;
     }
 }
 

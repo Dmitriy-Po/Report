@@ -25,36 +25,36 @@ namespace Report
             //заполение компонентов на форме Коэфицентов добавления, из datagrid
             Form_КК_Добавление f = new Form_КК_Добавление();
 
-            foreach (DataGridViewRow row in dataGridViewCoeff.Rows)
-            {
-                if (Convert.ToBoolean(row.Cells[0].Value))
-                {
-                    f.textBoxDesc.Text = row.Cells[1].Value.ToString();
-                    f.textBoxFullDesc.Text = row.Cells[2].Value.ToString();
-                    f.textBoxDetail.Text = row.Cells[3].Value.ToString();
-                    f.textBoxCoeff.Text = row.Cells[4].Value.ToString();
-                    f.comboBoxYear.Text = row.Cells[5].Value.ToString();
-                    f.textBoxComment.Text = row.Cells[6].Value.ToString();
-                    f.comboBoxFormEducation.Text = row.Cells[7].Value.ToString();
-                        //ListCoef.Where(x => x.id == Convert.ToInt32(row.Cells["id"].Value))
-                        //.Select(x => x.GetForm())
-                        //.ElementAt(0);
+            //foreach (DataGridViewRow row in dataGridViewCoeff.Rows)
+            //{
+            //    if (Convert.ToBoolean(row.Cells[0].Value))
+            //    {
+            //        f.textBoxDesc.Text = row.Cells[1].Value.ToString();
+            //        f.textBoxFullDesc.Text = row.Cells[2].Value.ToString();
+            //        f.textBoxDetail.Text = row.Cells[3].Value.ToString();
+            //        f.textBoxCoeff.Text = row.Cells[4].Value.ToString();
+            //        f.comboBoxYear.Text = row.Cells[5].Value.ToString();
+            //        f.textBoxComment.Text = row.Cells[6].Value.ToString();
+            //        f.comboBoxFormEducation.Text = row.Cells[7].Value.ToString();
+            //            //ListCoef.Where(x => x.id == Convert.ToInt32(row.Cells["id"].Value))
+            //            //.Select(x => x.GetForm())
+            //            //.ElementAt(0);
 
-                    if (IsEditingMode)
-                    {
-                        f.Text = "Редактирование";
-                        f.StatusOperation = 3;
-                        f.CurrentDataRow = row;    // получение строки для использования в функции IsDuplicate.
-                    }
-                    else
-                    {
-                        f.Text = "Создание по шаблону";
-                        f.StatusOperation = 2;
-                        f.CurrentDataRow = null;    // null - для режима Создать по шаблону.
-                    }
-                }
-            }
-            f.ShowDialog();
+            //        if (IsEditingMode)
+            //        {
+            //            f.Text = "Редактирование";
+            //            f.StatusOperation = 3;
+            //            f.CurrentDataRow = row;    // получение строки для использования в функции IsDuplicate.
+            //        }
+            //        else
+            //        {
+            //            f.Text = "Создание по шаблону";
+            //            f.StatusOperation = 2;
+            //            f.CurrentDataRow = null;    // null - для режима Создать по шаблону.
+            //        }
+            //    }
+            //}
+            //f.ShowDialog();
         }
         public bool CountSelectedRows (string tooltip)
         {
