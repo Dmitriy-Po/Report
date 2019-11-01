@@ -86,9 +86,9 @@ namespace Report
             //заполнение combobox датами из коллекции коэффицентов
             /*Возможно, при наступлении 3000 года, потомкам придётся сменить год (поменять цифру 2 на 3)*/
             
-            comboBoxYear.Items.AddRange
-                (ListCoef.Select(z => z.GetYear().Substring(6, 4))                
-                .Distinct().ToArray());
+            //comboBoxYear.Items.AddRange
+            //    (ListCoef.Select(z => z.GetYear().Substring(6, 4))                
+            //    .Distinct().ToArray());
                      
         }
 

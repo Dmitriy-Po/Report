@@ -187,9 +187,9 @@ namespace Report
             comboBoxFormEducation.Items.AddRange
                 (c.ListEducation.Select(x => x.Desc).ToArray());
 
-            comboBoxYear.Items.AddRange(c.ListCoef
-                .Select(y => y.GetYear().Substring(6, 4))
-                .Distinct().ToArray());
+            //comboBoxYear.Items.AddRange(c.ListCoef
+            //    .Select(y => y.GetYear().Substring(6, 4))
+            //    .Distinct().ToArray());
         }
 
         private void buttonSave_Click (object sender, EventArgs e)

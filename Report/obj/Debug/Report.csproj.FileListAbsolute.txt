@@ -59,5 +59,4 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Form_КК_Добавление.resources
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormБНЗ_Добавление.resources
 C:\Users\vvi\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormКоэффиценты.resources
-C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormСозданиеОтчёта.resources

@@ -9,11 +9,17 @@ namespace Report.Classes
 {
     public class FormEducation
     {
-        public FormEducation(int id, string description)
-        {
-            this.id = id;
+        List<ЗначениеКоэффицента> коэффицент { get; set; }
+        public FormEducation(string description)
+        {            
             Desc = description;
         }
+        public void SetCorrectCoef(ЗначениеКоэффицента val)
+        {
+            коэффицент.Add(val);
+        }
+        public List<ЗначениеКоэффицента> GetCoef () => коэффицент;
+
         public int id { get; set; }
         public string Desc { get; set; }
         public string FullDesc { get; set; }
@@ -24,7 +30,7 @@ namespace Report.Classes
 
             while (reader.Read())
             {
-                List.Add(new FormEducation(Convert.ToInt32(reader[0]), reader[1].ToString()));
+                List.Add(new FormEducation(reader[1].ToString()));
             }
         }
     }
