@@ -20,9 +20,9 @@
         public СтоимостнаяГруппаКалендарногоГода GetGroup () => СтоимостнаяГруппа;
         
         public decimal Бакалавриат_Специалитет { get; set; }
-        decimal Магистратура { get; set; }
-        decimal Аспирантура { get; set; }
-        decimal SPO { get; set; }
+        public decimal Магистратура { get; set; }
+        public decimal Аспирантура { get; set; }
+        public decimal SPO { get; set; }
         string Year { get; set; }
         
     }

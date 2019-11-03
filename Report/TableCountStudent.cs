@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SQLite;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace Report
+﻿namespace Report
 {
     public class TableCountStudent
     {
@@ -18,9 +10,7 @@ namespace Report
         public bool student_inv { get; set; }
         public string Filial { get; set; }
         public string Special { get; set; }
-        public string Skill { get; set; }
-
-       
+        public string Skill { get; set; }     
 
     }
 }
