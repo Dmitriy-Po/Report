@@ -19,8 +19,9 @@ namespace Report
             //КоррктирующийКоэфф = new КорректирующийКоэффицентБазовогоНорматива();  
         }
           
-        public БазовыеНормативыЗатрат(string description, string year)
+        public БазовыеНормативыЗатрат(int id, string description)
         {
+            this.id = id;
             Desc = description;
             Норматив            = new List<БазовыйНормативЗатратСтоимостнойГруппы>();
             КоррктирующийКоэфф  = new List<КорректирующийКоэффицентБазовогоНорматива>();                      
@@ -35,7 +36,8 @@ namespace Report
         {
             КоррктирующийКоэфф.Add(kk);
         }
-        public List<КорректирующийКоэффицентБазовогоНорматива> GetCorrectCoef () => КоррктирующийКоэфф;      
+        public List<КорректирующийКоэффицентБазовогоНорматива> GetCorrectCoef () => КоррктирующийКоэфф;
+        public int id { get; set; }
         public string Desc { get; set; }
         public string FullDesc { get; set; }
         public string Comment { get; set; }        

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Report;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SQLite;
 using System.Windows.Forms;
 
 
@@ -49,28 +52,94 @@ namespace Report.Forms
         }
         void Fill ()
         {
+            SQliteDB database = new SQliteDB();
+            SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB);
+            string query = "SELECT БазовыйНормативЗатрат.код as 'id', БазовыйНормативЗатрат.Наименование as 'наименование' FROM БазовыйНормативЗатрат;" +
+                            "SELECT * FROM БНЗСтоимостнойГруппы ORDER BY БНЗ_ВК ASC; " +
+                            "SELECT БазовыйНормативЗатрат.код, ЗначениеКоэффицента.Значение "+
+                            "FROM КоррКоэффицентБазовогоНорматива "+
+                            "JOIN ЗначениеКоэффицента ON "+
+                                 "КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК = ЗначениеКоэффицента.Корректирующие_ВК "+
+                            "JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК;";
+                            
+                            
+                            
+
+            connection.Open();
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection);
+
+            DataSet ds = new DataSet();
+            adapter.Fill(ds);
+
+
+
+            // Заполнение списка нормативами за этот год.
             List<БазовыеНормативыЗатрат> All_normals = new List<БазовыеНормативыЗатрат>();
-            БазовыеНормативыЗатрат normal1 = new БазовыеНормативыЗатрат("Затраты на ЗП", "2019");
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                All_normals.Add(new БазовыеНормативыЗатрат( Convert.ToInt32( row["id"] ), row["наименование"].ToString()));
+            }
+
+            // Выборка из таблицы БНЗСтоимостнойГруппы, значений норматива по полю БНЗ_ВК
+            foreach (var normativ in All_normals)
+            {
+                var norm = from id in ds.Tables[1].AsEnumerable() where Convert.ToInt32( id["БНЗ_ВК"] ) == normativ.id select id;
+
+                foreach (DataRow row in norm)
+                {
+                    normativ.SetNormativ(new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] {
+                        Convert.ToDecimal(row[1]),
+                        Convert.ToDecimal(row[2]),
+                        Convert.ToDecimal(row[3]),
+                        Convert.ToDecimal(row[4])},
+                        row[5].ToString()));
+                }
+
+            }
+
+            // Выборка из таблицы ЗначениеКоэффицента. Для сопоставления корректирующих коэффицентов Нормативам.
+            foreach (var normativ in All_normals)
+            {
+                var norm = from coef in ds.Tables[2].AsEnumerable() where Convert.ToInt32(coef["код"]) == normativ.id select coef;
+
+                
+                List<КорректирующиеКоэффиценты> correct_coef = new List<КорректирующиеКоэффиценты>();                                
+                foreach (DataRow row in norm)
+                {  
+
+                    correct_coef.Add(new КорректирующиеКоэффиценты("", "", "", "", false)
+                        .SetValueCoef(new ЗначениеКоэффицента(1.23m, ""));
+                }
+                
+            }
             
 
-            СтоимостнаяГруппаКалендарногоГода group1 = new СтоимостнаяГруппаКалендарногоГода("Группа 1", "2019");
-            СтоимостнаяГруппаКалендарногоГода group2 = new СтоимостнаяГруппаКалендарногоГода("Группа 2", "2019");
-            СтоимостнаяГруппаКалендарногоГода group3 = new СтоимостнаяГруппаКалендарногоГода("Группа 3", "2019");
+
+            
 
 
-            БазовыйНормативЗатратСтоимостнойГруппы norm1 = new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] { 37.01m, 42.56m, 47.7m, 0m }, "2019");
-            БазовыйНормативЗатратСтоимостнойГруппы norm2 = new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] { 37.01m, 42.56m, 47.7m, 71.55m }, "2019");
-            БазовыйНормативЗатратСтоимостнойГруппы norm3 = new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] { 44.41m, 46.26m, 57.24m, 71.55m }, "2019");
+            //List<БазовыеНормативыЗатрат> All_normals = new List<БазовыеНормативыЗатрат>();
+            //БазовыеНормативыЗатрат normal1 = new БазовыеНормативыЗатрат("Затраты на ЗП");
+            
+
+            //СтоимостнаяГруппаКалендарногоГода group1 = new СтоимостнаяГруппаКалендарногоГода("Группа 1", "2019");
+            //СтоимостнаяГруппаКалендарногоГода group2 = new СтоимостнаяГруппаКалендарногоГода("Группа 2", "2019");
+            //СтоимостнаяГруппаКалендарногоГода group3 = new СтоимостнаяГруппаКалендарногоГода("Группа 3", "2019");
 
 
-            group1.SetNormal(norm1);
-            group2.SetNormal(norm2);
-            group3.SetNormal(norm3);
+            //БазовыйНормативЗатратСтоимостнойГруппы norm1 = new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] { 37.01m, 42.56m, 47.7m, 0m }, "2019");
+            //БазовыйНормативЗатратСтоимостнойГруппы norm2 = new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] { 37.01m, 42.56m, 47.7m, 71.55m }, "2019");
+            //БазовыйНормативЗатратСтоимостнойГруппы norm3 = new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] { 44.41m, 46.26m, 57.24m, 71.55m }, "2019");
 
 
-            normal1.SetNormativ(norm1);
-            normal1.SetNormativ(norm2);
-            normal1.SetNormativ(norm3);
+            //group1.SetNormal(norm1);
+            //group2.SetNormal(norm2);
+            //group3.SetNormal(norm3);
+
+
+            //normal1.SetNormativ(norm1);
+            //normal1.SetNormativ(norm2);
+            //normal1.SetNormativ(norm3);
 
 
 
@@ -167,24 +236,24 @@ namespace Report.Forms
 
 
 
-            normal1.SetCorrectCoef(correct_base_normal1);
-            normal1.SetCorrectCoef(correct_base_normal2);
-            normal1.SetCorrectCoef(correct_base_normal3);
-            normal1.SetCorrectCoef(correct_base_normal4);
-            normal1.SetCorrectCoef(correct_base_normal5);
-            normal1.SetCorrectCoef(correct_base_normal6);
+            //normal1.SetCorrectCoef(correct_base_normal1);
+            //normal1.SetCorrectCoef(correct_base_normal2);
+            //normal1.SetCorrectCoef(correct_base_normal3);
+            //normal1.SetCorrectCoef(correct_base_normal4);
+            //normal1.SetCorrectCoef(correct_base_normal5);
+            //normal1.SetCorrectCoef(correct_base_normal6);
 
-            normal1.SetCorrectCoef(correct_base_normal7);
-            normal1.SetCorrectCoef(correct_base_normal8);
-            normal1.SetCorrectCoef(correct_base_normal9);
-            normal1.SetCorrectCoef(correct_base_normal10);
+            //normal1.SetCorrectCoef(correct_base_normal7);
+            //normal1.SetCorrectCoef(correct_base_normal8);
+            //normal1.SetCorrectCoef(correct_base_normal9);
+            //normal1.SetCorrectCoef(correct_base_normal10);
 
 
 
             //normal1.SetCorrectCoef(correct_base_normal7);
 
 
-            All_normals.Add(normal1);
+            //All_normals.Add(normal1);
             /*
              * 
              * Искуственно введу массив - содержащий количество студентов Конкретно формы обучения
@@ -208,37 +277,37 @@ namespace Report.Forms
             decimal Summ = 0;              // Сумма по группе с учётом количества студентов и формы обучения.
             decimal K_equal = 1.625m;      // Коэффицент выравнивания.
 
-            foreach (var item in normal1.GetNormativ())
-            {
-                foreach (var coef in normal1.GetCorrectCoef())
-                {
-                    foreach (var val in coef.GetCorrectCoef())
-                    {
-                        foreach (var z in val.GetValueCoef())
-                        {
-                            item.Бакалавриат_Специалитет    = Math.Round(item.Бакалавриат_Специалитет    *= z.Коэффицент, 2);
-                            item.Магистратура               = Math.Round(item.Магистратура               *= z.Коэффицент, 2);
-                            item.Аспирантура                = Math.Round(item.Аспирантура                *= z.Коэффицент, 2);
-                            item.SPO                        = Math.Round(item.SPO                        *= z.Коэффицент, 2);
-                        }
-                    }
-                }                
-            }
+            //foreach (var item in normal1.GetNormativ())
+            //{
+            //    foreach (var coef in normal1.GetCorrectCoef())
+            //    {
+            //        foreach (var val in coef.GetCorrectCoef())
+            //        {
+            //            foreach (var z in val.GetValueCoef())
+            //            {
+            //                item.Бакалавриат_Специалитет    = Math.Round(item.Бакалавриат_Специалитет    *= z.Коэффицент, 2);
+            //                item.Магистратура               = Math.Round(item.Магистратура               *= z.Коэффицент, 2);
+            //                item.Аспирантура                = Math.Round(item.Аспирантура                *= z.Коэффицент, 2);
+            //                item.SPO                        = Math.Round(item.SPO                        *= z.Коэффицент, 2);
+            //            }
+            //        }
+            //    }                
+            //}
 
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    Bakalavr    = Math.Round(normal1.GetNormativ()[j].Бакалавриат_Специалитет, 2)   * Bakalabrat[i];
-                    Magistr     = Math.Round(normal1.GetNormativ()[j].Магистратура, 2)              * Magistrat[i];
-                    Aspirant    = Math.Round(normal1.GetNormativ()[j].Аспирантура, 2)               * Aspirantur[i];
-                    SPO         = Math.Round(normal1.GetNormativ()[j].SPO, 2)                       * CPO[i];
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    for (int j = 0; j < 3; j++)
+            //    {
+            //        Bakalavr    = Math.Round(normal1.GetNormativ()[j].Бакалавриат_Специалитет, 2)   * Bakalabrat[i];
+            //        Magistr     = Math.Round(normal1.GetNormativ()[j].Магистратура, 2)              * Magistrat[i];
+            //        Aspirant    = Math.Round(normal1.GetNormativ()[j].Аспирантура, 2)               * Aspirantur[i];
+            //        SPO         = Math.Round(normal1.GetNormativ()[j].SPO, 2)                       * CPO[i];
 
-                    SummOnGroup += Math.Round((Bakalavr + Magistr + Aspirant + SPO) * coef_priv[i], 2);
-                }
+            //        SummOnGroup += Math.Round((Bakalavr + Magistr + Aspirant + SPO) * coef_priv[i], 2);
+            //    }
                 
-            }
-            Summ = Math.Round(SummOnGroup * K_equal, 2);
+            //}
+            //Summ = Math.Round(SummOnGroup * K_equal, 2);
 
         }
 
