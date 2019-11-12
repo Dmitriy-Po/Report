@@ -102,25 +102,36 @@ namespace Report.Forms
             {
                 var norm = from coef in ds.Tables[2].AsEnumerable() where Convert.ToInt32(coef["код"]) == normativ.id select coef;
 
-                
-                List<КорректирующиеКоэффиценты> correct_coef = new List<КорректирующиеКоэффиценты>();                                
-                foreach (DataRow row in norm)
-                {  
 
-                    correct_coef.Add(new КорректирующиеКоэффиценты("", "", "", "", false)
-                        .SetValueCoef(new ЗначениеКоэффицента(1.23m, ""));
+                List<ЗначениеКоэффицента> coef_values = new List<ЗначениеКоэффицента>();
+                List<КорректирующиеКоэффиценты> correct_coef = new List<КорректирующиеКоэффиценты>();
+                List<КорректирующийКоэффицентБазовогоНорматива> correct_base_normal = new List<КорректирующийКоэффицентБазовогоНорматива>();                             
+                foreach (DataRow row in norm)
+                {
+                    coef_values.Add(new ЗначениеКоэффицента( Convert.ToDecimal( row[1] ), ""));
+                }
+                for (int i = 0; i < coef_values.Count; i++)
+                {
+                    correct_coef.Add(new КорректирующиеКоэффиценты("", "", "", "", false));
+                    correct_coef[i].SetValueCoef(coef_values[i]);
+
+                    correct_base_normal.Add(new КорректирующийКоэффицентБазовогоНорматива(""));
+                    correct_base_normal[i].SetCorrectCoef(correct_coef[i]);
+
+                    normativ.SetCorrectCoef(correct_base_normal[i]);
                 }
                 
+                
             }
-            
+            #region old
+            //correct_base_normal1.SetCorrectCoef(correct_coef1);
 
 
-            
 
 
             //List<БазовыеНормативыЗатрат> All_normals = new List<БазовыеНормативыЗатрат>();
             //БазовыеНормативыЗатрат normal1 = new БазовыеНормативыЗатрат("Затраты на ЗП");
-            
+
 
             //СтоимостнаяГруппаКалендарногоГода group1 = new СтоимостнаяГруппаКалендарногоГода("Группа 1", "2019");
             //СтоимостнаяГруппаКалендарногоГода group2 = new СтоимостнаяГруппаКалендарногоГода("Группа 2", "2019");
@@ -150,29 +161,29 @@ namespace Report.Forms
             /*добавиьть форму обучения*/
 
 
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal1 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal2 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal3 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal4 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal5 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal6 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal7 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal8 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal9 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            КорректирующийКоэффицентБазовогоНорматива correct_base_normal10 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal1 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal2 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal3 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal4 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal5 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal6 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal7 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal8 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal9 = new КорректирующийКоэффицентБазовогоНорматива("2019");
+            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal10 = new КорректирующийКоэффицентБазовогоНорматива("2019");
 
 
 
-            КорректирующиеКоэффиценты correct_coef1 = new КорректирующиеКоэффиценты("Образовательные стандарты", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            КорректирующиеКоэффиценты correct_coef2 = new КорректирующиеКоэффиценты("2", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            КорректирующиеКоэффиценты correct_coef3 = new КорректирующиеКоэффиценты("3", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            КорректирующиеКоэффиценты correct_coef4 = new КорректирующиеКоэффиценты("4", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            КорректирующиеКоэффиценты correct_coef5 = new КорректирующиеКоэффиценты("5", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            КорректирующиеКоэффиценты correct_coef6 = new КорректирующиеКоэффиценты("6", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            КорректирующиеКоэффиценты correct_coef7 = new КорректирующиеКоэффиценты("7", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            КорректирующиеКоэффиценты correct_coef8 = new КорректирующиеКоэффиценты("8", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            КорректирующиеКоэффиценты correct_coef9 = new КорректирующиеКоэффиценты("9", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            КорректирующиеКоэффиценты correct_coef10 = new КорректирующиеКоэффиценты("10", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef1 = new КорректирующиеКоэффиценты("Образовательные стандарты", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef2 = new КорректирующиеКоэффиценты("2", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef3 = new КорректирующиеКоэффиценты("3", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef4 = new КорректирующиеКоэффиценты("4", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef5 = new КорректирующиеКоэффиценты("5", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef6 = new КорректирующиеКоэффиценты("6", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef7 = new КорректирующиеКоэффиценты("7", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef8 = new КорректирующиеКоэффиценты("8", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef9 = new КорректирующиеКоэффиценты("9", "ПолноеОписание", "Уточнение", "Комментарий", false);
+            //КорректирующиеКоэффиценты correct_coef10 = new КорректирующиеКоэффиценты("10", "ПолноеОписание", "Уточнение", "Комментарий", false);
 
 
 
@@ -180,17 +191,17 @@ namespace Report.Forms
             КорректирующиеКоэффиценты ochnaya = new КорректирующиеКоэффиценты("", "", "", "", false);
 
 
-            ЗначениеКоэффицента val_coef1 = new ЗначениеКоэффицента(1.15m, "2019");
-            ЗначениеКоэффицента val_coef2 = new ЗначениеКоэффицента(1.0m, "2019");
-            ЗначениеКоэффицента val_coef3 = new ЗначениеКоэффицента(2.0m, "2019");
-            ЗначениеКоэффицента val_coef4 = new ЗначениеКоэффицента(1.2m, "2019");
+            //ЗначениеКоэффицента val_coef1 = new ЗначениеКоэффицента(1.15m, "2019");
+            //ЗначениеКоэффицента val_coef2 = new ЗначениеКоэффицента(1.0m, "2019");
+            //ЗначениеКоэффицента val_coef3 = new ЗначениеКоэффицента(2.0m, "2019");
+            //ЗначениеКоэффицента val_coef4 = new ЗначениеКоэффицента(1.2m, "2019");
 
-            ЗначениеКоэффицента val_coef5 = new ЗначениеКоэффицента(1.0m, "2019");
-            ЗначениеКоэффицента val_coef6 = new ЗначениеКоэффицента(1.0m, "2019");
-            ЗначениеКоэффицента val_coef7 = new ЗначениеКоэффицента(1.0m, "2019");
-            ЗначениеКоэффицента val_coef8 = new ЗначениеКоэффицента(1.0m, "2019");
-            ЗначениеКоэффицента val_coef9 = new ЗначениеКоэффицента(1.0m, "2019");
-            ЗначениеКоэффицента val_coef10 = new ЗначениеКоэффицента(1.0m, "2019");
+            //ЗначениеКоэффицента val_coef5 = new ЗначениеКоэффицента(1.0m, "2019");
+            //ЗначениеКоэффицента val_coef6 = new ЗначениеКоэффицента(1.0m, "2019");
+            //ЗначениеКоэффицента val_coef7 = new ЗначениеКоэффицента(1.0m, "2019");
+            //ЗначениеКоэффицента val_coef8 = new ЗначениеКоэффицента(1.0m, "2019");
+            //ЗначениеКоэффицента val_coef9 = new ЗначениеКоэффицента(1.0m, "2019");
+            //ЗначениеКоэффицента val_coef10 = new ЗначениеКоэффицента(1.0m, "2019");
 
 
 
@@ -200,35 +211,35 @@ namespace Report.Forms
 
 
             // Коэффицент может иметь несколько значений.
-            correct_coef1.SetValueCoef(val_coef1);
-            correct_coef2.SetValueCoef(val_coef2);
-            correct_coef3.SetValueCoef(val_coef3);
-            correct_coef4.SetValueCoef(val_coef4);
-            correct_coef5.SetValueCoef(val_coef5);
-            correct_coef6.SetValueCoef(val_coef6);
+            //correct_coef1.SetValueCoef(val_coef1);
+            //correct_coef2.SetValueCoef(val_coef2);
+            //correct_coef3.SetValueCoef(val_coef3);
+            //correct_coef4.SetValueCoef(val_coef4);
+            //correct_coef5.SetValueCoef(val_coef5);
+            //correct_coef6.SetValueCoef(val_coef6);
 
-            correct_coef7.SetValueCoef(val_coef7);
-            correct_coef8.SetValueCoef(val_coef8);
-            correct_coef9.SetValueCoef(val_coef9);
-            correct_coef10.SetValueCoef(val_coef10);
+            //correct_coef7.SetValueCoef(val_coef7);
+            //correct_coef8.SetValueCoef(val_coef8);
+            //correct_coef9.SetValueCoef(val_coef9);
+            //correct_coef10.SetValueCoef(val_coef10);
 
 
 
             // Добавлен, но пока не используется.
-            ochnaya.SetValueCoef(val_ochnaya);            
-           
+            ochnaya.SetValueCoef(val_ochnaya);
 
-            correct_base_normal1.SetCorrectCoef(correct_coef1);
-            correct_base_normal2.SetCorrectCoef(correct_coef2);
-            correct_base_normal3.SetCorrectCoef(correct_coef3);
-            correct_base_normal4.SetCorrectCoef(correct_coef4);
-            correct_base_normal5.SetCorrectCoef(correct_coef5);
-            correct_base_normal6.SetCorrectCoef(correct_coef6);
 
-            correct_base_normal7.SetCorrectCoef(correct_coef7);
-            correct_base_normal8.SetCorrectCoef(correct_coef8);
-            correct_base_normal9.SetCorrectCoef(correct_coef9);
-            correct_base_normal10.SetCorrectCoef(correct_coef10);
+            //correct_base_normal1.SetCorrectCoef(correct_coef1);
+            //correct_base_normal2.SetCorrectCoef(correct_coef2);
+            //correct_base_normal3.SetCorrectCoef(correct_coef3);
+            //correct_base_normal4.SetCorrectCoef(correct_coef4);
+            //correct_base_normal5.SetCorrectCoef(correct_coef5);
+            //correct_base_normal6.SetCorrectCoef(correct_coef6);
+
+            //correct_base_normal7.SetCorrectCoef(correct_coef7);
+            //correct_base_normal8.SetCorrectCoef(correct_coef8);
+            //correct_base_normal9.SetCorrectCoef(correct_coef9);
+            //correct_base_normal10.SetCorrectCoef(correct_coef10);
 
 
             //correct_base_normal7.SetCorrectCoef(ochnaya);
@@ -254,11 +265,13 @@ namespace Report.Forms
 
 
             //All_normals.Add(normal1);
+            #endregion
             /*
              * 
              * Искуственно введу массив - содержащий количество студентов Конкретно формы обучения
              * Очная, очно-заочная, заочная соответственно. Так же к ним коэффиценты приведения.
              * */
+             /*Следующий шаг - отобрать численность обучающихся*/
             int[] Bakalabrat  = { 24, 14, 7 };
             int[] Magistrat   = { 19, 12, 4 };            
             int[] Aspirantur  = { 25, 87, 34 };
@@ -277,37 +290,40 @@ namespace Report.Forms
             decimal Summ = 0;              // Сумма по группе с учётом количества студентов и формы обучения.
             decimal K_equal = 1.625m;      // Коэффицент выравнивания.
 
-            //foreach (var item in normal1.GetNormativ())
-            //{
-            //    foreach (var coef in normal1.GetCorrectCoef())
-            //    {
-            //        foreach (var val in coef.GetCorrectCoef())
-            //        {
-            //            foreach (var z in val.GetValueCoef())
-            //            {
-            //                item.Бакалавриат_Специалитет    = Math.Round(item.Бакалавриат_Специалитет    *= z.Коэффицент, 2);
-            //                item.Магистратура               = Math.Round(item.Магистратура               *= z.Коэффицент, 2);
-            //                item.Аспирантура                = Math.Round(item.Аспирантура                *= z.Коэффицент, 2);
-            //                item.SPO                        = Math.Round(item.SPO                        *= z.Коэффицент, 2);
-            //            }
-            //        }
-            //    }                
-            //}
 
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    for (int j = 0; j < 3; j++)
-            //    {
-            //        Bakalavr    = Math.Round(normal1.GetNormativ()[j].Бакалавриат_Специалитет, 2)   * Bakalabrat[i];
-            //        Magistr     = Math.Round(normal1.GetNormativ()[j].Магистратура, 2)              * Magistrat[i];
-            //        Aspirant    = Math.Round(normal1.GetNormativ()[j].Аспирантура, 2)               * Aspirantur[i];
-            //        SPO         = Math.Round(normal1.GetNormativ()[j].SPO, 2)                       * CPO[i];
 
-            //        SummOnGroup += Math.Round((Bakalavr + Magistr + Aspirant + SPO) * coef_priv[i], 2);
-            //    }
-                
-            //}
-            //Summ = Math.Round(SummOnGroup * K_equal, 2);
+            // Считает пока по одному нормативу. Следует сделать подсчёт по всем нормативам.
+            foreach (var item in All_normals[0].GetNormativ())
+            {
+                foreach (var coef in All_normals[0].GetCorrectCoef())
+                {
+                    foreach (var val in coef.GetCorrectCoef())
+                    {
+                        foreach (var z in val.GetValueCoef())
+                        {
+                            item.Бакалавриат_Специалитет = Math.Round(item.Бакалавриат_Специалитет *= z.Коэффицент, 2);
+                            item.Магистратура = Math.Round(item.Магистратура *= z.Коэффицент, 2);
+                            item.Аспирантура = Math.Round(item.Аспирантура *= z.Коэффицент, 2);
+                            item.SPO = Math.Round(item.SPO *= z.Коэффицент, 2);
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    Bakalavr = Math.Round(All_normals[0].GetNormativ()[j].Бакалавриат_Специалитет, 2) * Bakalabrat[i];
+                    Magistr = Math.Round(All_normals[0].GetNormativ()[j].Магистратура, 2) * Magistrat[i];
+                    Aspirant = Math.Round(All_normals[0].GetNormativ()[j].Аспирантура, 2) * Aspirantur[i];
+                    SPO = Math.Round(All_normals[0].GetNormativ()[j].SPO, 2) * CPO[i];
+
+                    SummOnGroup += Math.Round((Bakalavr + Magistr + Aspirant + SPO) * coef_priv[i], 2);
+                }
+
+            }
+            Summ = Math.Round(SummOnGroup * K_equal, 2);
 
         }
 
