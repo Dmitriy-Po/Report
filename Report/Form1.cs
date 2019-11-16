@@ -17,7 +17,7 @@ namespace Report
             TableFilial.Fill(ListFilial);
             TableSKill.Fill(ListSkill);
             TableSpecial.Fill(ListSpecial);
-            FillDataGrid();
+            //FillDataGrid();
             FillComboBoxes();
 
             /*---------------------------------------------------------*/

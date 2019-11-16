@@ -35,6 +35,10 @@
             this.buttonExportTo = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxCoef = new System.Windows.Forms.TextBox();
+            this.GridReport = new System.Windows.Forms.DataGridView();
+            this.Filial = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.GridReport)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonShowReport
@@ -60,6 +64,7 @@
             // 
             // comboBoxYear
             // 
+            this.comboBoxYear.Enabled = false;
             this.comboBoxYear.FormattingEnabled = true;
             this.comboBoxYear.Location = new System.Drawing.Point(296, 29);
             this.comboBoxYear.Name = "comboBoxYear";
@@ -98,16 +103,47 @@
             // 
             // textBoxCoef
             // 
+            this.textBoxCoef.Enabled = false;
             this.textBoxCoef.Location = new System.Drawing.Point(296, 57);
             this.textBoxCoef.Name = "textBoxCoef";
             this.textBoxCoef.Size = new System.Drawing.Size(263, 20);
             this.textBoxCoef.TabIndex = 6;
             // 
+            // GridReport
+            // 
+            this.GridReport.AllowUserToAddRows = false;
+            this.GridReport.AllowUserToDeleteRows = false;
+            this.GridReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.GridReport.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Filial,
+            this.Value});
+            this.GridReport.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.GridReport.Location = new System.Drawing.Point(0, 189);
+            this.GridReport.Name = "GridReport";
+            this.GridReport.ReadOnly = true;
+            this.GridReport.Size = new System.Drawing.Size(584, 310);
+            this.GridReport.TabIndex = 7;
+            // 
+            // Filial
+            // 
+            this.Filial.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Filial.HeaderText = "Филиал";
+            this.Filial.Name = "Filial";
+            this.Filial.ReadOnly = true;
+            // 
+            // Value
+            // 
+            this.Value.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Value.HeaderText = "Сумма, руб.";
+            this.Value.Name = "Value";
+            this.Value.ReadOnly = true;
+            // 
             // FormСозданиеОтчёта
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 162);
+            this.ClientSize = new System.Drawing.Size(584, 499);
+            this.Controls.Add(this.GridReport);
             this.Controls.Add(this.textBoxCoef);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonExportTo);
@@ -118,6 +154,7 @@
             this.Name = "FormСозданиеОтчёта";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormСозданиеОтчёта";
+            ((System.ComponentModel.ISupportInitialize)(this.GridReport)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,5 +169,8 @@
         private System.Windows.Forms.Button buttonExportTo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxCoef;
+        private System.Windows.Forms.DataGridView GridReport;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Filial;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
     }
 }

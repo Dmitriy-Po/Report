@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 using System.Windows.Forms;
 
 
@@ -15,55 +16,44 @@ namespace Report.Forms
         {
             InitializeComponent();
         }
-
-        void garbahe ()
-        {
-            //// Цикл считает по одному нормативу. Пока сделано так, чтобы проверить ход расчётов
-            //foreach (БазовыйНормативЗатратСтоимостнойГруппы item in All_normals[0].GetNormativ())
-            //{
-            //    Bakalavr = item.Бакалавриат_Специалитет;
-            //    Magistr = item.Магистратура;
-            //    Aspirant = item.Аспирантура;
-            //    SPO = item.SPO;
-
-
-            //    foreach (КорректирующийКоэффицентБазовогоНорматива coef in All_normals[0].GetCorrectCoef())
-            //    {
-            //        foreach (КорректирующиеКоэффиценты kk in coef.GetCorrectCoef())
-            //        {
-            //            foreach (ЗначениеКоэффицента val in kk.GetValueCoef())
-            //            {
-            //                Bakalavr *= val.Коэффицент;
-            //                Magistr *= val.Коэффицент;
-            //                Aspirant *= val.Коэффицент;
-            //                SPO *= val.Коэффицент;
-            //            }
-            //        }
-            //    }
-            //    // Умножить на кол-во человек в группе.
-            //    for (int i = 0; i < ochnaya.Length; i++)
-            //    {
-            //        SummOnGroup += (Bakalavr + Magistr + Aspirant + SPO) * ochnaya[i];
-            //        SummOnGroup *= coef_priv[i];
-            //    }
-            //    Summ += SummOnGroup;
-            //}
-            //Summ *= K_equal
-        }
-        void Fill ()
+        
+        void Fill (string year, decimal K_equal)
         {
             SQliteDB database = new SQliteDB();
             SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB);
-            string query = "SELECT БазовыйНормативЗатрат.код as 'id', БазовыйНормативЗатрат.Наименование as 'наименование' FROM БазовыйНормативЗатрат;" +
+            string query =
+                            // Table 0
+                            "SELECT БазовыйНормативЗатрат.код as 'id', БазовыйНормативЗатрат.Наименование as 'наименование' FROM БазовыйНормативЗатрат;" +
+
+                            // Table 1
                             "SELECT * FROM БНЗСтоимостнойГруппы ORDER BY БНЗ_ВК ASC; " +
-                            "SELECT БазовыйНормативЗатрат.код, ЗначениеКоэффицента.Значение "+
-                            "FROM КоррКоэффицентБазовогоНорматива "+
-                            "JOIN ЗначениеКоэффицента ON "+
-                                 "КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК = ЗначениеКоэффицента.Корректирующие_ВК "+
-                            "JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК;";
-                            
-                            
-                            
+
+                            // Table 2
+                            "SELECT БазовыйНормативЗатрат.код, ЗначениеКоэффицента.Значение " +
+                            "FROM КоррКоэффицентБазовогоНорматива " +
+                            "JOIN ЗначениеКоэффицента ON " +
+                                 "КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК = ЗначениеКоэффицента.Корректирующие_ВК " +
+                            "JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК; " +
+
+                            // Table 3
+                            "SELECT Filial.id as 'Филиал', " +
+                                "Специальности.наименование as 'Специальность', " +
+                                "Квалификации.наименование as 'Квалификация',  " +
+                                "ЧисленностьОбучающихся.очное as 'Очное', "+
+                                "ЧисленностьОбучающихся.очно_заочное as 'Очно-заочное', "+
+                                "ЧисленностьОбучающихся.заочное as 'Заочное', "+
+                                "ЧисленностьОбучающихся.год " +
+                                "FROM ЧисленностьОбучающихся " +
+                                "JOIN Filial ON ЧисленностьОбучающихся.стуктурное_подразделение_ВК = Filial.id " +
+                                "JOIN Специальности ON ЧисленностьОбучающихся.специальность_ВК = Специальности.код " +
+                                "JOIN Квалификации  ON ЧисленностьОбучающихся.квалификация_ВК = Квалификации.код " +
+                                $"WHERE ЧисленностьОбучающихся.год = {year}; " + /*Выбор года подставить аргументом функции*/
+
+                            // Table 4
+                            "SELECT id, full_desc FROM Filial; ";
+
+
+
 
             connection.Open();
             SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection);
@@ -105,7 +95,8 @@ namespace Report.Forms
 
                 List<ЗначениеКоэффицента> coef_values = new List<ЗначениеКоэффицента>();
                 List<КорректирующиеКоэффиценты> correct_coef = new List<КорректирующиеКоэффиценты>();
-                List<КорректирующийКоэффицентБазовогоНорматива> correct_base_normal = new List<КорректирующийКоэффицентБазовогоНорматива>();                             
+                List<КорректирующийКоэффицентБазовогоНорматива> correct_base_normal = new List<КорректирующийКоэффицентБазовогоНорматива>();
+
                 foreach (DataRow row in norm)
                 {
                     coef_values.Add(new ЗначениеКоэффицента( Convert.ToDecimal( row[1] ), ""));
@@ -122,214 +113,143 @@ namespace Report.Forms
                 }
                 
                 
+            }          
+            
+
+            // Заполнение колекции Численности обучающихся.
+            List<TableCountStudent> ListStudent = new List<TableCountStudent>();
+            foreach (DataRow item in ds.Tables[3].AsEnumerable())
+            {                                
+                ListStudent.Add(new TableCountStudent(
+                    Convert.ToInt32(item[0]), 
+                    Convert.ToString(item[1]),
+                    Convert.ToString(item[2]),
+                    Convert.ToInt32(item[3]), 
+                    Convert.ToInt32(item[4]), 
+                    Convert.ToInt32(item[5]), 
+                    Convert.ToInt32(item[6])));
             }
-            #region old
-            //correct_base_normal1.SetCorrectCoef(correct_coef1);
 
 
+            //// Начало алгоритма.
+            
+            // Массив для суммирования по специальностям и группам.
+            decimal[,] SummOnGroups_AndSpecial = new decimal[4,3];
+            int g = 0;
 
-
-            //List<БазовыеНормативыЗатрат> All_normals = new List<БазовыеНормативыЗатрат>();
-            //БазовыеНормативыЗатрат normal1 = new БазовыеНормативыЗатрат("Затраты на ЗП");
-
-
-            //СтоимостнаяГруппаКалендарногоГода group1 = new СтоимостнаяГруппаКалендарногоГода("Группа 1", "2019");
-            //СтоимостнаяГруппаКалендарногоГода group2 = new СтоимостнаяГруппаКалендарногоГода("Группа 2", "2019");
-            //СтоимостнаяГруппаКалендарногоГода group3 = new СтоимостнаяГруппаКалендарногоГода("Группа 3", "2019");
-
-
-            //БазовыйНормативЗатратСтоимостнойГруппы norm1 = new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] { 37.01m, 42.56m, 47.7m, 0m }, "2019");
-            //БазовыйНормативЗатратСтоимостнойГруппы norm2 = new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] { 37.01m, 42.56m, 47.7m, 71.55m }, "2019");
-            //БазовыйНормативЗатратСтоимостнойГруппы norm3 = new БазовыйНормативЗатратСтоимостнойГруппы(new decimal[] { 44.41m, 46.26m, 57.24m, 71.55m }, "2019");
-
-
-            //group1.SetNormal(norm1);
-            //group2.SetNormal(norm2);
-            //group3.SetNormal(norm3);
-
-
-            //normal1.SetNormativ(norm1);
-            //normal1.SetNormativ(norm2);
-            //normal1.SetNormativ(norm3);
-
-
-
-            //FormEducation form_education1 = new FormEducation("Очно-заочная");
-            //form_education1.SetCorrectCoef(val_coef6);
-
-
-            /*добавиьть форму обучения*/
-
-
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal1 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal2 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal3 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal4 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal5 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal6 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal7 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal8 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal9 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-            //КорректирующийКоэффицентБазовогоНорматива correct_base_normal10 = new КорректирующийКоэффицентБазовогоНорматива("2019");
-
-
-
-            //КорректирующиеКоэффиценты correct_coef1 = new КорректирующиеКоэффиценты("Образовательные стандарты", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            //КорректирующиеКоэффиценты correct_coef2 = new КорректирующиеКоэффиценты("2", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            //КорректирующиеКоэффиценты correct_coef3 = new КорректирующиеКоэффиценты("3", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            //КорректирующиеКоэффиценты correct_coef4 = new КорректирующиеКоэффиценты("4", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            //КорректирующиеКоэффиценты correct_coef5 = new КорректирующиеКоэффиценты("5", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            //КорректирующиеКоэффиценты correct_coef6 = new КорректирующиеКоэффиценты("6", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            //КорректирующиеКоэффиценты correct_coef7 = new КорректирующиеКоэффиценты("7", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            //КорректирующиеКоэффиценты correct_coef8 = new КорректирующиеКоэффиценты("8", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            //КорректирующиеКоэффиценты correct_coef9 = new КорректирующиеКоэффиценты("9", "ПолноеОписание", "Уточнение", "Комментарий", false);
-            //КорректирующиеКоэффиценты correct_coef10 = new КорректирующиеКоэффиценты("10", "ПолноеОписание", "Уточнение", "Комментарий", false);
-
-
-
-            // Добавлен, но пока не используется.
-            КорректирующиеКоэффиценты ochnaya = new КорректирующиеКоэффиценты("", "", "", "", false);
-
-
-            //ЗначениеКоэффицента val_coef1 = new ЗначениеКоэффицента(1.15m, "2019");
-            //ЗначениеКоэффицента val_coef2 = new ЗначениеКоэффицента(1.0m, "2019");
-            //ЗначениеКоэффицента val_coef3 = new ЗначениеКоэффицента(2.0m, "2019");
-            //ЗначениеКоэффицента val_coef4 = new ЗначениеКоэффицента(1.2m, "2019");
-
-            //ЗначениеКоэффицента val_coef5 = new ЗначениеКоэффицента(1.0m, "2019");
-            //ЗначениеКоэффицента val_coef6 = new ЗначениеКоэффицента(1.0m, "2019");
-            //ЗначениеКоэффицента val_coef7 = new ЗначениеКоэффицента(1.0m, "2019");
-            //ЗначениеКоэффицента val_coef8 = new ЗначениеКоэффицента(1.0m, "2019");
-            //ЗначениеКоэффицента val_coef9 = new ЗначениеКоэффицента(1.0m, "2019");
-            //ЗначениеКоэффицента val_coef10 = new ЗначениеКоэффицента(1.0m, "2019");
-
-
-
-
-            // Добавлен, но пока не используется.
-            ЗначениеКоэффицента val_ochnaya = new ЗначениеКоэффицента(0.25m, "2019");
-
-
-            // Коэффицент может иметь несколько значений.
-            //correct_coef1.SetValueCoef(val_coef1);
-            //correct_coef2.SetValueCoef(val_coef2);
-            //correct_coef3.SetValueCoef(val_coef3);
-            //correct_coef4.SetValueCoef(val_coef4);
-            //correct_coef5.SetValueCoef(val_coef5);
-            //correct_coef6.SetValueCoef(val_coef6);
-
-            //correct_coef7.SetValueCoef(val_coef7);
-            //correct_coef8.SetValueCoef(val_coef8);
-            //correct_coef9.SetValueCoef(val_coef9);
-            //correct_coef10.SetValueCoef(val_coef10);
-
-
-
-            // Добавлен, но пока не используется.
-            ochnaya.SetValueCoef(val_ochnaya);
-
-
-            //correct_base_normal1.SetCorrectCoef(correct_coef1);
-            //correct_base_normal2.SetCorrectCoef(correct_coef2);
-            //correct_base_normal3.SetCorrectCoef(correct_coef3);
-            //correct_base_normal4.SetCorrectCoef(correct_coef4);
-            //correct_base_normal5.SetCorrectCoef(correct_coef5);
-            //correct_base_normal6.SetCorrectCoef(correct_coef6);
-
-            //correct_base_normal7.SetCorrectCoef(correct_coef7);
-            //correct_base_normal8.SetCorrectCoef(correct_coef8);
-            //correct_base_normal9.SetCorrectCoef(correct_coef9);
-            //correct_base_normal10.SetCorrectCoef(correct_coef10);
-
-
-            //correct_base_normal7.SetCorrectCoef(ochnaya);
-
-
-
-
-            //normal1.SetCorrectCoef(correct_base_normal1);
-            //normal1.SetCorrectCoef(correct_base_normal2);
-            //normal1.SetCorrectCoef(correct_base_normal3);
-            //normal1.SetCorrectCoef(correct_base_normal4);
-            //normal1.SetCorrectCoef(correct_base_normal5);
-            //normal1.SetCorrectCoef(correct_base_normal6);
-
-            //normal1.SetCorrectCoef(correct_base_normal7);
-            //normal1.SetCorrectCoef(correct_base_normal8);
-            //normal1.SetCorrectCoef(correct_base_normal9);
-            //normal1.SetCorrectCoef(correct_base_normal10);
-
-
-
-            //normal1.SetCorrectCoef(correct_base_normal7);
-
-
-            //All_normals.Add(normal1);
-            #endregion
-            /*
-             * 
-             * Искуственно введу массив - содержащий количество студентов Конкретно формы обучения
-             * Очная, очно-заочная, заочная соответственно. Так же к ним коэффиценты приведения.
-             * */
-             /*Следующий шаг - отобрать численность обучающихся*/
-            int[] Bakalabrat  = { 24, 14, 7 };
-            int[] Magistrat   = { 19, 12, 4 };            
-            int[] Aspirantur  = { 25, 87, 34 };
-            int[] CPO         = { 20, 30, 40 };
-
-
-            decimal[] coef_priv = { 1, 0.25m, 0.1m };
-
-
-            decimal Bakalavr = 0m;
-            decimal Magistr = 0m;
-            decimal Aspirant = 0m;
-            decimal SPO = 0m;
-
-            decimal SummOnGroup = 0;       // Сумма по группе.
-            decimal Summ = 0;              // Сумма по группе с учётом количества студентов и формы обучения.
-            decimal K_equal = 1.625m;      // Коэффицент выравнивания.
-
-
-
-            // Считает пока по одному нормативу. Следует сделать подсчёт по всем нормативам.
-            foreach (var item in All_normals[0].GetNormativ())
+            foreach (var normals in All_normals)
             {
-                foreach (var coef in All_normals[0].GetCorrectCoef())
-                {
-                    foreach (var val in coef.GetCorrectCoef())
-                    {
-                        foreach (var z in val.GetValueCoef())
-                        {
-                            item.Бакалавриат_Специалитет = Math.Round(item.Бакалавриат_Специалитет *= z.Коэффицент, 2);
-                            item.Магистратура = Math.Round(item.Магистратура *= z.Коэффицент, 2);
-                            item.Аспирантура = Math.Round(item.Аспирантура *= z.Коэффицент, 2);
-                            item.SPO = Math.Round(item.SPO *= z.Коэффицент, 2);
+                foreach (var item in normals.GetNormativ())
+                {                    
+                    foreach (var coef in normals.GetCorrectCoef())
+                    {                        
+                        foreach (var val in coef.GetCorrectCoef())
+                        {                            
+                            foreach (var z in val.GetValueCoef())
+                            {
+                                item.Бакалавриат_Специалитет    = Math.Round(item.Бакалавриат_Специалитет   *= z.Коэффицент, 2);
+                                item.Магистратура               = Math.Round(item.Магистратура              *= z.Коэффицент, 2);
+                                item.Аспирантура                = Math.Round(item.Аспирантура               *= z.Коэффицент, 2);
+                                item.SPO                        = Math.Round(item.SPO                       *= z.Коэффицент, 2);
+                            }                            
                         }
+                    } 
+                    SummOnGroups_AndSpecial[0, g] += item.Аспирантура;
+                    SummOnGroups_AndSpecial[1, g] += item.Бакалавриат_Специалитет;
+                    SummOnGroups_AndSpecial[2, g] += item.Магистратура;
+                    SummOnGroups_AndSpecial[3, g] += item.SPO;
+                    g++;
+                }
+                g = 0; 
+            }
+           
+            // Цикл считает Базовые нормативы по каждому филиалу.
+            foreach (DataRow filial in ds.Tables[4].AsEnumerable())
+            {
+                int[,] ArrayOfCountStudents = new int[4,3];
+                int r = 0;
+
+                // Коэффицент формы обучения.
+                decimal[] coef_priv = { 1, 0.25m, 0.1m };
+
+
+                decimal Bakalavr = 0m;
+                decimal Magistr = 0m;
+                decimal Aspirant = 0m;
+                decimal SPO = 0m;
+
+                //decimal _Bakalavr = 0m;
+                //decimal _Magistr = 0m;
+                //decimal _Aspirant = 0m;
+                //decimal _SPO = 0m;
+
+                decimal SummOnGroup = 0;       // Сумма по группе.
+                decimal Summ = 0;              // Сумма по группе с учётом количества студентов и формы обучения.
+
+
+                // Группировка от суммирование по специальности. Численность обучающихся.
+                var table3 = from result in ListStudent
+                             where Convert.ToInt32(result.Filial) == Convert.ToInt32(filial[0])
+                             orderby result.Skill ascending
+                             group result by result.Skill into newGroup
+                             select new
+                             {
+                                 //k = newGroup.Key, // key - пока не требуется.
+                                 och = newGroup.Sum(k => k.ochnoe),
+                                 och_zao = newGroup.Sum(y => y.ochno_zaocjnoe),
+                                 evening = newGroup.Sum(z => z.zaochnoe)
+                             };
+
+                foreach (var item in table3.AsEnumerable())
+                {
+                    ArrayOfCountStudents[r, 0] = item.och;
+                    ArrayOfCountStudents[r, 1] = item.och_zao;
+                    ArrayOfCountStudents[r, 2] = item.evening;                    
+                    r++;
+                }
+
+
+
+
+                // Цикл - по численности обучающихся.
+                for (int i = 0; i < 3; i++) //форма
+                {
+                    for (int j = 0; j < 3; j++) //группа
+                    {
+                        Aspirant    = Math.Round(SummOnGroups_AndSpecial[0, j], 2) * ArrayOfCountStudents[0, i];
+                        Bakalavr    = Math.Round(SummOnGroups_AndSpecial[1, j], 2) * ArrayOfCountStudents[1, i];
+                        Magistr     = Math.Round(SummOnGroups_AndSpecial[2, j], 2) * ArrayOfCountStudents[2, i];
+                        SPO         = Math.Round(SummOnGroups_AndSpecial[3, j], 2) * ArrayOfCountStudents[3, i];
+
+                        //_Bakalavr += Bakalavr;
+                        //_Magistr += Magistr;
+                        //_Aspirant += Aspirant;
+                        //_SPO += SPO;
+
+                        SummOnGroup += Math.Round((Bakalavr + Magistr + Aspirant + SPO) * coef_priv[i], 2);
                     }
                 }
+
+                Summ = Math.Round(SummOnGroup * K_equal, 2);
+
+                GridReport.Rows.Add(filial[1], Summ);
+                
+
+                //GridReport.Rows.Add("Аспирантура", _Aspirant);
+                //GridReport.Rows.Add("Бакалавриат", _Bakalavr);
+                //GridReport.Rows.Add("Магистратура", _Magistr);
+                //GridReport.Rows.Add("СПО", _SPO);
+                
+                //// Конец алгоритма.
             }
 
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 3; j++)
-                {
-                    Bakalavr = Math.Round(All_normals[0].GetNormativ()[j].Бакалавриат_Специалитет, 2) * Bakalabrat[i];
-                    Magistr = Math.Round(All_normals[0].GetNormativ()[j].Магистратура, 2) * Magistrat[i];
-                    Aspirant = Math.Round(All_normals[0].GetNormativ()[j].Аспирантура, 2) * Aspirantur[i];
-                    SPO = Math.Round(All_normals[0].GetNormativ()[j].SPO, 2) * CPO[i];
-
-                    SummOnGroup += Math.Round((Bakalavr + Magistr + Aspirant + SPO) * coef_priv[i], 2);
-                }
-
-            }
-            Summ = Math.Round(SummOnGroup * K_equal, 2);
+            
 
         }
 
         private void buttonShowReport_Click (object sender, EventArgs e)
         {
-            Fill();              
+            Fill("2019", 1.625m);              
         }
     }
 }
