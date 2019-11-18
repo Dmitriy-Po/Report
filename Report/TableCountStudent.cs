@@ -3,9 +3,10 @@
     public class TableCountStudent
     {
         public TableCountStudent () { }
-        public TableCountStudent (int filial, string special, string skill, int ochnaya, int ocjno_zaochnaya, int zaochnaya, int year)
+        public TableCountStudent (int id_filial, string filial, string special, string skill, int ochnaya, int ocjno_zaochnaya, int zaochnaya, int year)
         {
-            Filial = filial.ToString();
+            this.id_filial = id_filial;
+            Filial = filial;
             Special = special;
             Skill = skill;
             ochnoe = ochnaya;
@@ -16,6 +17,7 @@
 
 
         public int id { get; set; }
+        public int id_filial { get; set; }
 
         public int year { get; set; }
 

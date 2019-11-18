@@ -36,7 +36,8 @@ namespace Report.Forms
                             "JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК; " +
 
                             // Table 3
-                            "SELECT Filial.id as 'Филиал', " +
+                            "SELECT Filial.id as 'Филиал_код', " +                                
+                                "Filial.full_desc as 'Филиал', " +
                                 "Специальности.наименование as 'Специальность', " +
                                 "Квалификации.наименование as 'Квалификация',  " +
                                 "ЧисленностьОбучающихся.очное as 'Очное', "+
@@ -121,13 +122,15 @@ namespace Report.Forms
             foreach (DataRow item in ds.Tables[3].AsEnumerable())
             {                                
                 ListStudent.Add(new TableCountStudent(
-                    Convert.ToInt32(item[0]), 
-                    Convert.ToString(item[1]),
+                    Convert.ToInt32(item[0]),
+                    Convert.ToString(item[1]), 
                     Convert.ToString(item[2]),
-                    Convert.ToInt32(item[3]), 
+                    Convert.ToString(item[3]),
+
                     Convert.ToInt32(item[4]), 
                     Convert.ToInt32(item[5]), 
-                    Convert.ToInt32(item[6])));
+                    Convert.ToInt32(item[6]), 
+                    Convert.ToInt32(item[7])));
             }
 
 
@@ -189,7 +192,7 @@ namespace Report.Forms
 
                 // Группировка от суммирование по специальности. Численность обучающихся.
                 var table3 = from result in ListStudent
-                             where Convert.ToInt32(result.Filial) == Convert.ToInt32(filial[0])
+                             where Convert.ToInt32(result.id_filial) == Convert.ToInt32(filial[0])
                              orderby result.Skill ascending
                              group result by result.Skill into newGroup
                              select new

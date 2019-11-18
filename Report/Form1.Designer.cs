@@ -37,16 +37,6 @@
             this.buttonEditString = new System.Windows.Forms.Button();
             this.buttonDeleteSelected = new System.Windows.Forms.Button();
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
-            this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColumnYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnStrUnit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSpecial = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSkill = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnStudent_inv = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textBoxYear = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,13 +45,14 @@
             this.базовыеНормативыЗатратToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.коэффицентыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.корректирующиеКоэффицентыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.отчётToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сформироватьОтчётToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.отчётToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.сформироватьОтчётToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -151,16 +142,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewMain.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMain.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnCheck,
-            this.ColumnYear,
-            this.ColumnStrUnit,
-            this.ColumnSpecial,
-            this.ColumnSkill,
-            this.Column5,
-            this.Column6,
-            this.Column7,
-            this.ColumnStudent_inv,
-            this.ColumnID});
+            this.ColumnCheck});
             this.dataGridViewMain.Location = new System.Drawing.Point(0, 161);
             this.dataGridViewMain.Name = "dataGridViewMain";
             this.dataGridViewMain.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -169,80 +151,6 @@
             this.dataGridViewMain.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMain_CellClick);
             this.dataGridViewMain.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             this.dataGridViewMain.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewMain_CellValueChanged);
-            // 
-            // ColumnCheck
-            // 
-            this.ColumnCheck.HeaderText = "";
-            this.ColumnCheck.Name = "ColumnCheck";
-            this.ColumnCheck.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColumnCheck.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.ColumnCheck.Width = 50;
-            // 
-            // ColumnYear
-            // 
-            this.ColumnYear.HeaderText = "Год";
-            this.ColumnYear.Name = "ColumnYear";
-            this.ColumnYear.ReadOnly = true;
-            // 
-            // ColumnStrUnit
-            // 
-            this.ColumnStrUnit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ColumnStrUnit.HeaderText = "Структурное подразделение";
-            this.ColumnStrUnit.Name = "ColumnStrUnit";
-            this.ColumnStrUnit.ReadOnly = true;
-            this.ColumnStrUnit.Width = 160;
-            // 
-            // ColumnSpecial
-            // 
-            this.ColumnSpecial.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ColumnSpecial.HeaderText = "Специальность";
-            this.ColumnSpecial.Name = "ColumnSpecial";
-            this.ColumnSpecial.ReadOnly = true;
-            this.ColumnSpecial.Width = 110;
-            // 
-            // ColumnSkill
-            // 
-            this.ColumnSkill.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.ColumnSkill.HeaderText = "Квалификация";
-            this.ColumnSkill.Name = "ColumnSkill";
-            this.ColumnSkill.ReadOnly = true;
-            this.ColumnSkill.Width = 107;
-            // 
-            // Column5
-            // 
-            this.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Column5.HeaderText = "Очное";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            this.Column5.Width = 63;
-            // 
-            // Column6
-            // 
-            this.Column6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Column6.HeaderText = "Очно-заочное";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            this.Column6.Width = 101;
-            // 
-            // Column7
-            // 
-            this.Column7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Column7.HeaderText = "Заочное";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
-            this.Column7.Width = 74;
-            // 
-            // ColumnStudent_inv
-            // 
-            this.ColumnStudent_inv.HeaderText = "Студент инвалид";
-            this.ColumnStudent_inv.Name = "ColumnStudent_inv";
-            this.ColumnStudent_inv.ReadOnly = true;
-            // 
-            // ColumnID
-            // 
-            this.ColumnID.HeaderText = "ColumnID";
-            this.ColumnID.Name = "ColumnID";
-            this.ColumnID.Visible = false;
             // 
             // textBoxYear
             // 
@@ -311,6 +219,21 @@
             this.корректирующиеКоэффицентыToolStripMenuItem.Text = "Корректирующие коэффиценты...";
             this.корректирующиеКоэффицентыToolStripMenuItem.Click += new System.EventHandler(this.корректирующиеКоэффицентыToolStripMenuItem_Click);
             // 
+            // отчётToolStripMenuItem
+            // 
+            this.отчётToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.сформироватьОтчётToolStripMenuItem});
+            this.отчётToolStripMenuItem.Name = "отчётToolStripMenuItem";
+            this.отчётToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.отчётToolStripMenuItem.Text = "Отчёт";
+            // 
+            // сформироватьОтчётToolStripMenuItem
+            // 
+            this.сформироватьОтчётToolStripMenuItem.Name = "сформироватьОтчётToolStripMenuItem";
+            this.сформироватьОтчётToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.сформироватьОтчётToolStripMenuItem.Text = "Сформировать отчёт...";
+            this.сформироватьОтчётToolStripMenuItem.Click += new System.EventHandler(this.сформироватьОтчётToolStripMenuItem_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -372,20 +295,13 @@
             this.label2.TabIndex = 14;
             this.label2.Text = "Календарный год";
             // 
-            // отчётToolStripMenuItem
+            // ColumnCheck
             // 
-            this.отчётToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.сформироватьОтчётToolStripMenuItem});
-            this.отчётToolStripMenuItem.Name = "отчётToolStripMenuItem";
-            this.отчётToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
-            this.отчётToolStripMenuItem.Text = "Отчёт";
-            // 
-            // сформироватьОтчётToolStripMenuItem
-            // 
-            this.сформироватьОтчётToolStripMenuItem.Name = "сформироватьОтчётToolStripMenuItem";
-            this.сформироватьОтчётToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.сформироватьОтчётToolStripMenuItem.Text = "Сформировать отчёт...";
-            this.сформироватьОтчётToolStripMenuItem.Click += new System.EventHandler(this.сформироватьОтчётToolStripMenuItem_Click);
+            this.ColumnCheck.HeaderText = "";
+            this.ColumnCheck.Name = "ColumnCheck";
+            this.ColumnCheck.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.ColumnCheck.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.ColumnCheck.Width = 50;
             // 
             // FormListCountStudent
             // 
@@ -430,22 +346,13 @@
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.DataGridView dataGridViewMain;
         private System.Windows.Forms.Button buttonRefresh;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnCheck;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnYear;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnStrUnit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSpecial;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnSkill;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnStudent_inv;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnID;
         private System.Windows.Forms.ToolStripMenuItem нормативыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem базовыеНормативыЗатратToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem коэффицентыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem корректирующиеКоэффицентыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem отчётToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem сформироватьОтчётToolStripMenuItem;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnCheck;
     }
 }
 
