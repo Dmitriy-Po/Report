@@ -85,11 +85,9 @@ namespace Report
         {
             //заполнение combobox датами из коллекции коэффицентов
             /*Возможно, при наступлении 3000 года, потомкам придётся сменить год (поменять цифру 2 на 3)*/
-            
-            //comboBoxYear.Items.AddRange
-            //    (ListCoef.Select(z => z.GetYear().Substring(6, 4))                
-            //    .Distinct().ToArray());
-                     
+
+            comboBoxYear.Items.AddRange(new string[] { "2019", "2018", "2017", "2016" });
+            comboBoxYear.SelectedIndex = 0;
         }
 
         private void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
@@ -101,12 +99,13 @@ namespace Report
             //            == Convert.ToInt32(comboBoxYear.SelectedItem))
             //            .Select(x => x))
             //{
-            //    dataGridViewCoeff.Rows.Add(0, item.Наименование, 
-            //        item.ПолноеНаименование, item.Уточнение, 
-            //        item.GetCoef(), item.GetYear().Substring(6, 4), 
+            //    dataGridViewCoeff.Rows.Add(0, item.Наименование,
+            //        item.ПолноеНаименование, item.Уточнение,
+            //        item.GetCoef(), item.GetYear().Substring(6, 4),
             //        item.Комментарий, item.GetForm(), item.GetIdCoeff(), item.id);
             //}
-            string query = $"SELECT * FROM ЗначениеКоэффицента WHERE ЗначениеКоэффицента.КаледндарныйГод LIKE '{comboBoxYear.SelectedItem}%'";
+            string query = $"SELECT ЗначениеКоэффицента.КаледндарныйГод, КорректирующиеКоэффиценты.Наименование, Значение FROM ЗначениеКоэффицента " +
+                                $"JOIN КорректирующиеКоэффиценты ON КорректирующиеКоэффиценты.код = ЗначениеКоэффицента.Корректирующие_ВК WHERE ЗначениеКоэффицента.КаледндарныйГод LIKE '{comboBoxYear.SelectedItem}%'";
             SQLiteDataAdapter da = new SQLiteDataAdapter(query, db.ConnectionDB);
             DataTable table = new DataTable();
 

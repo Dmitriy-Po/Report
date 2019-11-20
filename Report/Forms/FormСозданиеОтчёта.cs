@@ -1,10 +1,11 @@
-﻿using Report;
+﻿using Microsoft.Office.Interop.Word;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Windows.Forms;
+using Word = Microsoft.Office.Interop.Word;
 
 
 
@@ -17,7 +18,9 @@ namespace Report.Forms
             InitializeComponent();
         }
         
-        void Fill (string year, decimal K_equal)
+
+
+        Dictionary<int, string[]> Fill (string year, decimal K_equal)
         {
             SQliteDB database = new SQliteDB();
             SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB);
@@ -165,7 +168,12 @@ namespace Report.Forms
                 }
                 g = 0; 
             }
-           
+
+            Dictionary<int, string[]> DataReport = new Dictionary<int, string[]>();
+            
+            int f = 0;
+            GridReport.Rows.Clear();
+
             // Цикл считает Базовые нормативы по каждому филиалу.
             foreach (DataRow filial in ds.Tables[4].AsEnumerable())
             {
@@ -181,10 +189,10 @@ namespace Report.Forms
                 decimal Aspirant = 0m;
                 decimal SPO = 0m;
 
-                //decimal _Bakalavr = 0m;
-                //decimal _Magistr = 0m;
-                //decimal _Aspirant = 0m;
-                //decimal _SPO = 0m;
+                decimal _Bakalavr = 0m;
+                decimal _Magistr = 0m;
+                decimal _Aspirant = 0m;
+                decimal _SPO = 0m;
 
                 decimal SummOnGroup = 0;       // Сумма по группе.
                 decimal Summ = 0;              // Сумма по группе с учётом количества студентов и формы обучения.
@@ -224,10 +232,10 @@ namespace Report.Forms
                         Magistr     = Math.Round(SummOnGroups_AndSpecial[2, j], 2) * ArrayOfCountStudents[2, i];
                         SPO         = Math.Round(SummOnGroups_AndSpecial[3, j], 2) * ArrayOfCountStudents[3, i];
 
-                        //_Bakalavr += Bakalavr;
-                        //_Magistr += Magistr;
-                        //_Aspirant += Aspirant;
-                        //_SPO += SPO;
+                        _Bakalavr += Bakalavr;
+                        _Magistr += Magistr;
+                        _Aspirant += Aspirant;
+                        _SPO += SPO;
 
                         SummOnGroup += Math.Round((Bakalavr + Magistr + Aspirant + SPO) * coef_priv[i], 2);
                     }
@@ -235,6 +243,9 @@ namespace Report.Forms
 
                 Summ = Math.Round(SummOnGroup * K_equal, 2);
 
+                DataReport.Add(f, new string[] { filial[1].ToString(), Summ.ToString(), _Bakalavr.ToString(),
+                                                    _Aspirant.ToString(), _Magistr.ToString(), _SPO.ToString()});
+                f++;                
                 GridReport.Rows.Add(filial[1], Summ);
                 
 
@@ -246,13 +257,133 @@ namespace Report.Forms
                 //// Конец алгоритма.
             }
 
-            
+            return DataReport;
 
         }
 
         private void buttonShowReport_Click (object sender, EventArgs e)
         {
-            Fill("2019", 1.625m);              
+            try
+            {
+                decimal coef = Convert.ToDecimal(textBoxCoef.Text);
+                Fill(comboBoxYear.SelectedItem.ToString(), coef);
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+                          
+        }
+
+        private void buttonExportTo_Click (object sender, EventArgs e)
+        {
+            try
+            {
+                decimal coef = Convert.ToDecimal(textBoxCoef.Text);
+                Dictionary<int, string[]> table = Fill(comboBoxYear.SelectedItem.ToString(), coef);
+
+
+                object oMissing = System.Reflection.Missing.Value;
+                object oEndOfDoc = "\\endofdoc"; /* \endofdoc is a predefined bookmark */
+                string[] spec = new string[] { "Бакалавриат", "Магистратура", "Аспирантура", "Специалитет" };
+
+                _Application WORD = new Word.Application();
+                _Document MyDoc = WORD.Documents.Add(Visible: true);
+                
+
+                // Заголовок.
+                Paragraph p0;
+                p0 = MyDoc.Content.Paragraphs.Add(ref oMissing);
+                p0.Range.Text = MyDoc.Name;
+                p0.Range.InsertParagraphAfter();                
+
+                Paragraph p1;
+                p1 = MyDoc.Content.Paragraphs.Add(ref oMissing);
+                p1.Range.Text = $"ОБЪЕМ СУБСИДИЙ НА ФИНАНСОВОЕ ОБЕСПЕЧЕНИЕ ВЫПОЛНЕНИЯ ГОСУДАРСТВЕННОГО ЗАДАНИЯ НА {comboBoxYear.SelectedItem.ToString()} ГОД";
+                p1.Range.ParagraphFormat.SpaceAfter = 12;
+                p1.Range.Font.Bold = 1;
+                p1.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+                p1.Range.Font.Size = 12;
+                p1.Range.Font.Name = "Times New Roman";
+                p1.Range.InsertParagraphAfter();
+
+
+                // Таблица.
+                Range wrdRng = MyDoc.Bookmarks.get_Item(ref oEndOfDoc).Range;
+                Table wtable = MyDoc.Tables.Add(wrdRng, table.Count + 6, 2);
+
+                wtable.Borders.Enable = 1;
+
+                wtable.Rows.Add();
+                wtable.Rows[1].Cells[1].Range.Text = "Расчет нормативных затрат на оказание государственных услуг " +
+                                                        "из средств субсидии федерального бюджета с учетом филиалов";
+                wtable.Rows[1].Cells[2].Range.Text = "Сумма, руб.";
+                wtable.Rows[1].Range.Font.Bold = 0;
+                wtable.Rows.Alignment = WdRowAlignment.wdAlignRowCenter;
+
+                int rr = 2;
+                foreach (var item in table)
+                {
+                    //wtable.Rows[rr].Alignment = WdRowAlignment.wdAlignRowLeft;
+                    wtable.Rows[rr].Cells[1].Range.Text = item.Value[0].ToString();
+                    wtable.Rows[rr].Cells[2].Range.Text = item.Value[1].ToString();
+                    rr++;
+                    if (rr == 3)
+                    {
+                        for (int i = 2; i < 6; i++)
+                        {
+                            wtable.Rows[rr].Cells[1].Range.Text = spec[i - 2];
+                            wtable.Rows[rr].Cells[2].Range.Text = item.Value[i].ToString();
+                            wtable.Rows[rr].Range.Font.Bold = 0;
+
+                            rr++;
+                        }
+                    }
+
+                }
+                rr++;
+                wtable.Rows[rr].Cells[1].Range.Text = "ИТОГО по вузу:";
+                wtable.Rows[rr].Cells[2].Range.Text = Convert.ToString(table.Sum(x => Convert.ToDecimal(x.Value[1])));
+
+                try
+                {
+                    //MyDoc.SaveAs2($"Затраты на {comboBoxYear.SelectedItem.ToString()} год");
+                    MyDoc.Save();
+                    MyDoc.Close();
+
+                }
+                catch (Exception)
+                {
+                    WORD.Quit();
+                }
+                finally
+                {
+                    WORD.Quit();
+                    //MessageBox.Show("Файл сохранён");
+                }
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+           this.Close();
+
+        }
+
+        private void buttonPrintReport_Click (object sender, EventArgs e)
+        {
+        }
+
+        private void FormСозданиеОтчёта_Load (object sender, EventArgs e)
+        {
+            int y = DateTime.Today.Year - 3;
+            do
+            {
+                comboBoxYear.Items.Add(++y);
+                
+            } while (y != DateTime.Today.Year);
+            comboBoxYear.SelectedItem = y;
         }
     }
 }

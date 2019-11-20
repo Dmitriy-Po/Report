@@ -64,7 +64,6 @@
             // 
             // comboBoxYear
             // 
-            this.comboBoxYear.Enabled = false;
             this.comboBoxYear.FormattingEnabled = true;
             this.comboBoxYear.Location = new System.Drawing.Point(296, 29);
             this.comboBoxYear.Name = "comboBoxYear";
@@ -80,6 +79,7 @@
             this.buttonPrintReport.TabIndex = 3;
             this.buttonPrintReport.Text = "Печать";
             this.buttonPrintReport.UseVisualStyleBackColor = true;
+            this.buttonPrintReport.Click += new System.EventHandler(this.buttonPrintReport_Click);
             // 
             // buttonExportTo
             // 
@@ -90,6 +90,7 @@
             this.buttonExportTo.TabIndex = 4;
             this.buttonExportTo.Text = "Сохранить как...";
             this.buttonExportTo.UseVisualStyleBackColor = true;
+            this.buttonExportTo.Click += new System.EventHandler(this.buttonExportTo_Click);
             // 
             // label2
             // 
@@ -103,7 +104,6 @@
             // 
             // textBoxCoef
             // 
-            this.textBoxCoef.Enabled = false;
             this.textBoxCoef.Location = new System.Drawing.Point(296, 57);
             this.textBoxCoef.Name = "textBoxCoef";
             this.textBoxCoef.Size = new System.Drawing.Size(263, 20);
@@ -154,6 +154,7 @@
             this.Name = "FormСозданиеОтчёта";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormСозданиеОтчёта";
+            this.Load += new System.EventHandler(this.FormСозданиеОтчёта_Load);
             ((System.ComponentModel.ISupportInitialize)(this.GridReport)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
