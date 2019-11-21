@@ -153,17 +153,17 @@ namespace Report.Forms
                         {                            
                             foreach (var z in val.GetValueCoef())
                             {
-                                item.Бакалавриат_Специалитет    = Math.Round(item.Бакалавриат_Специалитет   *= z.Коэффицент, 2);
-                                item.Магистратура               = Math.Round(item.Магистратура              *= z.Коэффицент, 2);
-                                item.Аспирантура                = Math.Round(item.Аспирантура               *= z.Коэффицент, 2);
-                                item.SPO                        = Math.Round(item.SPO                       *= z.Коэффицент, 2);
+                                item.Бакалавриат_Специалитет    *= z.Коэффицент;
+                                item.Магистратура               *= z.Коэффицент;
+                                item.Аспирантура                *= z.Коэффицент;
+                                item.SPO                        *= z.Коэффицент;
                             }                            
                         }
                     } 
-                    SummOnGroups_AndSpecial[0, g] += item.Аспирантура;
-                    SummOnGroups_AndSpecial[1, g] += item.Бакалавриат_Специалитет;
-                    SummOnGroups_AndSpecial[2, g] += item.Магистратура;
-                    SummOnGroups_AndSpecial[3, g] += item.SPO;
+                    SummOnGroups_AndSpecial[0, g] += Math.Round(item.Бакалавриат_Специалитет, 2);
+                    SummOnGroups_AndSpecial[1, g] += Math.Round(item.Магистратура, 2);
+                    SummOnGroups_AndSpecial[2, g] += Math.Round(item.Аспирантура, 2);
+                    SummOnGroups_AndSpecial[3, g] += Math.Round(item.SPO, 2);
                     g++;
                 }
                 g = 0; 
@@ -172,6 +172,7 @@ namespace Report.Forms
             Dictionary<int, string[]> DataReport = new Dictionary<int, string[]>();
             
             int f = 0;
+            bool flag = true;
             GridReport.Rows.Clear();
 
             // Цикл считает Базовые нормативы по каждому филиалу.
@@ -227,33 +228,41 @@ namespace Report.Forms
                 {
                     for (int j = 0; j < 3; j++) //группа
                     {
-                        Aspirant    = Math.Round(SummOnGroups_AndSpecial[0, j], 2) * ArrayOfCountStudents[0, i];
-                        Bakalavr    = Math.Round(SummOnGroups_AndSpecial[1, j], 2) * ArrayOfCountStudents[1, i];
-                        Magistr     = Math.Round(SummOnGroups_AndSpecial[2, j], 2) * ArrayOfCountStudents[2, i];
-                        SPO         = Math.Round(SummOnGroups_AndSpecial[3, j], 2) * ArrayOfCountStudents[3, i];
-
-                        _Bakalavr += Bakalavr;
-                        _Magistr += Magistr;
-                        _Aspirant += Aspirant;
-                        _SPO += SPO;
-
-                        SummOnGroup += Math.Round((Bakalavr + Magistr + Aspirant + SPO) * coef_priv[i], 2);
+                        Bakalavr    += Math.Round(SummOnGroups_AndSpecial[0, j] * ArrayOfCountStudents[0, i], 2);
+                        Magistr     += Math.Round(SummOnGroups_AndSpecial[1, j] * ArrayOfCountStudents[1, i], 2);
+                        Aspirant    += Math.Round(SummOnGroups_AndSpecial[2, j] * ArrayOfCountStudents[2, i], 2);                      
+                        SPO         += Math.Round(SummOnGroups_AndSpecial[3, j] * ArrayOfCountStudents[3, i], 2);
+                        
                     }
+                    _Bakalavr   += Math.Round(Bakalavr    * coef_priv[i], 2);
+                    _Magistr    += Math.Round(Magistr     * coef_priv[i], 2);
+                    _Aspirant   += Math.Round(Aspirant    * coef_priv[i], 2);
+                    _SPO        += Math.Round(SPO         * coef_priv[i], 2);
+
+                    Bakalavr    = 0;
+                    Magistr     = 0;
+                    Aspirant    = 0;
+                    SPO         = 0;
+                    
+                }
+                Summ = ((_Bakalavr *= K_equal) + (_Magistr *= K_equal) + (_Aspirant *= K_equal) + (_SPO *= K_equal));
+               
+
+                DataReport.Add(f, new string[] { filial[1].ToString(), Math.Round(Summ, 2).ToString(), Math.Round(_Bakalavr, 2).ToString(),
+                                                    Math.Round(_Aspirant, 2).ToString(), Math.Round(_Magistr, 2).ToString(), Math.Round(_SPO, 2).ToString()});
+                f++;
+
+                GridReport.Rows.Add(filial[1], Math.Round(Summ, 2));               
+
+                if (flag)
+                {
+                    GridReport.Rows.Add("Аспирантура", Math.Round(_Aspirant, 2));
+                    GridReport.Rows.Add("Бакалавриат, специалитет", Math.Round(_Bakalavr, 2));
+                    GridReport.Rows.Add("Магистратура", Math.Round(_Magistr, 2));
+                    GridReport.Rows.Add("Асстентура", Math.Round(_SPO, 2));
+                    flag = false; 
                 }
 
-                Summ = Math.Round(SummOnGroup * K_equal, 2);
-
-                DataReport.Add(f, new string[] { filial[1].ToString(), Summ.ToString(), _Bakalavr.ToString(),
-                                                    _Aspirant.ToString(), _Magistr.ToString(), _SPO.ToString()});
-                f++;                
-                GridReport.Rows.Add(filial[1], Summ);
-                
-
-                //GridReport.Rows.Add("Аспирантура", _Aspirant);
-                //GridReport.Rows.Add("Бакалавриат", _Bakalavr);
-                //GridReport.Rows.Add("Магистратура", _Magistr);
-                //GridReport.Rows.Add("СПО", _SPO);
-                
                 //// Конец алгоритма.
             }
 
@@ -285,7 +294,7 @@ namespace Report.Forms
 
                 object oMissing = System.Reflection.Missing.Value;
                 object oEndOfDoc = "\\endofdoc"; /* \endofdoc is a predefined bookmark */
-                string[] spec = new string[] { "Бакалавриат", "Магистратура", "Аспирантура", "Специалитет" };
+                string[] spec = new string[] { "Бакалавриат, специалитет", "Магистратура", "Аспирантура", "Ассистентура" };
 
                 _Application WORD = new Word.Application();
                 _Document MyDoc = WORD.Documents.Add(Visible: true);
