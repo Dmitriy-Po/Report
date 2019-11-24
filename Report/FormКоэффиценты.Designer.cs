@@ -37,15 +37,6 @@
             this.buttonAddStingPattern = new System.Windows.Forms.Button();
             this.buttonAddNewString = new System.Windows.Forms.Button();
             this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnDetail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFormEducation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id_kk = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCoeff)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,16 +55,7 @@
             this.dataGridViewCoeff.AllowUserToDeleteRows = false;
             this.dataGridViewCoeff.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewCoeff.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.check,
-            this.ColumnName,
-            this.ColumnFullName,
-            this.ColumnDetail,
-            this.ColumnValue,
-            this.ColumnYear,
-            this.ColumnComment,
-            this.ColumnFormEducation,
-            this.id,
-            this.id_kk});
+            this.check});
             this.dataGridViewCoeff.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridViewCoeff.Location = new System.Drawing.Point(0, 113);
             this.dataGridViewCoeff.Name = "dataGridViewCoeff";
@@ -141,62 +123,6 @@
             this.check.Name = "check";
             this.check.Width = 50;
             // 
-            // ColumnName
-            // 
-            this.ColumnName.HeaderText = "Наименование";
-            this.ColumnName.Name = "ColumnName";
-            this.ColumnName.ReadOnly = true;
-            // 
-            // ColumnFullName
-            // 
-            this.ColumnFullName.HeaderText = "Полное наименование";
-            this.ColumnFullName.MinimumWidth = 50;
-            this.ColumnFullName.Name = "ColumnFullName";
-            this.ColumnFullName.ReadOnly = true;
-            // 
-            // ColumnDetail
-            // 
-            this.ColumnDetail.HeaderText = "Уточнение";
-            this.ColumnDetail.Name = "ColumnDetail";
-            this.ColumnDetail.ReadOnly = true;
-            // 
-            // ColumnValue
-            // 
-            this.ColumnValue.HeaderText = "Значение коэффицента";
-            this.ColumnValue.Name = "ColumnValue";
-            this.ColumnValue.ReadOnly = true;
-            // 
-            // ColumnYear
-            // 
-            this.ColumnYear.HeaderText = "Календарный год";
-            this.ColumnYear.Name = "ColumnYear";
-            this.ColumnYear.ReadOnly = true;
-            // 
-            // ColumnComment
-            // 
-            this.ColumnComment.HeaderText = "Комментарий";
-            this.ColumnComment.Name = "ColumnComment";
-            this.ColumnComment.ReadOnly = true;
-            // 
-            // ColumnFormEducation
-            // 
-            this.ColumnFormEducation.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.ColumnFormEducation.HeaderText = "Форма обучения";
-            this.ColumnFormEducation.Name = "ColumnFormEducation";
-            this.ColumnFormEducation.Width = 108;
-            // 
-            // id
-            // 
-            this.id.HeaderText = "Column_id";
-            this.id.Name = "id";
-            this.id.Visible = false;
-            // 
-            // id_kk
-            // 
-            this.id_kk.HeaderText = "ColumnId";
-            this.id_kk.Name = "id_kk";
-            this.id_kk.Visible = false;
-            // 
             // FormКоэффиценты
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -229,14 +155,5 @@
         private System.Windows.Forms.Button buttonAddNewString;
         public System.Windows.Forms.DataGridView dataGridViewCoeff;
         private System.Windows.Forms.DataGridViewCheckBoxColumn check;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFullName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDetail;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnValue;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnYear;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnComment;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFormEducation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id_kk;
     }
 }

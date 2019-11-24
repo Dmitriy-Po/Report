@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SQLite;
 
 namespace Report
@@ -11,6 +12,11 @@ namespace Report
 
 
         public КорректирующиеКоэффиценты () { }
+        public КорректирующиеКоэффиценты (int id, string desc)
+        {
+            this.id = id;
+            this.Наименование = desc;
+        }
         public КорректирующиеКоэффиценты(string desc, string fullDesc, string detail, string comment, bool std_inv)
         {
             Наименование        = desc;
@@ -24,38 +30,30 @@ namespace Report
         }
         public static void Fill(List<КорректирующиеКоэффиценты> list)
         {
-            string q = "SELECT "+
-                "КорректирующиеКоэффиценты.Наименование as '1', "+
-                "КорректирующиеКоэффиценты.ПолноеНаименование as '2', "+
-                "КорректирующиеКоэффиценты.Уточнение as '3', "+
-                "КорректирующиеКоэффиценты.Комментарий as '4', "+
-                "КорректирующиеКоэффиценты.СтудентИнвалид as '5', "+
-                "ЗначениеКоэффицента.код as id_k, "+                
-                "ЗначениеКоэффицента.Значение as '6', "+
-                "ЗначениеКоэффицента.КаледндарныйГод as '7',"+                
-                "ФормаОбучения.код as '8', "+
-                "ФормаОбучения.наименование as 'Форма Обучения', "+
-                "КорректирующиеКоэффиценты.код as '9' " +
-                
-                "FROM ЗначениеКоэффицента "+
-                "INNER JOIN КорректирующиеКоэффиценты ON "+
-                "ЗначениеКоэффицента.Корректирующие_ВК = КорректирующиеКоэффиценты.код "+
-                "INNER JOIN ФормаОбучения ON "+
-                "ЗначениеКоэффицента.ФормаОбучения_ВК = ФормаОбучения.код";
+            string q = "SELECT КорректирующиеКоэффиценты.код, КорректирующиеКоэффиценты.Наименование FROM КорректирующиеКоэффиценты";
 
-            SQliteDB db = new SQliteDB();            
+            SQliteDB db = new SQliteDB();
+            using (SQLiteConnection connection = new SQLiteConnection(db.ConnectionDB))
+            {
+                connection.Open();
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(q, connection);
+                DataTable table = new DataTable();
 
-            SQLiteCommand Command = new SQLiteCommand(q, db.ConnectionDB);
-            db.ConnectionDB.Open();
+                adapter.Fill(table);
+
+                foreach (DataRow row in table.AsEnumerable())
+                {
+                    list.Add(new КорректирующиеКоэффиценты(Convert.ToInt32(row[0]), row[1].ToString()));
+                }
+            }
 
 
-            SQLiteDataReader reader = Command.ExecuteReader();
-
+            #region OLD
             //while (reader.Read())
             //{                
             //    list.Add(new КорректирующиеКоэффиценты(/*Convert.ToInt32(reader["id_k"]),*/
             //        Convert.ToDecimal(reader["6"]),
-                    
+
             //        new Classes.FormEducation(
             //            Convert.ToInt32(reader["8"]), reader["Форма Обучения"].ToString()), reader["7"].ToString())
             //    {
@@ -67,7 +65,8 @@ namespace Report
             //        СтудентИнвалид      = Convert.ToBoolean(reader["5"])
             //    });                                
             //}
-            db.ConnectionDB.Close();
+            //db.ConnectionDB.Close();
+            #endregion
         }
         public void SetValueCoef (ЗначениеКоэффицента val)
         {

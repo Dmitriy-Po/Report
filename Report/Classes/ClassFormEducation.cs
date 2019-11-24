@@ -10,8 +10,9 @@ namespace Report.Classes
     public class FormEducation
     {
         List<ЗначениеКоэффицента> коэффицент { get; set; }
-        public FormEducation(string description)
-        {            
+        public FormEducation(int id, string description)
+        {
+            this.id = id;            
             Desc = description;
         }
         public void SetCorrectCoef(ЗначениеКоэффицента val)
@@ -30,7 +31,7 @@ namespace Report.Classes
 
             while (reader.Read())
             {
-                List.Add(new FormEducation(reader[1].ToString()));
+                List.Add(new FormEducation(Convert.ToInt32(reader[0]), reader[1].ToString()));
             }
         }
     }

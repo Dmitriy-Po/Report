@@ -253,7 +253,7 @@ namespace Report.Forms
                 f++;
 
                 GridReport.Rows.Add(filial[1], Math.Round(Summ, 2));               
-
+                
                 if (flag)
                 {
                     GridReport.Rows.Add("Аспирантура", Math.Round(_Aspirant, 2));

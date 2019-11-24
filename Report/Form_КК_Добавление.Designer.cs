@@ -38,7 +38,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.textBoxCoeff = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxCorrectCoef = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -127,13 +127,13 @@
             this.label5.TabIndex = 22;
             this.label5.Text = "Значение:";
             // 
-            // comboBox1
+            // comboBoxCorrectCoef
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 89);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(380, 21);
-            this.comboBox1.TabIndex = 29;
+            this.comboBoxCorrectCoef.FormattingEnabled = true;
+            this.comboBoxCorrectCoef.Location = new System.Drawing.Point(12, 89);
+            this.comboBoxCorrectCoef.Name = "comboBoxCorrectCoef";
+            this.comboBoxCorrectCoef.Size = new System.Drawing.Size(380, 21);
+            this.comboBoxCorrectCoef.TabIndex = 29;
             // 
             // groupBox1
             // 
@@ -156,7 +156,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 293);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.comboBoxCorrectCoef);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonSaveAndClose);
             this.Controls.Add(this.buttonSave);
@@ -182,7 +182,7 @@
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.TextBox textBoxCoeff;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.GroupBox groupBox1;
+        public System.Windows.Forms.ComboBox comboBoxCorrectCoef;
     }
 }
