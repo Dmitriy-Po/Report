@@ -75,19 +75,36 @@ namespace Report
         bool IsCurrentRows (out int out_id)
         {
             DataTable table = GetTable();
-            // Три состояния при редактировании, когда ид совпадает, когда не совпадает и когда отсувствует.
-            int fantom_id = Convert.ToInt32(table.Rows[0][0]);
+            // Три состояния при редактировании, когда (ид совпадает, когда не совпадает) и когда отсувствует.
 
-            if (fantom_id == CurrentDataRow)
+            try
             {
+                if (table.Rows[0][0] != null)
+                {
+                    int fantom_id = Convert.ToInt32(table.Rows[0][0]);
+
+                    if (CurrentDataRow == fantom_id)
+                    {
+                        out_id = CurrentDataRow;
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Такая строка уже существует");
+                        out_id = 0;
+                        return false;
+                    };
+                }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // В случае, когда таблица вернула 0 результатов, это означает, 
+                // что записей по указанным параметрам не существует, и обновление редактируемой записи возможно.
                 out_id = CurrentDataRow;
                 return true;
             }
-            else
-            {
-                out_id = 0;
-                return false;
-            };
+            out_id = 0;
+            return false;
         }
         void Operation ()
         {
@@ -112,7 +129,7 @@ namespace Report
                     {
                         UpdateRecord(id);
                     }
-                    else MessageBox.Show("Такая строка уже существует");
+                    //else MessageBox.Show("Такая строка уже существует");
 
                     break;
             }
@@ -200,9 +217,10 @@ namespace Report
                 new_row[4] = value_coef;
 
 
-                table.AcceptChanges();
+                
                 adapter.Update(table);
-                command.Dispose();
+                table.AcceptChanges();
+                //command.Dispose();
             };
 
         }
