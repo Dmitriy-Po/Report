@@ -193,13 +193,12 @@ namespace Report
             {
                 connection.Open();
 
+                DataTable table = new DataTable();
                 SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection);
                 SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
-                DataTable table = new DataTable();
-
-                adapter.InsertCommand = new SQLiteCommand(connection);
+               
                 adapter.Fill(table);
-
+            
                 var row = from r in table.AsEnumerable()
                           where Convert.ToInt32(r["код"]) == id
                           select r;
@@ -210,18 +209,17 @@ namespace Report
                 decimal value_coef = Convert.ToDecimal(textBoxCoeff.Text.Replace('.', ','));
 
                 DataRow new_row = row.FirstOrDefault();
-
+                
                 new_row[1] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01");
                 new_row[2] = Convert.ToInt32(id_coef.ElementAt(0));
                 new_row[3] = Convert.ToInt32(id_form.ElementAt(0));
                 new_row[4] = value_coef;
-
-
+                
                 
                 adapter.Update(table);
                 table.AcceptChanges();
-                //command.Dispose();
-            };
+                
+            }
 
         }
         void InsertRecord ()//сохранение
@@ -269,11 +267,13 @@ namespace Report
                 new_row[3] = Convert.ToInt32(id_form.ElementAt(0));
                 new_row[4] = value_coef;
 
-                SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
+                //SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
 
                 table.Rows.Add(new_row);
                 adapter.Update(table);
-                command.Dispose();
+                //command.Dispose();
+                //table.Clear();
+                //adapter.Fill(table);
             };
         }
         //void IsCurrentRows (out int id, out int id_kk)

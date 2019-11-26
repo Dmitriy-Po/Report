@@ -31,12 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormКоэффиценты));
             this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.dataGridViewCoeff = new System.Windows.Forms.DataGridView();
+            this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonDeleteSelected = new System.Windows.Forms.Button();
             this.buttonEditString = new System.Windows.Forms.Button();
             this.buttonAddStingPattern = new System.Windows.Forms.Button();
             this.buttonAddNewString = new System.Windows.Forms.Button();
-            this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCoeff)).BeginInit();
             this.SuspendLayout();
             // 
@@ -53,15 +53,23 @@
             // 
             this.dataGridViewCoeff.AllowUserToAddRows = false;
             this.dataGridViewCoeff.AllowUserToDeleteRows = false;
+            this.dataGridViewCoeff.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewCoeff.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewCoeff.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.check});
-            this.dataGridViewCoeff.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dataGridViewCoeff.Location = new System.Drawing.Point(0, 113);
             this.dataGridViewCoeff.Name = "dataGridViewCoeff";
             this.dataGridViewCoeff.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewCoeff.Size = new System.Drawing.Size(758, 287);
             this.dataGridViewCoeff.TabIndex = 22;
+            // 
+            // check
+            // 
+            this.check.HeaderText = "";
+            this.check.Name = "check";
+            this.check.Width = 50;
             // 
             // label1
             // 
@@ -116,12 +124,6 @@
             this.buttonAddNewString.TabIndex = 17;
             this.buttonAddNewString.UseVisualStyleBackColor = true;
             this.buttonAddNewString.Click += new System.EventHandler(this.buttonAddNewString_Click);
-            // 
-            // check
-            // 
-            this.check.HeaderText = "";
-            this.check.Name = "check";
-            this.check.Width = 50;
             // 
             // FormКоэффиценты
             // 

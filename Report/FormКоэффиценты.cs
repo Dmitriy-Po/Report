@@ -9,10 +9,7 @@ using Report.Classes;
 namespace Report
 {
     partial class FormКоэффиценты : Form
-    {
-        DataTable table;
-        SQLiteDataAdapter adapter;
-        SQLiteCommandBuilder command;
+    {        
         public FormКоэффиценты ()
         {
             InitializeComponent();
@@ -22,26 +19,7 @@ namespace Report
         public List<FormEducation> ListEducation = new List<FormEducation>();
         public List<КорректирующиеКоэффиценты> ListCoef = new List<КорректирующиеКоэффиценты>();
 
-        string Query (string year)
-        {
-            string query = "SELECT " +
-                            "КорректирующиеКоэффиценты.Наименование, " +
-                            "КорректирующиеКоэффиценты.ПолноеНаименование as 'Полное наименование'," +
-                            "КорректирующиеКоэффиценты.Уточнение," +
-                            "ЗначениеКоэффицента.Значение as 'Значение коэффицента'," +
-                            "SUBSTR(ЗначениеКоэффицента.КаледндарныйГод, 0, 5) as 'Календарный год', " +
-                            "КорректирующиеКоэффиценты.Комментарий, " +
-                            "ФормаОбучения.наименование as 'Форма обучения', " +
-                            "ЗначениеКоэффицента.код " +
-                            "FROM ЗначениеКоэффицента " +
-                            "JOIN КорректирующиеКоэффиценты ON " +
-                            "КорректирующиеКоэффиценты.код = ЗначениеКоэффицента.Корректирующие_ВК " +
-                            "JOIN ФормаОбучения ON " +
-                            "ФормаОбучения.код = ЗначениеКоэффицента.ФормаОбучения_ВК " +
-                            $"WHERE ЗначениеКоэффицента.КаледндарныйГод LIKE '{year}%'";
-
-            return query;
-        }
+       
         void FillComponents (bool IsEditingMode)
         {
             //заполение компонентов на форме Коэфицентов добавления, из datagrid
@@ -114,10 +92,29 @@ namespace Report
         public void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
         {
             SQliteDB db = new SQliteDB();
+            string query = "SELECT " +
+                            "КорректирующиеКоэффиценты.Наименование, " +
+                            "КорректирующиеКоэффиценты.ПолноеНаименование as 'Полное наименование'," +
+                            "КорректирующиеКоэффиценты.Уточнение," +
+                            "ЗначениеКоэффицента.Значение as 'Значение коэффицента'," +
+                            "SUBSTR(ЗначениеКоэффицента.КаледндарныйГод, 0, 5) as 'Календарный год', " +
+                            "КорректирующиеКоэффиценты.Комментарий, " +
+                            "ФормаОбучения.наименование as 'Форма обучения', " +
+                            "ЗначениеКоэффицента.код " +
+                            "FROM ЗначениеКоэффицента " +
+                            "JOIN КорректирующиеКоэффиценты ON " +
+                            "КорректирующиеКоэффиценты.код = ЗначениеКоэффицента.Корректирующие_ВК " +
+                            "JOIN ФормаОбучения ON " +
+                            "ФормаОбучения.код = ЗначениеКоэффицента.ФормаОбучения_ВК " +
+                            $"WHERE ЗначениеКоэффицента.КаледндарныйГод LIKE '{comboBoxYear.SelectedItem}%'";
 
-            adapter = new SQLiteDataAdapter(Query(comboBoxYear.SelectedItem.ToString()), db.ConnectionDB);
-            command = new SQLiteCommandBuilder(adapter);
-            table = new DataTable();
+            
+            DataTable table = new DataTable();
+            
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, db.ConnectionDB);
+            
+            //SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
+            
 
             adapter.Fill(table);
 

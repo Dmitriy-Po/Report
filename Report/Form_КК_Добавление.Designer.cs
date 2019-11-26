@@ -34,12 +34,12 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.comboBoxFormEducation = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.textBoxCoeff = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.comboBoxCorrectCoef = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,14 +93,6 @@
             this.label8.TabIndex = 28;
             this.label8.Text = "Форма обучения:";
             // 
-            // comboBoxYear
-            // 
-            this.comboBoxYear.FormattingEnabled = true;
-            this.comboBoxYear.Location = new System.Drawing.Point(129, 82);
-            this.comboBoxYear.Name = "comboBoxYear";
-            this.comboBoxYear.Size = new System.Drawing.Size(245, 21);
-            this.comboBoxYear.TabIndex = 25;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -137,18 +129,26 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.comboBoxYear);
             this.groupBox1.Controls.Add(this.comboBoxFormEducation);
             this.groupBox1.Controls.Add(this.textBoxCoeff);
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.comboBoxYear);
             this.groupBox1.Location = new System.Drawing.Point(12, 150);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(380, 131);
             this.groupBox1.TabIndex = 30;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Коэффицент";
+            // 
+            // comboBoxYear
+            // 
+            this.comboBoxYear.FormattingEnabled = true;
+            this.comboBoxYear.Location = new System.Drawing.Point(129, 85);
+            this.comboBoxYear.Name = "comboBoxYear";
+            this.comboBoxYear.Size = new System.Drawing.Size(245, 21);
+            this.comboBoxYear.TabIndex = 31;
             // 
             // Form_КК_Добавление
             // 
@@ -178,11 +178,11 @@
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Label label8;
         public System.Windows.Forms.ComboBox comboBoxFormEducation;
-        public System.Windows.Forms.ComboBox comboBoxYear;
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.TextBox textBoxCoeff;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox1;
         public System.Windows.Forms.ComboBox comboBoxCorrectCoef;
+        public System.Windows.Forms.ComboBox comboBoxYear;
     }
 }
