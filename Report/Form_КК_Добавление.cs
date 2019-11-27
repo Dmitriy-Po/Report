@@ -183,42 +183,40 @@ namespace Report
             //string[] ValuesOfCoeff = { ValuesOfCoef()[0], ValuesOfCoef()[1], id.ToString(),  id_formEducation.ToString()};
 
             //db.Update_new("ЗначениеКоэффицента", FieldsCoef, ValuesOfCoeff, "WHERE Корректирующие_ВК = " + id.ToString() + " AND ФормаОбучения_ВК = " + id_formEducation.ToString());
+
+            //DataTable table = new DataTable();
+            //SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection);                
+
+            //adapter.Fill(table);
+
+            //var row = from r in table.AsEnumerable()
+            //          where Convert.ToInt32(r["код"]) == id
+            //          select r;
+
+            //DataRow new_row = row.FirstOrDefault();
             #endregion
-            
+
             SQliteDB database = new SQliteDB();
-            FormКоэффиценты fcoef = new FormКоэффиценты();
-            string query = "SELECT * FROM ЗначениеКоэффицента";
+            FormКоэффиценты fcoef = new FormКоэффиценты();            
 
             using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
             {
-                connection.Open();
+                connection.Open();                
 
-                DataTable table = new DataTable();
-                SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection);
-                SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
-               
-                adapter.Fill(table);
-            
-                var row = from r in table.AsEnumerable()
-                          where Convert.ToInt32(r["код"]) == id
-                          select r;
-
-                
                 var id_coef = fcoef.ListCoef.Where(x => x.Наименование.Contains(comboBoxCorrectCoef.SelectedItem.ToString())).Select(i => i.id);
                 var id_form = fcoef.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
                 decimal value_coef = Convert.ToDecimal(textBoxCoeff.Text.Replace('.', ','));
 
-                DataRow new_row = row.FirstOrDefault();
-                
-                new_row[1] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01");
-                new_row[2] = Convert.ToInt32(id_coef.ElementAt(0));
-                new_row[3] = Convert.ToInt32(id_form.ElementAt(0));
-                new_row[4] = value_coef;
-                
-                
-                adapter.Update(table);
-                table.AcceptChanges();
-                
+                string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");                
+
+                SQLiteCommand command = new SQLiteCommand("UPDATE ЗначениеКоэффицента SET "+
+                                $"Значение = {textBoxCoeff.Text.Replace(",", ".")}, КаледндарныйГод = '{DATE}', "+
+                                    $"Корректирующие_ВК = {Convert.ToInt32(id_coef.ElementAt(0))}, ФормаОбучения_ВК = {Convert.ToInt32(id_form.ElementAt(0))} " +
+                                    $"WHERE ЗначениеКоэффицента.код = {id}", connection);
+
+
+                command.ExecuteNonQuery();                
+
             }
 
         }
@@ -267,66 +265,13 @@ namespace Report
                 new_row[3] = Convert.ToInt32(id_form.ElementAt(0));
                 new_row[4] = value_coef;
 
-                //SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
+                SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
 
                 table.Rows.Add(new_row);
                 adapter.Update(table);
-                //command.Dispose();
-                //table.Clear();
-                //adapter.Fill(table);
+                
             };
         }
-        //void IsCurrentRows (out int id, out int id_kk)
-        //{
-        //FormКоэффиценты fk = new FormКоэффиценты();
-
-            //Редактируемая строка, взятая из коллекции ListCoef.
-            //var DuplicateId = fk.ListCoef.Where(
-            //    x => x.Наименование.Equals(textBoxDesc.Text, StringComparison.OrdinalIgnoreCase) &&
-            //         x.GetForm().Equals(comboBoxFormEducation.Text, StringComparison.OrdinalIgnoreCase) &&
-            //         x.СтудентИнвалид.Equals(checkBoxStdInv.Checked) &&
-            //         x.GetYear().Substring(6, 4).Equals(comboBoxYear.Text) &&
-            //         x.GetCoef() == Math.Round(Convert.ToDecimal(textBoxCoeff.Text), 2))
-            //         .Select(x => x.GetIdCoeff());
-
-
-            // Id - выбранной строки в DataGrid.
-            //int row_id = Convert.ToInt32(CurrentDataRow.Cells["id"].Value);
-            //int row_id_kk = Convert.ToInt32(CurrentDataRow.Cells["id_kk"].Value);
-
-            /*Если выбранная (из DataGrid) редактируемая строка совпадает, по параметрам 
-             * <указанным в поях формы>, с строкой в коллекции  ListCoef, тогда 
-                    - это текущая редактиремая строка и сохраненеи возможно.
-                Строки в DataGrid и ListCoef сравниваются по полю id.    
-
-             * Фокус в том, что при нажатии кнопки Редактировать, переменная DataGrid получает, из столбца 'id'
-             * идентификатор строки (записи в бд). А при нажати кнопки Создать по шаблону, переменная DataGrid
-             * идентификатор не получает. Вот и вся магия :) 
-             * */
-
-            //try
-            //{
-            //    if (row_id == DuplicateId.ElementAt(0)) // True - совпадение текущей редактируемой строки.
-            //    {
-            //        id = row_id;
-            //        id_kk = row_id_kk;
-            //        return true;
-            //    }
-            //    else // Flase - при редактированиия получилось набрать дубликат, исходя из значений полей на форме.
-            //    {
-            //        id = 0;
-            //        id_kk = 0;
-            //        return false;
-            //    };
-            //}
-            //catch (ArgumentOutOfRangeException) // Случай, когда не найдено дубликатов. Коллекция будет пуста.
-            //{
-            //    id_kk = row_id_kk;
-            //    id = row_id;
-            //    return true;
-            //}
-            
-        //}
 
         private void Form_КК_Добавление_Load(object sender, EventArgs e)
         {
@@ -335,12 +280,12 @@ namespace Report
 
         private void buttonSave_Click (object sender, EventArgs e)
         {
-            Operation();
+            Operation();           
         }
 
         private void buttonSaveAndClose_Click (object sender, EventArgs e)
         {
-            Operation();
+            Operation();            
             Close();
         }
     }

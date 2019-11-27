@@ -117,7 +117,7 @@ namespace Report
             
 
             adapter.Fill(table);
-
+            
             dataGridViewCoeff.DataSource = table;
             dataGridViewCoeff.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCoeff.Columns[0].Width = 50;
@@ -151,19 +151,16 @@ namespace Report
             {
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
-                    //ListId.Add(rows.Cells["id"].Value.ToString());
+                    ListId.Add(row.Cells["код"].Value.ToString());
                     dataGridViewCoeff.Rows.Remove(row);
                 }
             }
-            //q.Delete("ЗначениеКоэффицента", "ЗначениеКоэффицента.код", string.Join(",", ListId.ToArray()));
-
-            //adapter = new SQLiteDataAdapter(Query(comboBoxYear.SelectedItem.ToString()), q.ConnectionDB);
-            //command = new SQLiteCommandBuilder(adapter);
-            //adapter.Fill(table);
-            //adapter.DeleteCommand = command.GetDeleteCommand();
-            //table.AcceptChanges();
-            //adapter.Update(table);
+            q.Delete("ЗначениеКоэффицента", "ЗначениеКоэффицента.код", string.Join(",", ListId.ToArray()));            
         }
-        
+
+        private void FormКоэффиценты_Activated (object sender, EventArgs e)
+        {
+            comboBox1_SelectionChangeCommitted(sender, e);
+        }
     }
 }
