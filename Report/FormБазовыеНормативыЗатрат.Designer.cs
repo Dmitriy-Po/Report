@@ -34,14 +34,10 @@
             this.buttonAddStingPattern = new System.Windows.Forms.Button();
             this.buttonAddNewString = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.dataGridViewNormals = new System.Windows.Forms.DataGridView();
             this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColumnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnFullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.comboBoxYear = new System.Windows.Forms.ComboBox();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNormals)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonDeleteSelected
@@ -53,6 +49,7 @@
             this.buttonDeleteSelected.Size = new System.Drawing.Size(40, 40);
             this.buttonDeleteSelected.TabIndex = 13;
             this.buttonDeleteSelected.UseVisualStyleBackColor = true;
+            this.buttonDeleteSelected.Click += new System.EventHandler(this.buttonDeleteSelected_Click);
             // 
             // buttonEditString
             // 
@@ -63,6 +60,7 @@
             this.buttonEditString.Size = new System.Drawing.Size(40, 40);
             this.buttonEditString.TabIndex = 12;
             this.buttonEditString.UseVisualStyleBackColor = true;
+            this.buttonEditString.Click += new System.EventHandler(this.buttonEditString_Click);
             // 
             // buttonAddStingPattern
             // 
@@ -73,6 +71,7 @@
             this.buttonAddStingPattern.Size = new System.Drawing.Size(40, 40);
             this.buttonAddStingPattern.TabIndex = 11;
             this.buttonAddStingPattern.UseVisualStyleBackColor = true;
+            this.buttonAddStingPattern.Click += new System.EventHandler(this.buttonAddStingPattern_Click);
             // 
             // buttonAddNewString
             // 
@@ -95,80 +94,53 @@
             this.label1.TabIndex = 14;
             this.label1.Text = "Календарный год";
             // 
-            // dataGridView1
+            // dataGridViewNormals
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.check,
-            this.ColumnName,
-            this.ColumnFullName,
-            this.ColumnYear,
-            this.ColumnComment});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 113);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(679, 287);
-            this.dataGridView1.TabIndex = 15;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(15, 25);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(321, 21);
-            this.comboBox1.TabIndex = 16;
+            this.dataGridViewNormals.AllowUserToAddRows = false;
+            this.dataGridViewNormals.AllowUserToDeleteRows = false;
+            this.dataGridViewNormals.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewNormals.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewNormals.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.check});
+            this.dataGridViewNormals.Location = new System.Drawing.Point(0, 113);
+            this.dataGridViewNormals.Name = "dataGridViewNormals";
+            this.dataGridViewNormals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewNormals.Size = new System.Drawing.Size(784, 349);
+            this.dataGridViewNormals.TabIndex = 15;
             // 
             // check
             // 
             this.check.HeaderText = "";
             this.check.Name = "check";
-            this.check.ReadOnly = true;
             this.check.Width = 50;
             // 
-            // ColumnName
+            // comboBoxYear
             // 
-            this.ColumnName.HeaderText = "Наименование";
-            this.ColumnName.Name = "ColumnName";
-            this.ColumnName.ReadOnly = true;
-            // 
-            // ColumnFullName
-            // 
-            this.ColumnFullName.HeaderText = "Полное наименование";
-            this.ColumnFullName.MinimumWidth = 50;
-            this.ColumnFullName.Name = "ColumnFullName";
-            this.ColumnFullName.ReadOnly = true;
-            // 
-            // ColumnYear
-            // 
-            this.ColumnYear.HeaderText = "Год";
-            this.ColumnYear.Name = "ColumnYear";
-            this.ColumnYear.ReadOnly = true;
-            // 
-            // ColumnComment
-            // 
-            this.ColumnComment.HeaderText = "Комментарий";
-            this.ColumnComment.Name = "ColumnComment";
-            this.ColumnComment.ReadOnly = true;
+            this.comboBoxYear.FormattingEnabled = true;
+            this.comboBoxYear.Location = new System.Drawing.Point(15, 25);
+            this.comboBoxYear.Name = "comboBoxYear";
+            this.comboBoxYear.Size = new System.Drawing.Size(321, 21);
+            this.comboBoxYear.TabIndex = 16;
             // 
             // FormБазовыеНормативыЗатрат
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(679, 400);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(784, 462);
+            this.Controls.Add(this.comboBoxYear);
+            this.Controls.Add(this.dataGridViewNormals);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonDeleteSelected);
             this.Controls.Add(this.buttonEditString);
             this.Controls.Add(this.buttonAddStingPattern);
             this.Controls.Add(this.buttonAddNewString);
             this.Name = "FormБазовыеНормативыЗатрат";
-            this.Text = "Базовые Нормативы Затрат";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Базовые нормативы затрат";
+            this.Load += new System.EventHandler(this.FormБазовыеНормативыЗатрат_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNormals)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -180,12 +152,8 @@
         private System.Windows.Forms.Button buttonAddStingPattern;
         private System.Windows.Forms.Button buttonAddNewString;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxYear;
+        public System.Windows.Forms.DataGridView dataGridViewNormals;
         private System.Windows.Forms.DataGridViewCheckBoxColumn check;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnFullName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnYear;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnComment;
     }
 }

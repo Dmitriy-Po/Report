@@ -17,6 +17,13 @@ namespace Report
             this.id = id;
             this.Наименование = desc;
         }
+        public КорректирующиеКоэффиценты(int id, string desc, string detail)
+        {
+            this.id = id;
+            this.Наименование = desc;
+            this.Уточнение = detail;
+        }
+
         public КорректирующиеКоэффиценты(string desc, string fullDesc, string detail, string comment, bool std_inv)
         {
             Наименование        = desc;

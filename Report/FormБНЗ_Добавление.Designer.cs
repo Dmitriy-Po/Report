@@ -31,22 +31,21 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormБНЗ_Добавление));
             this.buttonSaveAndClose = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.textBoxDesc = new System.Windows.Forms.TextBox();
+            this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.textBoxComment = new System.Windows.Forms.TextBox();
+            this.textBoxFillDesc = new System.Windows.Forms.TextBox();
+            this.buttonDeleteKoef = new System.Windows.Forms.Button();
+            this.buttonAddKoef = new System.Windows.Forms.Button();
+            this.dataGridViewKoef = new System.Windows.Forms.DataGridView();
             this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.ColumnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnDetail = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label5 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.comboBoxCorrectKoef = new System.Windows.Forms.ComboBox();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKoef)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonSaveAndClose
@@ -69,21 +68,21 @@
             this.buttonSave.TabIndex = 1;
             this.buttonSave.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // textBoxDesc
             // 
-            this.textBox1.Location = new System.Drawing.Point(150, 70);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(242, 20);
-            this.textBox1.TabIndex = 3;
+            this.textBoxDesc.Location = new System.Drawing.Point(150, 70);
+            this.textBoxDesc.Name = "textBoxDesc";
+            this.textBoxDesc.Size = new System.Drawing.Size(242, 20);
+            this.textBoxDesc.TabIndex = 3;
             // 
-            // comboBox1
+            // comboBoxYear
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.ItemHeight = 13;
-            this.comboBox1.Location = new System.Drawing.Point(150, 148);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(73, 21);
-            this.comboBox1.TabIndex = 6;
+            this.comboBoxYear.FormattingEnabled = true;
+            this.comboBoxYear.ItemHeight = 13;
+            this.comboBoxYear.Location = new System.Drawing.Point(150, 148);
+            this.comboBoxYear.Name = "comboBoxYear";
+            this.comboBoxYear.Size = new System.Drawing.Size(242, 21);
+            this.comboBoxYear.TabIndex = 6;
             // 
             // label1
             // 
@@ -120,112 +119,113 @@
             this.label4.Size = new System.Drawing.Size(99, 13);
             this.label4.TabIndex = 11;
             this.label4.Text = "Календарный год:";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
-            // textBox2
+            // textBoxComment
             // 
-            this.textBox2.Location = new System.Drawing.Point(150, 122);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(242, 20);
-            this.textBox2.TabIndex = 5;
+            this.textBoxComment.Location = new System.Drawing.Point(150, 122);
+            this.textBoxComment.Name = "textBoxComment";
+            this.textBoxComment.Size = new System.Drawing.Size(242, 20);
+            this.textBoxComment.TabIndex = 5;
             // 
-            // textBox3
+            // textBoxFillDesc
             // 
-            this.textBox3.Location = new System.Drawing.Point(150, 96);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(242, 20);
-            this.textBox3.TabIndex = 4;
+            this.textBoxFillDesc.Location = new System.Drawing.Point(150, 96);
+            this.textBoxFillDesc.Name = "textBoxFillDesc";
+            this.textBoxFillDesc.Size = new System.Drawing.Size(242, 20);
+            this.textBoxFillDesc.TabIndex = 4;
             // 
-            // button1
+            // buttonDeleteKoef
             // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-            this.button1.Location = new System.Drawing.Point(50, 204);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(25, 25);
-            this.button1.TabIndex = 8;
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonDeleteKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDeleteKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonDeleteKoef.Image")));
+            this.buttonDeleteKoef.Location = new System.Drawing.Point(43, 257);
+            this.buttonDeleteKoef.Name = "buttonDeleteKoef";
+            this.buttonDeleteKoef.Size = new System.Drawing.Size(25, 25);
+            this.buttonDeleteKoef.TabIndex = 8;
+            this.buttonDeleteKoef.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // buttonAddKoef
             // 
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
-            this.button2.Location = new System.Drawing.Point(19, 204);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(25, 25);
-            this.button2.TabIndex = 7;
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonAddKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonAddKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddKoef.Image")));
+            this.buttonAddKoef.Location = new System.Drawing.Point(12, 257);
+            this.buttonAddKoef.Name = "buttonAddKoef";
+            this.buttonAddKoef.Size = new System.Drawing.Size(25, 25);
+            this.buttonAddKoef.TabIndex = 7;
+            this.buttonAddKoef.UseVisualStyleBackColor = true;
+            this.buttonAddKoef.Click += new System.EventHandler(this.buttonAddKoef_Click);
             // 
-            // dataGridView1
+            // dataGridViewKoef
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.check,
-            this.ColumnDescription,
-            this.ColumnDetail});
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 235);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(404, 151);
-            this.dataGridView1.TabIndex = 16;
+            this.dataGridViewKoef.AllowUserToAddRows = false;
+            this.dataGridViewKoef.AllowUserToDeleteRows = false;
+            this.dataGridViewKoef.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewKoef.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewKoef.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.check});
+            this.dataGridViewKoef.Location = new System.Drawing.Point(0, 288);
+            this.dataGridViewKoef.Name = "dataGridViewKoef";
+            this.dataGridViewKoef.ReadOnly = true;
+            this.dataGridViewKoef.Size = new System.Drawing.Size(404, 178);
+            this.dataGridViewKoef.TabIndex = 16;
             // 
             // check
             // 
             this.check.HeaderText = "";
             this.check.Name = "check";
+            this.check.ReadOnly = true;
             this.check.Width = 50;
-            // 
-            // ColumnDescription
-            // 
-            this.ColumnDescription.HeaderText = "Наименование";
-            this.ColumnDescription.Name = "ColumnDescription";
-            this.ColumnDescription.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.ColumnDescription.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColumnDescription.Width = 150;
-            // 
-            // ColumnDetail
-            // 
-            this.ColumnDetail.HeaderText = "Уточнение";
-            this.ColumnDetail.Name = "ColumnDetail";
-            this.ColumnDetail.Width = 150;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label5.Location = new System.Drawing.Point(19, 178);
+            this.label5.Location = new System.Drawing.Point(22, 182);
             this.label5.Name = "label5";
             this.label5.Padding = new System.Windows.Forms.Padding(20, 1, 20, 1);
-            this.label5.Size = new System.Drawing.Size(211, 17);
+            this.label5.Size = new System.Drawing.Size(255, 17);
             this.label5.TabIndex = 17;
-            this.label5.Text = "Корректирующие коэффиценты";
+            this.label5.Text = "Добавить корректирующий коэффицент\r\n";
+            // 
+            // comboBoxCorrectKoef
+            // 
+            this.comboBoxCorrectKoef.FormattingEnabled = true;
+            this.comboBoxCorrectKoef.Location = new System.Drawing.Point(22, 202);
+            this.comboBoxCorrectKoef.Name = "comboBoxCorrectKoef";
+            this.comboBoxCorrectKoef.Size = new System.Drawing.Size(370, 21);
+            this.comboBoxCorrectKoef.TabIndex = 18;
+            this.comboBoxCorrectKoef.SelectionChangeCommitted += new System.EventHandler(this.comboBoxCorrectKoef_SelectionChangeCommitted);
             // 
             // FormБНЗ_Добавление
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 386);
+            this.ClientSize = new System.Drawing.Size(404, 466);
+            this.Controls.Add(this.comboBoxCorrectKoef);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.dataGridViewKoef);
+            this.Controls.Add(this.buttonDeleteKoef);
+            this.Controls.Add(this.buttonAddKoef);
+            this.Controls.Add(this.textBoxFillDesc);
+            this.Controls.Add(this.textBoxComment);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.comboBoxYear);
+            this.Controls.Add(this.textBoxDesc);
             this.Controls.Add(this.buttonSaveAndClose);
             this.Controls.Add(this.buttonSave);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.MaximumSize = new System.Drawing.Size(420, 420);
-            this.MinimumSize = new System.Drawing.Size(420, 420);
+            this.MaximumSize = new System.Drawing.Size(420, 500);
+            this.MinimumSize = new System.Drawing.Size(420, 500);
             this.Name = "FormБНЗ_Добавление";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Добавление/Редактирование";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.FormБНЗ_Добавление_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKoef)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -235,20 +235,19 @@
 
         private System.Windows.Forms.Button buttonSaveAndClose;
         private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn check;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDescription;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnDetail;
+        private System.Windows.Forms.Button buttonDeleteKoef;
+        private System.Windows.Forms.Button buttonAddKoef;
+        private System.Windows.Forms.DataGridView dataGridViewKoef;
         private System.Windows.Forms.Label label5;
+        public System.Windows.Forms.TextBox textBoxDesc;
+        public System.Windows.Forms.ComboBox comboBoxYear;
+        public System.Windows.Forms.TextBox textBoxComment;
+        public System.Windows.Forms.TextBox textBoxFillDesc;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn check;
+        public System.Windows.Forms.ComboBox comboBoxCorrectKoef;
     }
 }
