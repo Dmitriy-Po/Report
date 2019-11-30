@@ -1,6 +1,6 @@
-﻿namespace Report
+﻿namespace Report.Forms
 {
-    partial class FormБазовыеНормативыЗатрат
+    partial class FormGroups
     {
         /// <summary>
         /// Required designer variable.
@@ -28,26 +28,26 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormБазовыеНормативыЗатрат));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormGroups));
             this.buttonDeleteSelected = new System.Windows.Forms.Button();
             this.buttonEditString = new System.Windows.Forms.Button();
             this.buttonAddStingPattern = new System.Windows.Forms.Button();
             this.buttonAddNewString = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.dataGridViewNormals = new System.Windows.Forms.DataGridView();
-            this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.dataGridViewGoups = new System.Windows.Forms.DataGridView();
             this.comboBoxYear = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNormals)).BeginInit();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoups)).BeginInit();
             this.SuspendLayout();
             // 
             // buttonDeleteSelected
             // 
             this.buttonDeleteSelected.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDeleteSelected.Image = ((System.Drawing.Image)(resources.GetObject("buttonDeleteSelected.Image")));
-            this.buttonDeleteSelected.Location = new System.Drawing.Point(153, 67);
+            this.buttonDeleteSelected.Location = new System.Drawing.Point(150, 67);
             this.buttonDeleteSelected.Name = "buttonDeleteSelected";
             this.buttonDeleteSelected.Size = new System.Drawing.Size(40, 40);
-            this.buttonDeleteSelected.TabIndex = 13;
+            this.buttonDeleteSelected.TabIndex = 17;
             this.buttonDeleteSelected.UseVisualStyleBackColor = true;
             this.buttonDeleteSelected.Click += new System.EventHandler(this.buttonDeleteSelected_Click);
             // 
@@ -55,10 +55,10 @@
             // 
             this.buttonEditString.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonEditString.Image = ((System.Drawing.Image)(resources.GetObject("buttonEditString.Image")));
-            this.buttonEditString.Location = new System.Drawing.Point(107, 67);
+            this.buttonEditString.Location = new System.Drawing.Point(104, 67);
             this.buttonEditString.Name = "buttonEditString";
             this.buttonEditString.Size = new System.Drawing.Size(40, 40);
-            this.buttonEditString.TabIndex = 12;
+            this.buttonEditString.TabIndex = 16;
             this.buttonEditString.UseVisualStyleBackColor = true;
             this.buttonEditString.Click += new System.EventHandler(this.buttonEditString_Click);
             // 
@@ -66,10 +66,10 @@
             // 
             this.buttonAddStingPattern.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAddStingPattern.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddStingPattern.Image")));
-            this.buttonAddStingPattern.Location = new System.Drawing.Point(61, 67);
+            this.buttonAddStingPattern.Location = new System.Drawing.Point(58, 67);
             this.buttonAddStingPattern.Name = "buttonAddStingPattern";
             this.buttonAddStingPattern.Size = new System.Drawing.Size(40, 40);
-            this.buttonAddStingPattern.TabIndex = 11;
+            this.buttonAddStingPattern.TabIndex = 15;
             this.buttonAddStingPattern.UseVisualStyleBackColor = true;
             this.buttonAddStingPattern.Click += new System.EventHandler(this.buttonAddStingPattern_Click);
             // 
@@ -77,44 +77,24 @@
             // 
             this.buttonAddNewString.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAddNewString.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddNewString.Image")));
-            this.buttonAddNewString.Location = new System.Drawing.Point(15, 66);
+            this.buttonAddNewString.Location = new System.Drawing.Point(12, 66);
             this.buttonAddNewString.Name = "buttonAddNewString";
             this.buttonAddNewString.Padding = new System.Windows.Forms.Padding(3);
             this.buttonAddNewString.Size = new System.Drawing.Size(40, 40);
-            this.buttonAddNewString.TabIndex = 10;
+            this.buttonAddNewString.TabIndex = 14;
             this.buttonAddNewString.UseVisualStyleBackColor = true;
             this.buttonAddNewString.Click += new System.EventHandler(this.buttonAddNewString_Click);
             // 
-            // label1
+            // dataGridViewGoups
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 13);
-            this.label1.TabIndex = 14;
-            this.label1.Text = "Календарный год";
-            // 
-            // dataGridViewNormals
-            // 
-            this.dataGridViewNormals.AllowUserToAddRows = false;
-            this.dataGridViewNormals.AllowUserToDeleteRows = false;
-            this.dataGridViewNormals.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewNormals.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewNormals.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.check});
-            this.dataGridViewNormals.Location = new System.Drawing.Point(0, 113);
-            this.dataGridViewNormals.Name = "dataGridViewNormals";
-            this.dataGridViewNormals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewNormals.Size = new System.Drawing.Size(784, 349);
-            this.dataGridViewNormals.TabIndex = 15;
-            // 
-            // check
-            // 
-            this.check.HeaderText = "";
-            this.check.Name = "check";
-            this.check.Width = 50;
+            this.dataGridViewGoups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewGoups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Check});
+            this.dataGridViewGoups.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataGridViewGoups.Location = new System.Drawing.Point(0, 112);
+            this.dataGridViewGoups.Name = "dataGridViewGoups";
+            this.dataGridViewGoups.Size = new System.Drawing.Size(784, 350);
+            this.dataGridViewGoups.TabIndex = 18;
             // 
             // comboBoxYear
             // 
@@ -122,39 +102,55 @@
             this.comboBoxYear.Location = new System.Drawing.Point(15, 25);
             this.comboBoxYear.Name = "comboBoxYear";
             this.comboBoxYear.Size = new System.Drawing.Size(321, 21);
-            this.comboBoxYear.TabIndex = 16;
+            this.comboBoxYear.TabIndex = 19;
             // 
-            // FormБазовыеНормативыЗатрат
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(96, 13);
+            this.label1.TabIndex = 20;
+            this.label1.Text = "Календарный год";
+            // 
+            // Check
+            // 
+            this.Check.HeaderText = "";
+            this.Check.Name = "Check";
+            // 
+            // FormGroups
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 462);
-            this.Controls.Add(this.comboBoxYear);
-            this.Controls.Add(this.dataGridViewNormals);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.comboBoxYear);
+            this.Controls.Add(this.dataGridViewGoups);
             this.Controls.Add(this.buttonDeleteSelected);
             this.Controls.Add(this.buttonEditString);
             this.Controls.Add(this.buttonAddStingPattern);
             this.Controls.Add(this.buttonAddNewString);
-            this.Name = "FormБазовыеНормативыЗатрат";
+            this.MaximumSize = new System.Drawing.Size(800, 500);
+            this.MinimumSize = new System.Drawing.Size(800, 500);
+            this.Name = "FormGroups";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Базовые нормативы затрат";
-            this.Activated += new System.EventHandler(this.FormБазовыеНормативыЗатрат_Activated);
-            this.Load += new System.EventHandler(this.FormБазовыеНормативыЗатрат_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNormals)).EndInit();
+            this.Text = "Стоимостные группы";
+            this.Load += new System.EventHandler(this.FormGroups_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoups)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
+
         private System.Windows.Forms.Button buttonDeleteSelected;
         private System.Windows.Forms.Button buttonEditString;
         private System.Windows.Forms.Button buttonAddStingPattern;
         private System.Windows.Forms.Button buttonAddNewString;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridView dataGridViewGoups;
         private System.Windows.Forms.ComboBox comboBoxYear;
-        public System.Windows.Forms.DataGridView dataGridViewNormals;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn check;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Check;
     }
 }

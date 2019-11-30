@@ -270,7 +270,7 @@ namespace Report
                 table.Rows.Add(new_row);
                 adapter.Update(table);
                 
-            };
+            }
         }
 
         private void Form_КК_Добавление_Load(object sender, EventArgs e)

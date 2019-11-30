@@ -57,6 +57,7 @@
             this.buttonSaveAndClose.Size = new System.Drawing.Size(40, 40);
             this.buttonSaveAndClose.TabIndex = 2;
             this.buttonSaveAndClose.UseVisualStyleBackColor = true;
+            this.buttonSaveAndClose.Click += new System.EventHandler(this.buttonSaveAndClose_Click);
             // 
             // buttonSave
             // 
@@ -67,6 +68,7 @@
             this.buttonSave.Size = new System.Drawing.Size(40, 40);
             this.buttonSave.TabIndex = 1;
             this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
             // textBoxDesc
             // 
@@ -77,6 +79,7 @@
             // 
             // comboBoxYear
             // 
+            this.comboBoxYear.Enabled = false;
             this.comboBoxYear.FormattingEnabled = true;
             this.comboBoxYear.ItemHeight = 13;
             this.comboBoxYear.Location = new System.Drawing.Point(150, 148);
@@ -143,6 +146,7 @@
             this.buttonDeleteKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonDeleteKoef.TabIndex = 8;
             this.buttonDeleteKoef.UseVisualStyleBackColor = true;
+            this.buttonDeleteKoef.Click += new System.EventHandler(this.buttonDeleteKoef_Click);
             // 
             // buttonAddKoef
             // 
@@ -167,7 +171,6 @@
             this.check});
             this.dataGridViewKoef.Location = new System.Drawing.Point(0, 288);
             this.dataGridViewKoef.Name = "dataGridViewKoef";
-            this.dataGridViewKoef.ReadOnly = true;
             this.dataGridViewKoef.Size = new System.Drawing.Size(404, 178);
             this.dataGridViewKoef.TabIndex = 16;
             // 
@@ -175,7 +178,6 @@
             // 
             this.check.HeaderText = "";
             this.check.Name = "check";
-            this.check.ReadOnly = true;
             this.check.Width = 50;
             // 
             // label5
@@ -247,7 +249,7 @@
         public System.Windows.Forms.ComboBox comboBoxYear;
         public System.Windows.Forms.TextBox textBoxComment;
         public System.Windows.Forms.TextBox textBoxFillDesc;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn check;
         public System.Windows.Forms.ComboBox comboBoxCorrectKoef;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn check;
     }
 }

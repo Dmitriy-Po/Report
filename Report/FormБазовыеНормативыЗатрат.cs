@@ -50,8 +50,10 @@ namespace Report
                         fadd.CurrentDataRow = 0;    // 0 - для режима Создать по шаблону.
                     }
                 }
-            }
-            fadd.FillList();
+            }            
+            /*
+             * Вот здесь добавить функцию заполения DataGrid - она сработает как обновление таблицы.
+             * */
             fadd.ShowDialog();
         }
         bool CountSelectedRows (string tooltip)
@@ -73,9 +75,9 @@ namespace Report
         }
         void DeleteSelectedRows ()
         {
-            DialogResult result = MessageBox.Show("Вы действительно хотите удлать запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            DialogResult result = MessageBox.Show("Вы действительно хотите удлать запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            if (result.Equals(DialogResult.OK))
+            if (result.Equals(DialogResult.Yes))
             {
                 foreach (DataGridViewRow row in dataGridViewNormals.Rows)
                 {
@@ -94,7 +96,26 @@ namespace Report
                 }
             }
         }
+        void FillDataGrid ()
+        {
+            // Зполение DataGrid.
+            db = new SQliteDB();
+            string query = "SELECT * FROM БазовыйНормативЗатрат";
 
+            table = new DataTable();
+
+            adapter = new SQLiteDataAdapter(query, db.ConnectionDB);
+
+            adapter.Fill(table);
+
+            dataGridViewNormals.DataSource = table;
+            dataGridViewNormals.Columns[0].Width = 50;
+            dataGridViewNormals.Columns[1].Width = 50;
+            dataGridViewNormals.Columns["Наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewNormals.Columns["Полное_наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dataGridViewNormals.Columns["Комментарий"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dataGridViewNormals.Columns["код"].Visible = false;
+        }
 
 
         private void buttonAddNewString_Click (object sender, EventArgs e)
@@ -116,25 +137,8 @@ namespace Report
                 comboBoxYear.Items.Add(++y);
             } while (y != DateTime.Today.Year);
             comboBoxYear.SelectedItem = y;
-            
 
-            // Зполение DataGrid.
-            db = new SQliteDB();
-            string query = "SELECT * FROM БазовыйНормативЗатрат";
-
-            table = new DataTable();
-
-            adapter = new SQLiteDataAdapter(query, db.ConnectionDB);
-
-            adapter.Fill(table);
-
-            dataGridViewNormals.DataSource = table;
-            dataGridViewNormals.Columns[0].Width = 50;
-            dataGridViewNormals.Columns[1].Width = 50;
-            dataGridViewNormals.Columns["Наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewNormals.Columns["Полное_наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewNormals.Columns["Комментарий"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewNormals.Columns["код"].Visible = false;
+            FillDataGrid();
         }
 
         private void buttonDeleteSelected_Click (object sender, EventArgs e)
@@ -170,6 +174,11 @@ namespace Report
             {
                 FillComponents(true);
             }
+        }
+
+        private void FormБазовыеНормативыЗатрат_Activated (object sender, EventArgs e)
+        {
+            //FillDataGrid();
         }
     }
 }

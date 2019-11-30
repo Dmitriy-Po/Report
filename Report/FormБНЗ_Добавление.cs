@@ -15,8 +15,7 @@ namespace Report
         DataTable table1;        
         SQLiteDataAdapter adapter;
         SQLiteCommandBuilder command;
-        public List<КорректирующиеКоэффиценты> ListKK = new List<КорректирующиеКоэффиценты>();
-        
+        public List<КорректирующиеКоэффиценты> ListKK = new List<КорректирующиеКоэффиценты>();              
 
 
         public ushort StatusOperation { get; set; } /*Для выбора режима Редактирования, Добавления или Дубликата */
@@ -24,7 +23,7 @@ namespace Report
 
         public FormБНЗ_Добавление ()
         {
-            InitializeComponent();            
+            InitializeComponent();                       
         }
         public void FillCombobox ()
         {
@@ -33,71 +32,276 @@ namespace Report
             {
                 comboBoxYear.Items.Add(++y);
             } while (y != DateTime.Now.Year);
-        }       
-        public void FillList()
-        {
-            string q = "SELECT КорректирующиеКоэффиценты.код, Наименование, Уточнение FROM КорректирующиеКоэффиценты WHERE КорректирующиеКоэффиценты.код " +
-                       "NOT IN(SELECT КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК FROM КоррКоэффицентБазовогоНорматива " +
-                      $" WHERE КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}); ";
-
-            db = new SQliteDB();
-            SQLiteConnection connection = new SQLiteConnection(db.ConnectionDB);
-
-            connection.Open();
-            adapter = new SQLiteDataAdapter(q, connection);
-            table1 = new DataTable();
-
-            adapter.Fill(table1);
-
-            foreach (DataRow row in table1.Rows)
-            {
-                ListKK.Add(new КорректирующиеКоэффиценты(Convert.ToInt32(row[0]), row[1].ToString(), row[2].ToString()));
-            }
-            comboBoxCorrectKoef.Items.AddRange(ListKK.Select(x => x.Наименование).ToArray());
-            connection.Close();
-        }
-        private void FormБНЗ_Добавление_Load (object sender, EventArgs e)
+        }     
+        void FillDataGrid ()
         {
             string query =
                             // Table 0.
-                            "SELECT КорректирующиеКоэффиценты.Наименование, Уточнение " +
+                            "SELECT КорректирующиеКоэффиценты.код, Наименование, Уточнение " +
                             "FROM КоррКоэффицентБазовогоНорматива " +
                             "JOIN КорректирующиеКоэффиценты ON КорректирующиеКоэффиценты.код = КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК " +
                             $"WHERE КоррКоэффицентБазовогоНорматива.Календарный_год LIKE '{comboBoxYear.SelectedItem.ToString()}%' " +
-                            $"AND КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}; ";
-                            
-                            
+                            $"AND КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}; " +
+
+                            "SELECT КорректирующиеКоэффиценты.код, Наименование, Уточнение FROM КорректирующиеКоэффиценты WHERE КорректирующиеКоэффиценты.код " +
+                            "NOT IN(SELECT КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК FROM КоррКоэффицентБазовогоНорматива " +
+                           $"WHERE КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}); ";
+
 
             db = new SQliteDB();
             using (SQLiteConnection conection = new SQLiteConnection(db.ConnectionDB))
             {
                 conection.Open();
-                              
-                adapter = new SQLiteDataAdapter(query, conection);
-                
-                table0 = new DataTable();               
 
-                adapter.Fill(table0);               
-                
+                adapter = new SQLiteDataAdapter(query, conection);
+                dataset = new DataSet();
+
+                table0 = new DataTable();
+                table1 = new DataTable();
+
+                adapter.Fill(dataset);
+
+                table0 = dataset.Tables[0];
+                table1 = dataset.Tables[1];
 
                 dataGridViewKoef.DataSource = table0;
                 dataGridViewKoef.Columns[0].Width = 25;
-                dataGridViewKoef.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridViewKoef.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;                
-               
-            }
-            
+                dataGridViewKoef.Columns[1].Visible = false;
+                dataGridViewKoef.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridViewKoef.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
+                ListKK.Clear();
+                comboBoxCorrectKoef.Items.Clear();
+                foreach (DataRow row in table1.Rows)
+                {
+                    ListKK.Add(new КорректирующиеКоэффиценты(Convert.ToInt32(row[0]), row[1].ToString(), row[2].ToString()));
+                }
+                comboBoxCorrectKoef.Items.AddRange(ListKK.Select(x => x.Наименование).ToArray());
+            }
+        }
+        void Operation ()
+        {
+            int id = 0;
+            // 1 - добавление, 2 - по шаблону, 3 - редактирование.
+
+            switch (StatusOperation)
+            {
+                case 1:
+                case 2:
+                    if (Duplicate())
+                    {
+                        MessageBox.Show("Такая строка уже существует");
+                    }
+                    else InsertRecord();
+
+                    break;
+
+                case 3:
+                    if (IsCurrentRows(out id))
+                    {
+                        UpdateRecord(id);
+                    }
+                    //else MessageBox.Show("Такая строка уже существует");
+
+                    break;
+            }
+        }
+        bool Duplicate ()
+        {
+            DataTable table = GetTable();
+            if (table.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        DataTable GetTable ()
+        {
+            SQliteDB db = new SQliteDB();
+            // Дубликат - исходя из выбранных полей на форме.            
+
+            using (SQLiteConnection connection = new SQLiteConnection(db.ConnectionDB))
+            {
+                string query = "SELECT * FROM БазовыйНормативЗатрат WHERE "+
+                                    $"БазовыйНормативЗатрат.Наименование = '{textBoxDesc.Text}'";
+
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+
+                return table;
+            }
+        }
+        bool IsCurrentRows (out int out_id)
+        {
+            DataTable table = GetTable();
+            // Три состояния при редактировании, когда (ид совпадает, когда не совпадает) и когда отсувствует.
+
+            try
+            {
+                if (table.Rows[0][0] != null)
+                {
+                    int fantom_id = Convert.ToInt32(table.Rows[0][0]);
+
+                    if (CurrentDataRow == fantom_id)
+                    {
+                        out_id = CurrentDataRow;
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Такая строка уже существует");
+                        out_id = 0;
+                        return false;
+                    };
+                }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // В случае, когда таблица вернула 0 результатов, это означает, 
+                // что записей по указанным параметрам не существует, и обновление редактируемой записи возможно.
+                out_id = CurrentDataRow;
+                return true;
+            }
+            out_id = 0;
+            return false;
+        }
+        void UpdateRecord (int id)//обновление
+        {
+            SQliteDB database = new SQliteDB();            
+
+            using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
+            {
+                connection.Open();             
+
+                SQLiteCommand command = new SQLiteCommand($"UPDATE БазовыйНормативЗатрат SET Наименование = '{textBoxDesc.Text}', "+
+                                                            $"Полное_наименование = '{textBoxFillDesc.Text}', Комментарий = '{textBoxComment.Text}' " +
+                                                            $"WHERE БазовыйНормативЗатрат.код = {CurrentDataRow}"
+                                                            , connection);
+
+                command.ExecuteNonQuery();
+            }
+        }
+        void InsertRecord ()//сохранение
+        {
+            SQliteDB database = new SQliteDB();            
+            string query = "SELECT * FROM БазовыйНормативЗатрат";
+
+            using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
+            {
+                connection.Open();
+
+                adapter = new SQLiteDataAdapter(query, connection);
+                table0 = new DataTable();
+                DataRow new_row = table0.NewRow();
+
+                adapter.Fill(table0); 
+
+                new_row[1] = textBoxDesc.Text;
+                new_row[2] = textBoxFillDesc.Text;
+                new_row[3] = textBoxComment.Text;
+                
+
+                SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
+
+                table0.Rows.Add(new_row);
+                adapter.Update(table0);
+
+            }
+        }
+
+
+
+
+        private void FormБНЗ_Добавление_Load (object sender, EventArgs e)
+        {
+            FillDataGrid();
         }
 
         private void buttonAddKoef_Click (object sender, EventArgs e)
         {
-           
+           /*
+            * Кнопка пока не задейсвован. Но позже может потребоваться.
+            * Для отдельной формы, на окторой будут отображены корректирующие коэффиценты 
+            * с дополнительним полем - Уточнение. По этому полю, можно будет дополнить условия проверки на будликаты.
+            * */
         }
 
         private void comboBoxCorrectKoef_SelectionChangeCommitted (object sender, EventArgs e)
         {
+            db = new SQliteDB();
+            ComboBox item = (ComboBox)sender;
 
+            using (SQLiteConnection connection = new SQLiteConnection(db.ConnectionDB))
+            {
+                connection.Open();
+                adapter = new SQLiteDataAdapter("SELECT * FROM КоррКоэффицентБазовогоНорматива", connection);
+                table1 = new DataTable();
+                adapter.Fill(table1);
+
+                DataRow newrow = table1.NewRow();
+
+                newrow["Календарный_год"]       = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01");
+                newrow["Базовый_норматив_ВК"]   = CurrentDataRow;
+                newrow["Корр_коэфф_ВК"]         = Convert.ToInt32(ListKK.Where(x => x.Наименование.Contains(item.SelectedItem.ToString())).Select(x => x.id).ElementAt(0));
+
+                command = new SQLiteCommandBuilder(adapter);
+
+                table1.Rows.Add(newrow);
+                adapter.Update(table1);
+
+                item.Items.Remove(item.SelectedItem);                
+                FillDataGrid();
+            }
+        }
+
+        private void buttonDeleteKoef_Click (object sender, EventArgs e)
+        {
+            List<string> ListId = new List<string>();
+
+            SQliteDB q = new SQliteDB();
+            foreach (DataGridViewRow row in dataGridViewKoef.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[0].Value))
+                {
+                    ListId.Add(row.Cells["код"].Value.ToString());                    
+                }
+            }
+            foreach (DataGridViewRow row in dataGridViewKoef.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[0].Value))
+                {
+                    dataGridViewKoef.Rows.Remove(row);
+                }
+            }
+            
+            //q.Delete("КоррКоэффицентБазовогоНорматива", "КоррКоэффицентБазовогоНорматива.код", string.Join(",", ListId.ToArray()));
+            string s = string.Join(",", ListId.ToArray());
+
+            using (SQLiteConnection connection = new SQLiteConnection(q.ConnectionDB))
+            {
+                connection.Open();
+                SQLiteCommand command = new SQLiteCommand("DELETE FROM КоррКоэффицентБазовогоНорматива WHERE " +
+                                                            $"КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК IN({s}) AND " +
+                                                            $"КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}", connection);
+                command.ExecuteNonQuery();
+
+            }
+        }
+
+        private void buttonSaveAndClose_Click (object sender, EventArgs e)
+        {
+            Operation();
+            Close();
+        }
+
+        private void buttonSave_Click (object sender, EventArgs e)
+        {
+            Operation();
         }
     }
 }

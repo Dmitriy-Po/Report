@@ -75,6 +75,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\ClassFormEducation.cs" />
+    <Compile Include="Forms\Form1GroupAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Form1GroupAdd.Designer.cs">
+      <DependentUpon>Form1GroupAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormGroups.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormGroups.Designer.cs">
+      <DependentUpon>FormGroups.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormСозданиеОтчёта.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +147,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormAddReport.resx">
       <DependentUpon>FormAddReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Form1GroupAdd.resx">
+      <DependentUpon>Form1GroupAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormGroups.resx">
+      <DependentUpon>FormGroups.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormСозданиеОтчёта.resx">
       <DependentUpon>FormСозданиеОтчёта.cs</DependentUpon>

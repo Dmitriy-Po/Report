@@ -429,5 +429,11 @@ namespace Report
             FormСозданиеОтчёта report = new FormСозданиеОтчёта();
             report.ShowDialog();
         }
+
+        private void группыToolStripMenuItem_Click (object sender, EventArgs e)
+        {
+            FormGroups gr = new FormGroups();
+            gr.ShowDialog();
+        }
     }
 }
