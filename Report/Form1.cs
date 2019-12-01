@@ -289,7 +289,7 @@ namespace Report
                         form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
                         form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
                         form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
-                        form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;
+                        form.checkBoxStdInv.Checked = Convert.ToBoolean(row.Cells[8].Value);
                     }
                 }
                 form.ShowDialog(); 
@@ -379,14 +379,15 @@ namespace Report
                     if (Convert.ToBoolean(row.Cells[0].Value))
                     {
                         form.textBoxYear.Text = row.Cells[1].Value.ToString();
-                        form.textBoxОчное.Text = row.Cells[5].Value.ToString();
-                        form.textBoxОчно_заочное.Text = row.Cells[6].Value.ToString();
-                        form.textBoxЗаочное.Text = row.Cells[7].Value.ToString();
+                        form.textBoxОчное.Text          = row.Cells[6].Value.ToString();
+                        form.textBoxОчно_заочное.Text   = row.Cells[7].Value.ToString();
+                        form.textBoxЗаочное.Text        = row.Cells[8].Value.ToString();
 
-                        form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
-                        form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
-                        form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
-                        form.checkBoxStdInv.Checked = (bool)row.Cells[8].Value;
+                        form.comboBoxFilial.SelectedItem    = row.Cells["Филиал"].Value;
+                        form.comboBoxSpecial.SelectedItem   = row.Cells["Специальность"].Value;
+                        form.comboBoxSkill.SelectedItem     = row.Cells["Квалификация"].Value;
+                        
+                        form.checkBoxStdInv.Checked = Convert.ToBoolean(row.Cells["Студент инвалид"].Value);
                         form.GetCurrentrow_ID = Convert.ToInt32(row.Cells[9].Value);
                     }
                 }

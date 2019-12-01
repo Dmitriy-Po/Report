@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Report.Forms
@@ -11,12 +13,13 @@ namespace Report.Forms
         {
             InitializeComponent();
         }
+        DataSet ds;
         SQliteDB DB;
         DataTable Table, TableGroup;
         SQLiteDataAdapter Adapter, AdapterGroup;
         SQLiteCommand Command;
         SQLiteCommandBuilder CommndBuilder;
-
+        List<БазовыеНормативыЗатрат> ListNormals = new List<БазовыеНормативыЗатрат>();
 
         public ushort StatusOperation { get; set; } /*Для выбора режима Редактирования, Добавления или Дубликата */
         public int CurrentDataRow_id { get; set; }
@@ -54,8 +57,8 @@ namespace Report.Forms
             using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
             {
                 connection.Open();
-                string query = "SELECT * FROM СтоимостнаяГруппаКалГода "+
-                               $"WHERE СтоимостнаяГруппаКалГода.Наименование = '{textBoxDesc.Text}' "+
+                string query = "SELECT * FROM СтоимостнаяГруппаКалГода " +
+                               $"WHERE СтоимостнаяГруппаКалГода.Наименование = '{textBoxDesc.Text}' " +
                                $" AND СтоимостнаяГруппаКалГода.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%';";
 
                 Adapter = new SQLiteDataAdapter(query, connection);
@@ -96,9 +99,9 @@ namespace Report.Forms
             DB = new SQliteDB();
             string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
-            string update = "UPDATE СтоимостнаяГруппаКалГода SET "+
-                            $"Наименование = '{textBoxDesc.Text}', ПолноеНаименование = '{textBoxFillDesc.Text}', "+
-                            $"Комментарий = '{textBoxComment.Text}', КалендарныйГод = '{DATE}' "+
+            string update = "UPDATE СтоимостнаяГруппаКалГода SET " +
+                            $"Наименование = '{textBoxDesc.Text}', ПолноеНаименование = '{textBoxFillDesc.Text}', " +
+                            $"Комментарий = '{textBoxComment.Text}', КалендарныйГод = '{DATE}' " +
                             $"WHERE СтоимостнаяГруппаКалГода.код = {CurrentDataRow_id}";
 
 
@@ -145,7 +148,7 @@ namespace Report.Forms
             out_id = 0;
             return false;
         }
-        void Operation()
+        void Operation ()
         {
             int id = 0;
             // 1 - добавление, 2 - по шаблону, 3 - редактирование.
@@ -178,25 +181,42 @@ namespace Report.Forms
         {
             DB = new SQliteDB();
             string select = "SELECT БНЗСтоимостнойГруппы.код, " +
-                            "БазовыйНормативЗатрат.Наименование, "+                            
-                            "БНЗСтоимостнойГруппы.Бакалавриат, "+
-                            "БНЗСтоимостнойГруппы.Магистратура, "+
-                            "БНЗСтоимостнойГруппы.Аспирантура, "+
-                            "БНЗСтоимостнойГруппы.СПО "+
-                            "FROM БНЗСтоимостнойГруппы JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = БНЗСтоимостнойГруппы.БНЗ_ВК "+
-                            $"WHERE БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК = {CurrentDataRow_id} "+
-                            $"AND БНЗСтоимостнойГруппы.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'; ";
-            
-            //SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB);
-            
-            //    connection.Open();
-                AdapterGroup = new SQLiteDataAdapter(select, DB.ConnectionDB);
-                TableGroup = new DataTable();
-                AdapterGroup.Fill(TableGroup);
+                            "БазовыйНормативЗатрат.Наименование as 'Базовый норматив', "+
+                            "БНЗСтоимостнойГруппы.Бакалавриат, " +
+                            "БНЗСтоимостнойГруппы.Магистратура, " +
+                            "БНЗСтоимостнойГруппы.Аспирантура, " +
+                            "БНЗСтоимостнойГруппы.СПО, " +
+                            "БНЗСтоимостнойГруппы.КалендарныйГод, " +
+                            "БНЗСтоимостнойГруппы.БНЗ_ВК, " +
+                            "БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК " +
+                            "FROM БНЗСтоимостнойГруппы JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = БНЗСтоимостнойГруппы.БНЗ_ВК " +
+                            $"WHERE БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК = {CurrentDataRow_id} " +
+                            $"AND БНЗСтоимостнойГруппы.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'; " +
 
-                dataGridViewБНЗ_Группы.DataSource = TableGroup;
-                //connection.Close();
-                        
+                            //Table 1.
+                            "SELECT БазовыйНормативЗатрат.код, Наименование FROM БазовыйНормативЗатрат WHERE БазовыйНормативЗатрат.код " +
+                            "NOT IN(SELECT БНЗСтоимостнойГруппы.БНЗ_ВК FROM БНЗСтоимостнойГруппы WHERE " +
+                            $"БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК = {CurrentDataRow_id})";
+
+
+            ds = new DataSet();
+            AdapterGroup = new SQLiteDataAdapter(select, DB.ConnectionDB);
+            TableGroup = new DataTable();
+            AdapterGroup.Fill(ds);
+
+            TableGroup = ds.Tables[0];
+
+            dataGridViewБНЗ_Группы.DataSource = TableGroup;
+            /*формирование внешнего вида таблицы*/
+
+            ListNormals.Clear();
+            comboBoxNormativ.Items.Clear();
+            foreach (DataRow row in ds.Tables[1].Rows)
+            {
+                ListNormals.Add(new БазовыеНормативыЗатрат(Convert.ToInt32(row[0]), row[1].ToString()));
+            }
+            comboBoxNormativ.Items.AddRange(ListNormals.Select(x => x.Desc).ToArray());
+
         }
         void DeleteSelectedRows ()
         {
@@ -228,6 +248,45 @@ namespace Report.Forms
             DeleteSelectedRows();
         }
 
+        private void buttonSave_Click (object sender, EventArgs e)
+        {
+            Operation();
+        }
+
+        private void comboBoxNormativ_SelectionChangeCommitted (object sender, EventArgs e)
+        {
+            ComboBox item = (ComboBox)sender;
+
+            AdapterGroup = new SQLiteDataAdapter("select БНЗСтоимостнойГруппы.код, "+
+                                                    "БНЗСтоимостнойГруппы.Бакалавриат, "+
+                                                    "БНЗСтоимостнойГруппы.Магистратура, "+
+                                                    "БНЗСтоимостнойГруппы.Аспирантура, "+
+                                                    "БНЗСтоимостнойГруппы.СПО, "+
+                                                    "БНЗСтоимостнойГруппы.КалендарныйГод, "+
+                                                    "БНЗСтоимостнойГруппы.БНЗ_ВК, "+
+                                                    "БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК "+
+                                                    "from БНЗСтоимостнойГруппы", DB.ConnectionDB);
+
+            DataRow newrow = TableGroup.NewRow();
+
+            newrow["Бакалавриат"] = 0;
+            newrow["Магистратура"] = 0;
+            newrow["Аспирантура"] = 0;
+            newrow["СПО"] = 0;
+
+            newrow["КалендарныйГод"] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01");
+            newrow["СтоимостнаяГруппаКалГода_ВК"] = CurrentDataRow_id;
+            newrow["БНЗ_ВК"] = Convert.ToInt32(ListNormals.Where(x => x.Desc.Contains(item.SelectedItem.ToString())).Select(x => x.id).ElementAt(0));
+
+            CommndBuilder = new SQLiteCommandBuilder(AdapterGroup);
+            TableGroup.Rows.Add(newrow);
+            AdapterGroup.Update(TableGroup);
+
+            item.Items.Remove(item.SelectedItem);
+            FillDataGridGroups();
+        }
+
+
         private void FormGroupAdd_Load (object sender, EventArgs e)
         {
             FillDataGridGroups();
@@ -235,7 +294,6 @@ namespace Report.Forms
 
         private void dataGridViewБНЗ_Группы_CellEndEdit (object sender, DataGridViewCellEventArgs e)
         {
-            //DB = new SQliteDB();
             string select = "SELECT БНЗСтоимостнойГруппы.код, " +                            
                             "БНЗСтоимостнойГруппы.Бакалавриат, " +
                             "БНЗСтоимостнойГруппы.Магистратура, " +

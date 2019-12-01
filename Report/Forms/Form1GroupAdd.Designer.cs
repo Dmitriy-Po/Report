@@ -43,7 +43,7 @@
             this.textBoxDesc = new System.Windows.Forms.TextBox();
             this.buttonSaveAndClose = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.comboBoxCorrectKoef = new System.Windows.Forms.ComboBox();
+            this.comboBoxNormativ = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewБНЗ_Группы)).BeginInit();
             this.SuspendLayout();
@@ -175,14 +175,16 @@
             this.buttonSave.Size = new System.Drawing.Size(40, 40);
             this.buttonSave.TabIndex = 19;
             this.buttonSave.UseVisualStyleBackColor = true;
+            this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // comboBoxCorrectKoef
+            // comboBoxNormativ
             // 
-            this.comboBoxCorrectKoef.FormattingEnabled = true;
-            this.comboBoxCorrectKoef.Location = new System.Drawing.Point(22, 194);
-            this.comboBoxCorrectKoef.Name = "comboBoxCorrectKoef";
-            this.comboBoxCorrectKoef.Size = new System.Drawing.Size(370, 21);
-            this.comboBoxCorrectKoef.TabIndex = 33;
+            this.comboBoxNormativ.FormattingEnabled = true;
+            this.comboBoxNormativ.Location = new System.Drawing.Point(22, 194);
+            this.comboBoxNormativ.Name = "comboBoxNormativ";
+            this.comboBoxNormativ.Size = new System.Drawing.Size(370, 21);
+            this.comboBoxNormativ.TabIndex = 33;
+            this.comboBoxNormativ.SelectionChangeCommitted += new System.EventHandler(this.comboBoxNormativ_SelectionChangeCommitted);
             // 
             // label5
             // 
@@ -213,7 +215,7 @@
             this.Controls.Add(this.textBoxDesc);
             this.Controls.Add(this.buttonSaveAndClose);
             this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.comboBoxCorrectKoef);
+            this.Controls.Add(this.comboBoxNormativ);
             this.Controls.Add(this.label5);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormGroupAdd";
@@ -241,7 +243,7 @@
         public System.Windows.Forms.TextBox textBoxDesc;
         private System.Windows.Forms.Button buttonSaveAndClose;
         private System.Windows.Forms.Button buttonSave;
-        public System.Windows.Forms.ComboBox comboBoxCorrectKoef;
+        public System.Windows.Forms.ComboBox comboBoxNormativ;
         private System.Windows.Forms.Label label5;
     }
 }
