@@ -61,14 +61,11 @@ namespace Report.Forms
                         dataGridViewGoups.Rows.Remove(row);
                     }
                 }
+                Adapter = new SQLiteDataAdapter("select СтоимостнаяГруппаКалГода.код from СтоимостнаяГруппаКалГода", DB.ConnectionDB);
+                Command = new SQLiteCommandBuilder(Adapter);
 
-                using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
-                {
-                    connection.Open();
-                    Command = new SQLiteCommandBuilder(Adapter);
+                Adapter.Update(Table);
 
-                    Adapter.Update(Table);
-                }
             }
         }
         bool CountSelectedRows (string tooltip)

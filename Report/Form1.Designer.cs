@@ -38,10 +38,11 @@
             this.buttonDeleteSelected = new System.Windows.Forms.Button();
             this.dataGridViewMain = new System.Windows.Forms.DataGridView();
             this.ColumnCheck = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.textBoxYear = new System.Windows.Forms.TextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.стоимостныеГруппыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.группыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.нормативыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.базовыеНормативыЗатратToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.коэффицентыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,8 +54,7 @@
             this.buttonRefresh = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.стоимостныеГруппыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.группыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.comboBoxYear = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -162,14 +162,6 @@
             this.ColumnCheck.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.ColumnCheck.Width = 50;
             // 
-            // textBoxYear
-            // 
-            this.textBoxYear.Location = new System.Drawing.Point(323, 37);
-            this.textBoxYear.Name = "textBoxYear";
-            this.textBoxYear.Size = new System.Drawing.Size(230, 20);
-            this.textBoxYear.TabIndex = 3;
-            this.textBoxYear.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -196,9 +188,24 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(108, 22);
             this.exitToolStripMenuItem.Text = "Выход";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // стоимостныеГруппыToolStripMenuItem
+            // 
+            this.стоимостныеГруппыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.группыToolStripMenuItem});
+            this.стоимостныеГруппыToolStripMenuItem.Name = "стоимостныеГруппыToolStripMenuItem";
+            this.стоимостныеГруппыToolStripMenuItem.Size = new System.Drawing.Size(139, 20);
+            this.стоимостныеГруппыToolStripMenuItem.Text = "Стоимостные группы";
+            // 
+            // группыToolStripMenuItem
+            // 
+            this.группыToolStripMenuItem.Name = "группыToolStripMenuItem";
+            this.группыToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.группыToolStripMenuItem.Text = "Группы...";
+            this.группыToolStripMenuItem.Click += new System.EventHandler(this.группыToolStripMenuItem_Click);
             // 
             // нормативыToolStripMenuItem
             // 
@@ -258,9 +265,9 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.comboBoxYear);
             this.groupBox1.Controls.Add(this.buttonRefresh);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textBoxYear);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.buttonDeleteSelected);
             this.groupBox1.Controls.Add(this.comboBoxFil);
@@ -306,20 +313,13 @@
             this.label2.TabIndex = 14;
             this.label2.Text = "Календарный год";
             // 
-            // стоимостныеГруппыToolStripMenuItem
+            // comboBoxYear
             // 
-            this.стоимостныеГруппыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.группыToolStripMenuItem});
-            this.стоимостныеГруппыToolStripMenuItem.Name = "стоимостныеГруппыToolStripMenuItem";
-            this.стоимостныеГруппыToolStripMenuItem.Size = new System.Drawing.Size(139, 20);
-            this.стоимостныеГруппыToolStripMenuItem.Text = "Стоимостные группы";
-            // 
-            // группыToolStripMenuItem
-            // 
-            this.группыToolStripMenuItem.Name = "группыToolStripMenuItem";
-            this.группыToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.группыToolStripMenuItem.Text = "Группы...";
-            this.группыToolStripMenuItem.Click += new System.EventHandler(this.группыToolStripMenuItem_Click);
+            this.comboBoxYear.FormattingEnabled = true;
+            this.comboBoxYear.Location = new System.Drawing.Point(323, 36);
+            this.comboBoxYear.Name = "comboBoxYear";
+            this.comboBoxYear.Size = new System.Drawing.Size(230, 21);
+            this.comboBoxYear.TabIndex = 17;
             // 
             // FormListCountStudent
             // 
@@ -354,7 +354,6 @@
         private System.Windows.Forms.Button buttonAddStingPattern;
         private System.Windows.Forms.Button buttonEditString;
         private System.Windows.Forms.Button buttonDeleteSelected;
-        private System.Windows.Forms.TextBox textBoxYear;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
@@ -373,6 +372,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn ColumnCheck;
         private System.Windows.Forms.ToolStripMenuItem стоимостныеГруппыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem группыToolStripMenuItem;
+        private System.Windows.Forms.ComboBox comboBoxYear;
     }
 }
 

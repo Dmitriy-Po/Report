@@ -40,7 +40,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxОчно_заочное = new System.Windows.Forms.TextBox();
             this.textBoxОчное = new System.Windows.Forms.TextBox();
-            this.textBoxYear = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
@@ -56,6 +55,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
+            this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // buttonSave
@@ -152,13 +152,6 @@
             this.textBoxОчное.Size = new System.Drawing.Size(81, 20);
             this.textBoxОчное.TabIndex = 6;
             this.textBoxОчное.Text = "0";
-            // 
-            // textBoxYear
-            // 
-            this.textBoxYear.Location = new System.Drawing.Point(146, 68);
-            this.textBoxYear.Name = "textBoxYear";
-            this.textBoxYear.Size = new System.Drawing.Size(130, 20);
-            this.textBoxYear.TabIndex = 1;
             // 
             // button2
             // 
@@ -295,11 +288,20 @@
             this.label12.TabIndex = 34;
             this.label12.Text = "*";
             // 
+            // comboBoxYear
+            // 
+            this.comboBoxYear.FormattingEnabled = true;
+            this.comboBoxYear.Location = new System.Drawing.Point(141, 68);
+            this.comboBoxYear.Name = "comboBoxYear";
+            this.comboBoxYear.Size = new System.Drawing.Size(133, 21);
+            this.comboBoxYear.TabIndex = 35;
+            // 
             // FormAddReport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 386);
+            this.Controls.Add(this.comboBoxYear);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
@@ -316,7 +318,6 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBoxОчно_заочное);
             this.Controls.Add(this.textBoxОчное);
-            this.Controls.Add(this.textBoxYear);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -357,12 +358,12 @@
         public System.Windows.Forms.CheckBox checkBoxStdInv;
         public System.Windows.Forms.TextBox textBoxОчно_заочное;
         public System.Windows.Forms.TextBox textBoxОчное;
-        public System.Windows.Forms.TextBox textBoxYear;
         public System.Windows.Forms.TextBox textBoxЗаочное;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
+        public System.Windows.Forms.ComboBox comboBoxYear;
     }
 }

@@ -17,17 +17,22 @@ namespace Report
             //заполнение коллекций
             TableFilial.Fill(ListFilial);
             TableSKill.Fill(ListSkill);
-            TableSpecial.Fill(ListSpecial);
-            FillDataGrid();
-            FillComboBoxes();
+            TableSpecial.Fill(ListSpecial);           
+            
 
             /*---------------------------------------------------------*/
-            comboBoxFil.SelectedIndexChanged += (s, e) => DataFilter();
-            comboBoxSpec.SelectedIndexChanged += (s, e) => DataFilter();
-            textBoxYear.TextChanged += (s, e) => DataFilter();
-            checkBoxStudent_inv.Click += (s, e) => DataFilter();
+            //comboBoxFil.SelectedIndexChanged += (s, e) => DataFilter();
+            //comboBoxSpec.SelectedIndexChanged += (s, e) => DataFilter();
+            //textBoxYear.TextChanged += (s, e) => DataFilter();
+            //checkBoxStudent_inv.Click += (s, e) => DataFilter();
 
         }
+
+        SQliteDB DB;
+        DataTable Table;
+        SQLiteDataAdapter Adapter;
+        SQLiteCommandBuilder Command;
+
         public List<TableFilial>  ListFilial = new List<TableFilial>();
         public List<TableSKill>   ListSkill = new List<TableSKill>();
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
@@ -41,8 +46,77 @@ namespace Report
             comboBoxSpec.Items.Insert(0, "Все специальности");
             comboBoxFil.SelectedIndex = 0;
             comboBoxSpec.SelectedIndex = 0;
-            textBoxYear.Text = DateTime.Today.Year.ToString();
+           
+            // Заполнение comboboxYear.            
+            int y = DateTime.Today.Year - 3;
+            do
+            {
+                comboBoxYear.Items.Add(++y);
+            } while (y != DateTime.Today.Year);
+            comboBoxYear.SelectedItem = y;
         }
+        void DeleteSelectedRows ()
+        {
+            DB = new SQliteDB();
+            DialogResult result = MessageBox.Show("Вы действительно хотите удлать запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result.Equals(DialogResult.Yes))
+            {
+                foreach (DataGridViewRow row in dataGridViewMain.Rows)
+                {
+                    if (Convert.ToBoolean(row.Cells[0].Value))
+                    {
+                        dataGridViewMain.Rows.Remove(row);
+                    }
+                }
+                Adapter = new SQLiteDataAdapter("select ЧисленностьОбучающихся.код from ЧисленностьОбучающихся", DB.ConnectionDB);
+                Command = new SQLiteCommandBuilder(Adapter);
+
+                Adapter.Update(Table);
+
+            }
+        }
+        void FillComponents (bool IsEditingMode)
+        {
+            // Заполение компонентов на форме из datagrid.
+            FormAddReport fadd = new FormAddReport();
+            fadd.FillCombobox();
+            SqlMyDataReader("Filial", 2, fadd.comboBoxFilial);
+            SqlMyDataReader("Квалификации", 1, fadd.comboBoxSkill);
+            SqlMyDataReader("Специальности", 1, fadd.comboBoxSpecial);
+
+            foreach (DataGridViewRow row in dataGridViewMain.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[0].Value))
+                {
+                    fadd.comboBoxFilial.SelectedItem      = row.Cells["Филиал"].Value;
+                    fadd.comboBoxSpecial.SelectedItem     = row.Cells["Специальность"].Value;
+                    fadd.comboBoxSkill.SelectedItem       = row.Cells["Квалификация"].Value;
+                    fadd.comboBoxYear.SelectedItem        = comboBoxYear.SelectedItem;
+                    
+                    fadd.textBoxОчное.Text          = row.Cells["Очное"].Value.ToString();
+                    fadd.textBoxОчно_заочное.Text   = row.Cells["Очно-заочное"].Value.ToString();
+                    fadd.textBoxЗаочное.Text        = row.Cells["Заочное"].Value.ToString();
+
+                    if (IsEditingMode)
+                    {
+                        fadd.Text = "Редактирование норматива";
+                        fadd.StatusOperation = 3;
+                        fadd.GetCurrentrow_ID = Convert.ToInt32(row.Cells["код"].Value);    // получение строки для использования в функции IsDuplicate.
+                    }
+                    else
+                    {
+                        fadd.Text = "Создание по шаблону";
+                        fadd.StatusOperation = 2;
+                        fadd.GetCurrentrow_ID = 0;    // 0 - для режима Создать по шаблону.
+                    }
+                }
+            }
+
+            fadd.ShowDialog();
+            FillDataGrid();
+        }
+
         public void DataFilter ()
         {
             try
@@ -124,20 +198,72 @@ namespace Report
             else return true;
         }
 
-        #region select                
+                      
         public void RefreshDataGridCiew()
         {
-            dataGridViewMain.DataSource = null;
-            dataGridViewMain.Rows.Clear();
-            FillDataGrid();
+            //dataGridViewMain.DataSource = null;
+            //dataGridViewMain.Rows.Clear();
+            //FillDataGrid();
         }
         public void FillDataGrid()
         {
+            #region OLD
             //возможно стоит использовать datasource для получекния данных
             //но пока действует по выборе из базы данных
+            //string query = " SELECT " +
+            //"ЧисленностьОбучающихся.год as 'Год', " +
+            //"Filial.id as 'Структурное код', "+
+            //"Filial.full_desc as 'Филиал', " +
+            //"Специальности.наименование as 'Специальность', " +
+            //"Квалификации.наименование as 'Квалификация', " +
+            //"ЧисленностьОбучающихся.очное as 'Очное', " +
+            //"ЧисленностьОбучающихся.очно_заочное as 'Очно-заочное', " +
+            //"ЧисленностьОбучающихся.заочное as 'Заочное', " +
+            //"ЧисленностьОбучающихся.студент_инвалид as 'Студент инвалид', " +
+            //"ЧисленностьОбучающихся.код as 'id' "+            
+            //"FROM ЧисленностьОбучающихся " +
+            //"INNER JOIN Filial ON " +
+            //"ЧисленностьОбучающихся.стуктурное_подразделение_ВК = Filial.id " +
+            //"INNER JOIN Специальности ON " +
+            //"ЧисленностьОбучающихся.специальность_ВК = Специальности.код " +
+            //"INNER JOIN Квалификации ON " +
+            //"ЧисленностьОбучающихся.квалификация_ВК = Квалификации.код";
+
+
+            
+            //SQliteDB db = new SQliteDB();
+                        
+            //using (SQLiteConnection Connection = new SQLiteConnection(db.ConnectionDB))
+            //{
+            //    Connection.Open();
+            //    SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, Connection);
+            //    DataSet ds = new DataSet();
+            //    adapter.Fill(ds);
+
+            //    dataGridViewMain.DataSource = ds.Tables[0];
+            //    dataGridViewMain.Columns[2].Visible = false;
+            //    dataGridViewMain.Columns[10].Visible = false;
+
+            //    ListCountStudent.Clear();
+            //    foreach (DataRow row in ds.Tables[0].AsEnumerable())
+            //    {
+            //        ListCountStudent.Add(new TableCountStudent(
+            //            Convert.ToInt32(row[1]),
+            //            Convert.ToString(row[2]),
+            //            Convert.ToString(row[3]),
+            //            Convert.ToString(row[4]),
+
+            //            Convert.ToInt32(row[5]),
+            //            Convert.ToInt32(row[6]),
+            //            Convert.ToInt32(row[7]),
+            //            Convert.ToInt32(row[0])));
+            //    }               
+            //}
+            
+            #endregion
             string query = " SELECT " +
             "ЧисленностьОбучающихся.год as 'Год', " +
-            "Filial.id as 'Структурное код', "+
+            "Filial.id as 'Структурное код', " +
             "Filial.full_desc as 'Филиал', " +
             "Специальности.наименование as 'Специальность', " +
             "Квалификации.наименование as 'Квалификация', " +
@@ -145,7 +271,7 @@ namespace Report
             "ЧисленностьОбучающихся.очно_заочное as 'Очно-заочное', " +
             "ЧисленностьОбучающихся.заочное as 'Заочное', " +
             "ЧисленностьОбучающихся.студент_инвалид as 'Студент инвалид', " +
-            "ЧисленностьОбучающихся.код as 'id' "+            
+            "ЧисленностьОбучающихся.код as 'код' " +
             "FROM ЧисленностьОбучающихся " +
             "INNER JOIN Filial ON " +
             "ЧисленностьОбучающихся.стуктурное_подразделение_ВК = Filial.id " +
@@ -154,58 +280,19 @@ namespace Report
             "INNER JOIN Квалификации ON " +
             "ЧисленностьОбучающихся.квалификация_ВК = Квалификации.код";
 
+            DB = new SQliteDB();
+            SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB);
+            connection.Open();
 
-            
-            SQliteDB db = new SQliteDB();
-                        
-            using (SQLiteConnection Connection = new SQLiteConnection(db.ConnectionDB))
-            {
-                Connection.Open();
-                SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, Connection);
-                DataSet ds = new DataSet();
-                adapter.Fill(ds);
+            Adapter = new SQLiteDataAdapter(query, connection);
+            Table = new DataTable();
+            Adapter.Fill(Table);
 
-                dataGridViewMain.DataSource = ds.Tables[0];
-                dataGridViewMain.Columns[2].Visible = false;
-                dataGridViewMain.Columns[10].Visible = false;
+            dataGridViewMain.DataSource = Table;
+            dataGridViewMain.Columns[2].Visible = false;
+            dataGridViewMain.Columns[10].Visible = false;
 
-                ListCountStudent.Clear();
-                foreach (DataRow row in ds.Tables[0].AsEnumerable())
-                {
-                    ListCountStudent.Add(new TableCountStudent(
-                        Convert.ToInt32(row[1]),
-                        Convert.ToString(row[2]),
-                        Convert.ToString(row[3]),
-                        Convert.ToString(row[4]),
-
-                        Convert.ToInt32(row[5]),
-                        Convert.ToInt32(row[6]),
-                        Convert.ToInt32(row[7]),
-                        Convert.ToInt32(row[0])));
-                }               
-            }
-
-            //SQLiteDataReader r = cmd.ExecuteReader();
-            
-            //while (r.Read())
-            //{
-            //    dataGridViewMain.Rows.Add(0, r[8], r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7]);
-            //    ListCountStudent.Add(new TableCountStudent()
-            //    {
-            //        Filial =         Convert.ToString(r[0]),
-            //        Skill =          Convert.ToString(r[2]),
-            //        Special =        Convert.ToString(r[1]),
-            //        ochnoe =         Convert.ToInt32(r[3]),
-            //        ochno_zaocjnoe = Convert.ToInt32(r[4]),
-            //        zaochnoe =       Convert.ToInt32(r[5]),
-            //        student_inv =    Convert.ToBoolean(r[6]),
-            //        id =             Convert.ToInt32(r[7]),
-            //        year =           Convert.ToInt32(r[8])
-
-            //    });
-            //}
-            //r.Close();
-            //conn.Close();
+            connection.Close();
         }
 
         public void SaveStudent(int[] column)
@@ -225,7 +312,7 @@ namespace Report
                 });
             
         }
-        #endregion
+        
         public void SqlMyDataReader (string name_table, int num_col, ComboBox box)
         {
             //заполнение combobox
@@ -269,31 +356,38 @@ namespace Report
         }
 
         private void button2_Click (object sender, EventArgs e)
-        {            
-            if (CountSelectedRows("Создать по шаблону"))
+        {
+            if (CountSelectedRows("Добавить по шаблону"))
             {
-                FormAddReport form = new FormAddReport();
-                SqlMyDataReader("Filial", 2, form.comboBoxFilial);
-                SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
-                SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
-
-                foreach (DataGridViewRow row in dataGridViewMain.Rows)
-                {
-                    if (Convert.ToBoolean(row.Cells[0].Value))
-                    {
-                        form.textBoxYear.Text = row.Cells[1].Value.ToString();
-                        form.textBoxОчное.Text = row.Cells[5].Value.ToString();
-                        form.textBoxОчно_заочное.Text = row.Cells[6].Value.ToString();
-                        form.textBoxЗаочное.Text = row.Cells[7].Value.ToString();
-
-                        form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
-                        form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
-                        form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
-                        form.checkBoxStdInv.Checked = Convert.ToBoolean(row.Cells[8].Value);
-                    }
-                }
-                form.ShowDialog(); 
+                FillComponents(false);
             }
+
+            #region OLD
+            //if (CountSelectedRows("Создать по шаблону"))
+            //{
+            //    FormAddReport form = new FormAddReport();
+            //    SqlMyDataReader("Filial", 2, form.comboBoxFilial);
+            //    SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
+            //    SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
+
+            //    foreach (DataGridViewRow row in dataGridViewMain.Rows)
+            //    {
+            //        if (Convert.ToBoolean(row.Cells[0].Value))
+            //        {
+            //            form.textBoxYear.Text = row.Cells[1].Value.ToString();
+            //            form.textBoxОчное.Text = row.Cells[5].Value.ToString();
+            //            form.textBoxОчно_заочное.Text = row.Cells[6].Value.ToString();
+            //            form.textBoxЗаочное.Text = row.Cells[7].Value.ToString();
+
+            //            form.comboBoxFilial.SelectedItem = row.Cells[2].Value.ToString();
+            //            form.comboBoxSpecial.SelectedItem = row.Cells[3].Value.ToString();
+            //            form.comboBoxSkill.SelectedItem = row.Cells[4].Value.ToString();
+            //            form.checkBoxStdInv.Checked = Convert.ToBoolean(row.Cells["id"].Value);
+            //        }
+            //    }
+            //    form.ShowDialog(); 
+            //}
+            #endregion
 
         }
 
@@ -317,19 +411,33 @@ namespace Report
         #endregion
         private void buttonAddNewString_Click (object sender, EventArgs e)
         {
+            FormAddReport f = new FormAddReport();
+            f.FillCombobox();
+
+            SqlMyDataReader("Filial", 2, f.comboBoxFilial);
+            SqlMyDataReader("Квалификации", 1, f.comboBoxSkill);
+            SqlMyDataReader("Специальности", 1, f.comboBoxSpecial);
+
+            f.Text = "Добавление";
+            f.StatusOperation = 1;
+
+            f.ShowDialog();
+            FillDataGrid();
+
             //при нажатии на кнопку AddnewString - заполняются combobox
-            FormAddReport form = new FormAddReport();
+            //FormAddReport form = new FormAddReport();
 
-            SqlMyDataReader("Filial", 2, form.comboBoxFilial);
-            SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
-            SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
+            //SqlMyDataReader("Filial", 2, form.comboBoxFilial);
+            //SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
+            //SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
 
-            form.ShowDialog();
+            //form.ShowDialog();
         }
 
         public void FormListCountStudent_Load(object sender, EventArgs e)
         {
-            
+            FillComboBoxes();
+            FillDataGrid();
         }
 
         private void бДToolStripMenuItem_Click(object sender, EventArgs e)
@@ -345,55 +453,76 @@ namespace Report
 
         private void buttonDeleteSelected_Click(object sender, EventArgs e)
         {
+            #region OLD
             //доделать проверку
             //и попробовать сделать асинхронный метод
-            List<string> ListId = new List<string>();
-            SQliteDB q = new SQliteDB();
-            foreach (DataGridViewRow rows in dataGridViewMain.Rows)
+            //List<string> ListId = new List<string>();
+            //SQliteDB q = new SQliteDB();
+            //foreach (DataGridViewRow rows in dataGridViewMain.Rows)
+            //{
+            //    if (Convert.ToBoolean(rows.Cells[0].Value))
+            //    {
+            //        ListId.Add(rows.Cells["id"].Value.ToString());
+            //    }
+            //}
+            //q.Delete("ЧисленностьОбучающихся", "ЧисленностьОбучающихся.код", string.Join(",", ListId.ToArray()));
+            //RefreshDataGridCiew();
+            #endregion
+            UInt32 count = 0;
+            foreach (DataGridViewRow row in dataGridViewMain.Rows)
             {
-                if (Convert.ToBoolean(rows.Cells[0].Value))
+                if (Convert.ToBoolean(row.Cells[0].Value))
                 {
-                    ListId.Add(rows.Cells["ColumnID"].Value.ToString());
+                    count++;
                 }
             }
-            q.Delete("ЧисленностьОбучающихся", "ЧисленностьОбучающихся.код", string.Join(",", ListId.ToArray()));
-            RefreshDataGridCiew();            
+            if (count == 0)
+            {
+                MessageBox.Show($"Выберите ОДНУ или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            else DeleteSelectedRows();
         }
 
 
         public void buttonEditString_Click(object sender, EventArgs e)
         {
+            #region OLD
+            //if (CountSelectedRows("Редактирования"))
+            //{
+            //    //сделать проверку на количество выделенных строк. Должна быть только одна.
+            //    //пока что функция не определяет количество выделенных строк. - это будущий баг.
+            //    FormAddReport form = new FormAddReport();
+
+            //    SqlMyDataReader("Filial", 2, form.comboBoxFilial);
+            //    SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
+            //    SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
+
+            //    //выбирается всегда последний элемент списка
+            //    foreach (DataGridViewRow row in dataGridViewMain.Rows)
+            //    {
+            //        if (Convert.ToBoolean(row.Cells[0].Value))
+            //        {
+            //            form.textBoxYear.Text = row.Cells[1].Value.ToString();
+            //            form.textBoxОчное.Text          = row.Cells[6].Value.ToString();
+            //            form.textBoxОчно_заочное.Text   = row.Cells[7].Value.ToString();
+            //            form.textBoxЗаочное.Text        = row.Cells[8].Value.ToString();
+
+            //            form.comboBoxFilial.SelectedItem    = row.Cells["Филиал"].Value;
+            //            form.comboBoxSpecial.SelectedItem   = row.Cells["Специальность"].Value;
+            //            form.comboBoxSkill.SelectedItem     = row.Cells["Квалификация"].Value;
+
+            //            form.checkBoxStdInv.Checked = Convert.ToBoolean(row.Cells["Студент инвалид"].Value);
+            //            form.GetCurrentrow_ID = Convert.ToInt32(row.Cells[9].Value);
+            //        }
+            //    }
+            //    form.ShowDialog(); 
+            //}
+            #endregion
             if (CountSelectedRows("Редактирования"))
             {
-                //сделать проверку на количество выделенных строк. Должна быть только одна.
-                //пока что функция не определяет количество выделенных строк. - это будущий баг.
-                FormAddReport form = new FormAddReport();
-
-                SqlMyDataReader("Filial", 2, form.comboBoxFilial);
-                SqlMyDataReader("Квалификации", 1, form.comboBoxSkill);
-                SqlMyDataReader("Специальности", 1, form.comboBoxSpecial);
-
-                //выбирается всегда последний элемент списка
-                foreach (DataGridViewRow row in dataGridViewMain.Rows)
-                {
-                    if (Convert.ToBoolean(row.Cells[0].Value))
-                    {
-                        form.textBoxYear.Text = row.Cells[1].Value.ToString();
-                        form.textBoxОчное.Text          = row.Cells[6].Value.ToString();
-                        form.textBoxОчно_заочное.Text   = row.Cells[7].Value.ToString();
-                        form.textBoxЗаочное.Text        = row.Cells[8].Value.ToString();
-
-                        form.comboBoxFilial.SelectedItem    = row.Cells["Филиал"].Value;
-                        form.comboBoxSpecial.SelectedItem   = row.Cells["Специальность"].Value;
-                        form.comboBoxSkill.SelectedItem     = row.Cells["Квалификация"].Value;
-                        
-                        form.checkBoxStdInv.Checked = Convert.ToBoolean(row.Cells["Студент инвалид"].Value);
-                        form.GetCurrentrow_ID = Convert.ToInt32(row.Cells[9].Value);
-                    }
-                }
-                form.ShowDialog(); 
+                FillComponents(true);
             }
-            
         }
 
         private void dataGridViewMain_CellValueChanged(object sender, DataGridViewCellEventArgs e)

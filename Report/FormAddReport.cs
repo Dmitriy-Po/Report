@@ -5,20 +5,206 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Windows.Forms;
 using System.Linq;
+using System.Data;
 
 namespace Report
 {
     public partial class FormAddReport : Form
     {
-        public int GetCurrentrow_ID
-        {
-            get;
-            set;
-        }
+        DataSet ds;
+        SQliteDB DB;
+        DataTable Table, TableGroup;
+        SQLiteDataAdapter Adapter, AdapterGroup;
+        SQLiteCommand Command;
+        SQLiteCommandBuilder CommndBuilder;
+
+
+        public int GetCurrentrow_ID { get; set; }
+        public int StatusOperation { get; set; }
+
+
         public FormAddReport()
         {
             InitializeComponent();
         }
+        public void FillCombobox ()
+        {
+            // Заполнение combobox.            
+            int y = DateTime.Today.Year - 3;
+            do
+            {
+                comboBoxYear.Items.Add(++y);
+            } while (y != DateTime.Today.Year);
+            comboBoxYear.SelectedItem = y;
+        }
+        void Operation ()
+        {
+            int id = 0;
+            // 1 - добавление, 2 - по шаблону, 3 - редактирование.
+
+            switch (StatusOperation)
+            {
+                case 1:
+                case 2:
+                    if (Duplicate())
+                    {
+                        MessageBox.Show("Такая строка уже существует");
+                    }
+                    else InsertRecord();
+
+                    break;
+
+                case 3:
+                    if (IsCurrentRows(out id))
+                    {
+                        UpdateRecord(id);
+                    }
+                    //else MessageBox.Show("Такая строка уже существует");
+
+                    break;
+            }
+        }
+        bool Duplicate ()
+        {
+            DataTable table = GetTable();
+            if (table.Rows.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        DataTable GetTable ()
+        {
+            DB = new SQliteDB();
+            FormListCountStudent ListCount = new FormListCountStudent();
+            // Дубликат - исходя из выбранных полей на форме.            
+
+            using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
+            {
+                connection.Open();
+
+                int id_filial = ListCount.ListFilial.Where(x => x.full_desc.Contains(comboBoxFilial.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
+                int id_spec = ListCount.ListSpecial.Where(x => x.desc.Contains(comboBoxSpecial.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
+
+
+                string query = "SELECT * FROM ЧисленностьОбучающихся "+
+                                    $"WHERE ЧисленностьОбучающихся.стуктурное_подразделение_ВК = {id_filial} "+
+                                    $"AND ЧисленностьОбучающихся.специальность_ВК = {id_spec} "+
+                                    $"AND ЧисленностьОбучающихся.студент_инвалид = {checkBoxStdInv.Checked} "+
+                                    $"AND ЧисленностьОбучающихся.год LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
+
+                Adapter = new SQLiteDataAdapter(query, connection);
+                Table = new DataTable();
+                Adapter.Fill(Table);
+
+                return Table;
+            }
+        }
+        void InsertRecord ()//сохранение
+        {
+            DB = new SQliteDB();
+            FormListCountStudent ListCount = new FormListCountStudent();
+            string query = "SELECT * FROM ЧисленностьОбучающихся";
+
+            int id_filial   = ListCount.ListFilial.Where(x => x.full_desc.Contains(comboBoxFilial.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
+            int id_spec     = ListCount.ListSpecial.Where(x => x.desc.Contains(comboBoxSpecial.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
+            int id_skill    = ListCount.ListSkill.Where(x => x.desc.Contains(comboBoxSkill.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
+
+
+            using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
+            {
+                connection.Open();
+
+                Adapter = new SQLiteDataAdapter(query, connection);
+                Table = new DataTable();
+                DataRow new_row = Table.NewRow();
+
+                Adapter.Fill(Table);
+
+                new_row[1] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01");
+                new_row[2] = textBoxОчное.Text;
+                new_row[3] = textBoxОчно_заочное.Text;
+                new_row[4] = textBoxЗаочное.Text;
+                new_row[5] = checkBoxStdInv.Checked;
+                new_row[6] = id_filial;
+                new_row[7] = id_spec;
+                new_row[8] = id_skill;
+
+                SQLiteCommandBuilder command = new SQLiteCommandBuilder(Adapter);
+
+                Table.Rows.Add(new_row);
+                Adapter.Update(Table);
+            }
+        }
+        bool IsCurrentRows (out int out_id)
+        {
+            DataTable table = GetTable();
+            // Три состояния при редактировании, когда (ид совпадает, когда не совпадает) и когда отсувствует.
+
+            try
+            {
+                if (table.Rows[0][0] != null)
+                {
+                    int fantom_id = Convert.ToInt32(table.Rows[0][0]);
+
+                    if (GetCurrentrow_ID == fantom_id)
+                    {
+                        out_id = GetCurrentrow_ID;
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Такая строка уже существует");
+                        out_id = 0;
+                        return false;
+                    };
+                }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                // В случае, когда таблица вернула 0 результатов, это означает, 
+                // что записей по указанным параметрам не существует, и обновление редактируемой записи возможно.
+                out_id = GetCurrentrow_ID;
+                return true;
+            }
+            out_id = 0;
+            return false;
+        }
+        void UpdateRecord (int id)//обновление
+        {
+            FormListCountStudent ListCount = new FormListCountStudent();
+            DB = new SQliteDB();
+
+            string DATE     = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
+            int id_filial   = ListCount.ListFilial.Where(x => x.full_desc.Contains(comboBoxFilial.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
+            int id_spec     = ListCount.ListSpecial.Where(x => x.desc.Contains(comboBoxSpecial.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
+            int id_skill    = ListCount.ListSkill.Where(x => x.desc.Contains(comboBoxSkill.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
+            
+            string update = "UPDATE ЧисленностьОбучающихся SET "+
+                            $"год = {DATE}, "+
+                            $"очное = {textBoxОчное.Text}, "+
+                            $"очно_заочное = '', "+
+                            $"заочное = '', "+
+                            $"студент_инвалид = '', "+
+                            $"стуктурное_подразделение_ВК= '', "+
+                            $"специальность_ВК = '', "+
+                            $"квалификация_ВК = '' "+
+                            $"WHERE ЧисленностьОбучающихся.код = {id}";
+
+
+            using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
+            {
+                connection.Open();
+                Command = new SQLiteCommand(update, connection);
+                Command.ExecuteNonQuery();
+            }
+        }
+
+
         #region Проверка ввода данных
         public bool NO_Dublicate_ForUpdateRecord(List<TableCountStudent> editable_row)
         {
@@ -218,40 +404,45 @@ namespace Report
 
         private void buttonSaveAndClose_Click(object sender, EventArgs e)
         {
+            Operation();
+            Close();
+
+            #region OLD
             //сохранить и закрыть форму        
-            FormListCountStudent FormStudent = new FormListCountStudent();
+            //FormListCountStudent FormStudent = new FormListCountStudent();
             
 
-            //поиск в коллекции, посик поля с идентификатором записи
-            var ID_current_row = FormStudent.ListCountStudent
-                    .Where(x => x.id == GetCurrentrow_ID)
-                    .Select(x => x).ToList();
+            ////поиск в коллекции, посик поля с идентификатором записи
+            //var ID_current_row = FormStudent.ListCountStudent
+            //        .Where(x => x.id == GetCurrentrow_ID)
+            //        .Select(x => x).ToList();
 
-            try
-            {
-                if (ID_current_row.Count > 0)
-                {
-                    if (NO_Dublicate_ForUpdateRecord(ID_current_row))
-                    {
-                        update(ID_current_row[0]);
-                        Close();
-                    }
-                }
-                else
-                {
-                    if (IsMatch())
-                    {
-                        if (save())
-                        {
-                            Close();
-                        }  
-                    }
-                }
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                return;
-            }
+            //try
+            //{
+            //    if (ID_current_row.Count > 0)
+            //    {
+            //        if (NO_Dublicate_ForUpdateRecord(ID_current_row))
+            //        {
+            //            update(ID_current_row[0]);
+            //            Close();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (IsMatch())
+            //        {
+            //            if (save())
+            //            {
+            //                Close();
+            //            }  
+            //        }
+            //    }
+            //}
+            //catch (ArgumentOutOfRangeException)
+            //{
+            //    return;
+            //}
+            #endregion
         }
 
         private void label18_Click(object sender, EventArgs e)
