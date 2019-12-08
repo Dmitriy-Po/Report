@@ -75,6 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\ClassFormEducation.cs" />
+    <Compile Include="FormListKoef.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormListKoef.Designer.cs">
+      <DependentUpon>FormListKoef.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Form1GroupAdd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +92,12 @@
     </Compile>
     <Compile Include="Forms\FormGroups.Designer.cs">
       <DependentUpon>FormGroups.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormListBaseGroup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormListBaseGroup.Designer.cs">
+      <DependentUpon>FormListBaseGroup.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormСозданиеОтчёта.cs">
       <SubType>Form</SubType>
@@ -148,11 +160,17 @@
     <EmbeddedResource Include="FormAddReport.resx">
       <DependentUpon>FormAddReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormListKoef.resx">
+      <DependentUpon>FormListKoef.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Form1GroupAdd.resx">
       <DependentUpon>Form1GroupAdd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormGroups.resx">
       <DependentUpon>FormGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormListBaseGroup.resx">
+      <DependentUpon>FormListBaseGroup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormСозданиеОтчёта.resx">
       <DependentUpon>FormСозданиеОтчёта.cs</DependentUpon>

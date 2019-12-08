@@ -21,8 +21,7 @@ namespace Report
         {
             // заполнение combobox данными из табилцы Форма обучения, Даты.
             FormКоэффиценты c = new FormКоэффиценты();
-            comboBoxFormEducation.Items.AddRange(c.ListEducation.Select(x => x.Desc).ToArray());
-            comboBoxCorrectCoef.Items.AddRange(c.ListCoef.Select(x => x.Наименование).ToArray());
+            comboBoxFormEducation.Items.AddRange(c.ListEducation.Select(x => x.Desc).ToArray());            
 
             int y = DateTime.Now.Year - 3;
             do
@@ -35,29 +34,37 @@ namespace Report
         {
             FormКоэффиценты fk = new FormКоэффиценты();
             SQliteDB db = new SQliteDB();
-
-
+            DataTable table;
+            SQLiteDataAdapter adapter;
             // Дубликат - исходя из выбранных полей на форме.
 
-            var id_coef = fk.ListCoef.Where(x => x.Наименование.Contains(comboBoxCorrectCoef.SelectedItem.ToString())).Select(i => i.id);
+            var id_coef = fk.ListCoef.Where(x => x.Наименование.Contains(textBoxNameCoef.Text)).Select(i => i.id);
             var id_form = fk.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
             string value_coef = textBoxCoeff.Text.Replace(",", ".");
             int year = Convert.ToInt32(comboBoxYear.SelectedItem);
 
-            using (SQLiteConnection connection = new SQLiteConnection(db.ConnectionDB))
+            if (id_coef.Count() != 0)
             {
-                string query = "SELECT * FROM ЗначениеКоэффицента " +
-                                $"WHERE ЗначениеКоэффицента.Корректирующие_ВК = {Convert.ToInt32(id_coef.ElementAt(0))} " +
-                                $"AND ЗначениеКоэффицента.ФормаОбучения_ВК = {Convert.ToInt32(id_form.ElementAt(0))} " +
-                                $"AND ЗначениеКоэффицента.КаледндарныйГод LIKE '{year}%' " +
-                                $"AND ЗначениеКоэффицента.Значение = {value_coef};";
+                using (SQLiteConnection connection = new SQLiteConnection(db.ConnectionDB))
+                {
+                    string query = "SELECT * FROM ЗначениеКоэффицента " +
+                                    $"WHERE ЗначениеКоэффицента.Корректирующие_ВК = {Convert.ToInt32(id_coef.ElementAt(0))} " +
+                                    $"AND ЗначениеКоэффицента.ФормаОбучения_ВК = {Convert.ToInt32(id_form.ElementAt(0))} " +
+                                    $"AND ЗначениеКоэффицента.КаледндарныйГод LIKE '{year}%' " +
+                                    $"AND ЗначениеКоэффицента.Значение = {value_coef};";
 
-                SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection);
-                DataTable table = new DataTable();
-                adapter.Fill(table);
+                    adapter = new SQLiteDataAdapter(query, connection);
+                    table = new DataTable();
+                    adapter.Fill(table);
 
-                return table;
+                    return table;
+                } 
             }
+            else
+            {
+                return table = new DataTable();
+            }
+
         }
         bool Duplicate ()
         {
@@ -203,7 +210,7 @@ namespace Report
             {
                 connection.Open();                
 
-                var id_coef = fcoef.ListCoef.Where(x => x.Наименование.Contains(comboBoxCorrectCoef.SelectedItem.ToString())).Select(i => i.id);
+                var id_coef = fcoef.ListCoef.Where(x => x.Наименование.Contains(textBoxNameCoef.Text)).Select(i => i.id);
                 var id_form = fcoef.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
                 decimal value_coef = Convert.ToDecimal(textBoxCoeff.Text.Replace('.', ','));
 
@@ -243,32 +250,44 @@ namespace Report
             #endregion
             SQliteDB database = new SQliteDB();
             FormКоэффиценты fcoef = new FormКоэффиценты();
-            string query = "SELECT * FROM ЗначениеКоэффицента";
+            string query_KK = "SELECT * FROM КорректирующиеКоэффиценты";            
 
             using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
             {
                 connection.Open();
 
-                SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, connection);
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(query_KK, connection);
+                
+
                 DataTable table = new DataTable();
                 DataRow new_row = table.NewRow();
 
                 adapter.Fill(table);
 
-                var id_coef = fcoef.ListCoef.Where(x => x.Наименование.Contains(comboBoxCorrectCoef.SelectedItem.ToString())).Select(i => i.id);
+                //var id_coef = fcoef.ListCoef.Where(x => x.Наименование.Contains(comboBoxCorrectCoef.SelectedItem.ToString())).Select(i => i.id);
                 var id_form = fcoef.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
-                decimal value_coef = Convert.ToDecimal(textBoxCoeff.Text.Replace('.', ','));
+                decimal value_coef = Convert.ToDecimal(textBoxCoeff.Text);
+                string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
+                new_row[1] = textBoxNameCoef.Text;
+                new_row[2] = textBoxFullDesc.Text;
+                new_row[3] = textBoxDetail.Text;
+                new_row[4] = textBoxComment.Text;
+                new_row[5] = checkBoxStdInv.Checked;               
 
-                new_row[1] = Convert.ToDateTime(comboBoxYear.SelectedItem+"-01-01");
-                new_row[2] = Convert.ToInt32(id_coef.ElementAt(0));
-                new_row[3] = Convert.ToInt32(id_form.ElementAt(0));
-                new_row[4] = value_coef;
 
                 SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
 
-                table.Rows.Add(new_row);
+                table.Rows.Add(new_row);                
                 adapter.Update(table);
+
+
+                /*-------------------*/
+                SQLiteCommand new_command = new SQLiteCommand("INSERT INTO ЗначениеКоэффицента(Значение, КаледндарныйГод, Корректирующие_ВК, ФормаОбучения_ВК) "+
+                                                    $"VALUES({textBoxCoeff.Text.Replace(",", ".")}, '{DATE}', "+
+                                                    $"((SELECT MAX(КорректирующиеКоэффиценты.код) FROM КорректирующиеКоэффиценты)), {id_form.ElementAt(0)})", connection);
+                new_command.ExecuteNonQuery();
+                               
                 
             }
         }

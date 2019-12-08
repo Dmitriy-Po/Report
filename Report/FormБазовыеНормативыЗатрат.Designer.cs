@@ -123,6 +123,7 @@
             this.comboBoxYear.Name = "comboBoxYear";
             this.comboBoxYear.Size = new System.Drawing.Size(321, 21);
             this.comboBoxYear.TabIndex = 16;
+            this.comboBoxYear.SelectionChangeCommitted += new System.EventHandler(this.comboBoxYear_SelectionChangeCommitted);
             // 
             // FormБазовыеНормативыЗатрат
             // 
@@ -139,7 +140,6 @@
             this.Name = "FormБазовыеНормативыЗатрат";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Базовые нормативы затрат";
-            this.Activated += new System.EventHandler(this.FormБазовыеНормативыЗатрат_Activated);
             this.Load += new System.EventHandler(this.FormБазовыеНормативыЗатрат_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNormals)).EndInit();
             this.ResumeLayout(false);

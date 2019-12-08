@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Report
@@ -21,6 +15,20 @@ namespace Report
         public FormБазовыеНормативыЗатрат()
         {
             InitializeComponent();
+        }
+        int AddFictiveRow ()
+        {
+            // Удаление пустых строк.
+            db = new SQliteDB();
+            using (SQLiteConnection conn = new SQLiteConnection(db.ConnectionDB))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("INSERT INTO БазовыйНормативЗатрат(Наименование) VALUES ('');", conn);
+                command.ExecuteNonQuery();
+
+                command.CommandText = "select MAX(БазовыйНормативЗатрат.код) as 'код' FROM БазовыйНормативЗатрат;";
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
         }
         void FillComponents(bool IsEditingMode)
         {
@@ -47,14 +55,13 @@ namespace Report
                     {
                         fadd.Text = "Создание по шаблону";
                         fadd.StatusOperation = 2;
-                        fadd.CurrentDataRow = 0;    // 0 - для режима Создать по шаблону.
+                        fadd.CurrentDataRow = Convert.ToInt32(row.Cells["код"].Value);    // 0 - для режима Создать по шаблону.
                     }
                 }
-            }            
-            /*
-             * Вот здесь добавить функцию заполения DataGrid - она сработает как обновление таблицы.
-             * */
+            }         
+            
             fadd.ShowDialog();
+            FillDataGrid();
         }
         bool CountSelectedRows (string tooltip)
         {
@@ -100,7 +107,13 @@ namespace Report
         {
             // Зполение DataGrid.
             db = new SQliteDB();
-            string query = "SELECT * FROM БазовыйНормативЗатрат";
+            /* Недоработка - выбираются все строки. Следует изменить на выбор нормативов с существующими коэффицентами. Вложенным запросом. */
+            string query = "SELECT DISTINCT(БазовыйНормативЗатрат.код), "+
+                            "БазовыйНормативЗатрат.Наименование, "+
+                            "Полное_наименование, "+
+                            "Комментарий "+
+                            "FROM КоррКоэффицентБазовогоНорматива JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК "+
+                            $"WHERE КоррКоэффицентБазовогоНорматива.Календарный_год LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
 
             table = new DataTable();
 
@@ -122,9 +135,12 @@ namespace Report
         {
             FormБНЗ_Добавление f = new FormБНЗ_Добавление();
             f.FillCombobox();
+            f.comboBoxYear.SelectedItem = comboBoxYear.SelectedItem;
             f.Text = "Добавление норматива";
-            f.StatusOperation = 1;
+            f.StatusOperation = 3;
+            f.CurrentDataRow = AddFictiveRow();
             f.ShowDialog();
+            FillDataGrid();
         }
         
 
@@ -165,7 +181,7 @@ namespace Report
             if (CountSelectedRows("Добавить по шаблону"))
             {
                 FillComponents(false);
-            }
+            }           
         }
 
         private void buttonEditString_Click (object sender, EventArgs e)
@@ -173,12 +189,12 @@ namespace Report
             if (CountSelectedRows("Редактирования"))
             {
                 FillComponents(true);
-            }
+            }            
         }
 
-        private void FormБазовыеНормативыЗатрат_Activated (object sender, EventArgs e)
+        private void comboBoxYear_SelectionChangeCommitted (object sender, EventArgs e)
         {
-            //FillDataGrid();
+            FillDataGrid();
         }
     }
 }

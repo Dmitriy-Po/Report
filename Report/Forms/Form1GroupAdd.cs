@@ -86,11 +86,11 @@ namespace Report.Forms
                 new_row[1] = textBoxDesc.Text;
                 new_row[2] = textBoxFillDesc.Text;
                 new_row[3] = textBoxComment.Text;
-                new_row[4] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01");
-
-                SQLiteCommandBuilder command = new SQLiteCommandBuilder(Adapter);
+                new_row[4] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
                 Table.Rows.Add(new_row);
+
+                SQLiteCommandBuilder command = new SQLiteCommandBuilder(Adapter);                
                 Adapter.Update(Table);
             }
         }
@@ -102,7 +102,9 @@ namespace Report.Forms
             string update = "UPDATE СтоимостнаяГруппаКалГода SET " +
                             $"Наименование = '{textBoxDesc.Text}', ПолноеНаименование = '{textBoxFillDesc.Text}', " +
                             $"Комментарий = '{textBoxComment.Text}', КалендарныйГод = '{DATE}' " +
-                            $"WHERE СтоимостнаяГруппаКалГода.код = {CurrentDataRow_id}";
+                            $"WHERE СтоимостнаяГруппаКалГода.код = {CurrentDataRow_id}; " +
+                            $"UPDATE БНЗСтоимостнойГруппы SET КалендарныйГод = '{DATE}' "+
+                            $"WHERE БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК = {CurrentDataRow_id}";
 
 
             using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
@@ -210,12 +212,12 @@ namespace Report.Forms
             /*формирование внешнего вида таблицы*/
 
             ListNormals.Clear();
-            comboBoxNormativ.Items.Clear();
+            //comboBoxNormativ.Items.Clear();
             foreach (DataRow row in ds.Tables[1].Rows)
             {
                 ListNormals.Add(new БазовыеНормативыЗатрат(Convert.ToInt32(row[0]), row[1].ToString()));
             }
-            comboBoxNormativ.Items.AddRange(ListNormals.Select(x => x.Desc).ToArray());
+            //comboBoxNormativ.Items.AddRange(ListNormals.Select(x => x.Desc).ToArray());
 
         }
         void DeleteSelectedRows ()
@@ -286,6 +288,28 @@ namespace Report.Forms
             FillDataGridGroups();
         }
 
+        private void buttonAddKoef_Click (object sender, EventArgs e)
+        {
+            FormListBaseGroup fb = new FormListBaseGroup();
+            fb.DATE = comboBoxYear.SelectedItem.ToString();
+            fb.CurrentRow = CurrentDataRow_id;
+            fb.ShowDialog();
+            FillDataGridGroups();
+        }
+
+        private void FormGroupAdd_FormClosing (object sender, FormClosingEventArgs e)
+        {
+            DB = new SQliteDB();
+            using (SQLiteConnection c = new SQLiteConnection(DB.ConnectionDB))
+            {
+                c.Open();
+                /*Проверка на удаление только по одному признаку - пустое поле наименование.
+                 * Возможно, следут добавить ещё два условия для удаления. 
+                 * */
+                SQLiteCommand cm = new SQLiteCommand("DELETE FROM СтоимостнаяГруппаКалГода WHERE СтоимостнаяГруппаКалГода.Наименование = '';", c);
+                cm.ExecuteNonQueryAsync();
+            }
+        }
 
         private void FormGroupAdd_Load (object sender, EventArgs e)
         {

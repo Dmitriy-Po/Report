@@ -44,7 +44,6 @@
             this.dataGridViewKoef = new System.Windows.Forms.DataGridView();
             this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.label5 = new System.Windows.Forms.Label();
-            this.comboBoxCorrectKoef = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKoef)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,7 +78,6 @@
             // 
             // comboBoxYear
             // 
-            this.comboBoxYear.Enabled = false;
             this.comboBoxYear.FormattingEnabled = true;
             this.comboBoxYear.ItemHeight = 13;
             this.comboBoxYear.Location = new System.Drawing.Point(150, 148);
@@ -184,28 +182,18 @@
             // 
             this.label5.AutoSize = true;
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label5.Location = new System.Drawing.Point(22, 182);
+            this.label5.Location = new System.Drawing.Point(12, 223);
             this.label5.Name = "label5";
             this.label5.Padding = new System.Windows.Forms.Padding(20, 1, 20, 1);
-            this.label5.Size = new System.Drawing.Size(255, 17);
+            this.label5.Size = new System.Drawing.Size(249, 17);
             this.label5.TabIndex = 17;
-            this.label5.Text = "Добавить корректирующий коэффицент\r\n";
-            // 
-            // comboBoxCorrectKoef
-            // 
-            this.comboBoxCorrectKoef.FormattingEnabled = true;
-            this.comboBoxCorrectKoef.Location = new System.Drawing.Point(22, 202);
-            this.comboBoxCorrectKoef.Name = "comboBoxCorrectKoef";
-            this.comboBoxCorrectKoef.Size = new System.Drawing.Size(370, 21);
-            this.comboBoxCorrectKoef.TabIndex = 18;
-            this.comboBoxCorrectKoef.SelectionChangeCommitted += new System.EventHandler(this.comboBoxCorrectKoef_SelectionChangeCommitted);
+            this.label5.Text = "Выбрать корректирующий коэффицент";
             // 
             // FormБНЗ_Добавление
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 466);
-            this.Controls.Add(this.comboBoxCorrectKoef);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.dataGridViewKoef);
             this.Controls.Add(this.buttonDeleteKoef);
@@ -226,6 +214,7 @@
             this.Name = "FormБНЗ_Добавление";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Добавление/Редактирование";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormБНЗ_Добавление_FormClosed);
             this.Load += new System.EventHandler(this.FormБНЗ_Добавление_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewKoef)).EndInit();
             this.ResumeLayout(false);
@@ -243,13 +232,12 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonDeleteKoef;
         private System.Windows.Forms.Button buttonAddKoef;
-        private System.Windows.Forms.DataGridView dataGridViewKoef;
         private System.Windows.Forms.Label label5;
         public System.Windows.Forms.TextBox textBoxDesc;
         public System.Windows.Forms.ComboBox comboBoxYear;
         public System.Windows.Forms.TextBox textBoxComment;
         public System.Windows.Forms.TextBox textBoxFillDesc;
-        public System.Windows.Forms.ComboBox comboBoxCorrectKoef;
         private System.Windows.Forms.DataGridViewCheckBoxColumn check;
+        public System.Windows.Forms.DataGridView dataGridViewKoef;
     }
 }

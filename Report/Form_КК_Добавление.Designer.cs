@@ -37,20 +37,27 @@
             this.label6 = new System.Windows.Forms.Label();
             this.textBoxCoeff = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.comboBoxCorrectCoef = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.comboBoxYear = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBoxNameCoef = new System.Windows.Forms.TextBox();
+            this.textBoxFullDesc = new System.Windows.Forms.TextBox();
+            this.textBoxDetail = new System.Windows.Forms.TextBox();
+            this.textBoxComment = new System.Windows.Forms.TextBox();
+            this.checkBoxStdInv = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 73);
+            this.label1.Location = new System.Drawing.Point(9, 71);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(251, 13);
+            this.label1.Size = new System.Drawing.Size(86, 13);
             this.label1.TabIndex = 16;
-            this.label1.Text = "Наименование Корректирующего коэффицента\r\n";
+            this.label1.Text = "Наименование:";
             // 
             // buttonSaveAndClose
             // 
@@ -119,14 +126,6 @@
             this.label5.TabIndex = 22;
             this.label5.Text = "Значение:";
             // 
-            // comboBoxCorrectCoef
-            // 
-            this.comboBoxCorrectCoef.FormattingEnabled = true;
-            this.comboBoxCorrectCoef.Location = new System.Drawing.Point(12, 89);
-            this.comboBoxCorrectCoef.Name = "comboBoxCorrectCoef";
-            this.comboBoxCorrectCoef.Size = new System.Drawing.Size(380, 21);
-            this.comboBoxCorrectCoef.TabIndex = 29;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.comboBoxYear);
@@ -135,7 +134,7 @@
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(12, 150);
+            this.groupBox1.Location = new System.Drawing.Point(12, 300);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(380, 131);
             this.groupBox1.TabIndex = 30;
@@ -150,13 +149,86 @@
             this.comboBoxYear.Size = new System.Drawing.Size(245, 21);
             this.comboBoxYear.TabIndex = 31;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 98);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(125, 13);
+            this.label2.TabIndex = 31;
+            this.label2.Text = "Полное наименование:\r\n";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(9, 207);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(64, 13);
+            this.label3.TabIndex = 32;
+            this.label3.Text = "Уточнение:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 234);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(80, 13);
+            this.label4.TabIndex = 33;
+            this.label4.Text = "Комментарий:";
+            // 
+            // textBoxNameCoef
+            // 
+            this.textBoxNameCoef.Location = new System.Drawing.Point(141, 68);
+            this.textBoxNameCoef.Name = "textBoxNameCoef";
+            this.textBoxNameCoef.Size = new System.Drawing.Size(245, 20);
+            this.textBoxNameCoef.TabIndex = 34;
+            // 
+            // textBoxFullDesc
+            // 
+            this.textBoxFullDesc.Location = new System.Drawing.Point(141, 95);
+            this.textBoxFullDesc.Multiline = true;
+            this.textBoxFullDesc.Name = "textBoxFullDesc";
+            this.textBoxFullDesc.Size = new System.Drawing.Size(245, 100);
+            this.textBoxFullDesc.TabIndex = 35;
+            // 
+            // textBoxDetail
+            // 
+            this.textBoxDetail.Location = new System.Drawing.Point(141, 204);
+            this.textBoxDetail.Name = "textBoxDetail";
+            this.textBoxDetail.Size = new System.Drawing.Size(245, 20);
+            this.textBoxDetail.TabIndex = 36;
+            // 
+            // textBoxComment
+            // 
+            this.textBoxComment.Location = new System.Drawing.Point(141, 231);
+            this.textBoxComment.Name = "textBoxComment";
+            this.textBoxComment.Size = new System.Drawing.Size(245, 20);
+            this.textBoxComment.TabIndex = 37;
+            // 
+            // checkBoxStdInv
+            // 
+            this.checkBoxStdInv.AutoSize = true;
+            this.checkBoxStdInv.Location = new System.Drawing.Point(275, 257);
+            this.checkBoxStdInv.Name = "checkBoxStdInv";
+            this.checkBoxStdInv.Size = new System.Drawing.Size(111, 17);
+            this.checkBoxStdInv.TabIndex = 38;
+            this.checkBoxStdInv.Text = "Студент инвалид";
+            this.checkBoxStdInv.UseVisualStyleBackColor = true;
+            // 
             // Form_КК_Добавление
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 293);
+            this.ClientSize = new System.Drawing.Size(404, 443);
+            this.Controls.Add(this.checkBoxStdInv);
+            this.Controls.Add(this.textBoxComment);
+            this.Controls.Add(this.textBoxDetail);
+            this.Controls.Add(this.textBoxFullDesc);
+            this.Controls.Add(this.textBoxNameCoef);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.comboBoxCorrectCoef);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonSaveAndClose);
             this.Controls.Add(this.buttonSave);
@@ -182,7 +254,14 @@
         public System.Windows.Forms.TextBox textBoxCoeff;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox1;
-        public System.Windows.Forms.ComboBox comboBoxCorrectCoef;
         public System.Windows.Forms.ComboBox comboBoxYear;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.TextBox textBoxNameCoef;
+        public System.Windows.Forms.TextBox textBoxFullDesc;
+        public System.Windows.Forms.TextBox textBoxDetail;
+        public System.Windows.Forms.TextBox textBoxComment;
+        public System.Windows.Forms.CheckBox checkBoxStdInv;
     }
 }

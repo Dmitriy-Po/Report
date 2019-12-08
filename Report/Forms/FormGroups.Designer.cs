@@ -34,9 +34,9 @@
             this.buttonAddStingPattern = new System.Windows.Forms.Button();
             this.buttonAddNewString = new System.Windows.Forms.Button();
             this.dataGridViewGoups = new System.Windows.Forms.DataGridView();
+            this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.Check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoups)).BeginInit();
             this.SuspendLayout();
             // 
@@ -87,6 +87,8 @@
             // 
             // dataGridViewGoups
             // 
+            this.dataGridViewGoups.AllowUserToAddRows = false;
+            this.dataGridViewGoups.AllowUserToDeleteRows = false;
             this.dataGridViewGoups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGoups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Check});
@@ -96,6 +98,11 @@
             this.dataGridViewGoups.Size = new System.Drawing.Size(784, 350);
             this.dataGridViewGoups.TabIndex = 18;
             // 
+            // Check
+            // 
+            this.Check.HeaderText = "";
+            this.Check.Name = "Check";
+            // 
             // comboBoxYear
             // 
             this.comboBoxYear.FormattingEnabled = true;
@@ -103,6 +110,7 @@
             this.comboBoxYear.Name = "comboBoxYear";
             this.comboBoxYear.Size = new System.Drawing.Size(321, 21);
             this.comboBoxYear.TabIndex = 19;
+            this.comboBoxYear.SelectionChangeCommitted += new System.EventHandler(this.comboBoxYear_SelectionChangeCommitted);
             // 
             // label1
             // 
@@ -112,11 +120,6 @@
             this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 20;
             this.label1.Text = "Календарный год";
-            // 
-            // Check
-            // 
-            this.Check.HeaderText = "";
-            this.Check.Name = "Check";
             // 
             // FormGroups
             // 

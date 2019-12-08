@@ -19,7 +19,37 @@ namespace Report
         public List<FormEducation> ListEducation = new List<FormEducation>();
         public List<КорректирующиеКоэффиценты> ListCoef = new List<КорректирующиеКоэффиценты>();
 
-       
+        void FillDataGrid ()
+        {
+            SQliteDB db = new SQliteDB();
+            string query = "SELECT " +
+                            "КорректирующиеКоэффиценты.Наименование, " +
+                            "КорректирующиеКоэффиценты.ПолноеНаименование as 'Полное наименование', " +
+                            "КорректирующиеКоэффиценты.Уточнение, " +
+                            "ЗначениеКоэффицента.Значение as 'Значение коэффицента', " +
+                            "SUBSTR(ЗначениеКоэффицента.КаледндарныйГод, 0, 5) as 'Календарный год', " +
+                            "КорректирующиеКоэффиценты.Комментарий,  " +
+                            "ФормаОбучения.наименование as 'Форма обучения', " +
+                            "ЗначениеКоэффицента.код " +
+                            "FROM ЗначениеКоэффицента LEFT JOIN КорректирующиеКоэффиценты ON ЗначениеКоэффицента.Корректирующие_ВК = КорректирующиеКоэффиценты.код " +
+                            "JOIN ФормаОбучения ON ФормаОбучения.код = ЗначениеКоэффицента.ФормаОбучения_ВК " +
+                            $"WHERE ЗначениеКоэффицента.КаледндарныйГод LIKE '{comboBoxYear.SelectedItem}%'";
+
+
+            DataTable table = new DataTable();
+
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, db.ConnectionDB);
+
+            //SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
+
+
+            adapter.Fill(table);
+
+            dataGridViewCoeff.DataSource = table;
+            dataGridViewCoeff.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCoeff.Columns[0].Width = 50;
+            dataGridViewCoeff.Columns["код"].Visible = false;
+        }
         void FillComponents (bool IsEditingMode)
         {
             //заполение компонентов на форме Коэфицентов добавления, из datagrid
@@ -30,8 +60,12 @@ namespace Report
             {
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
-                    f.comboBoxCorrectCoef.SelectedItem      = row.Cells["Наименование"].Value;
-                    f.textBoxCoeff.Text                     = row.Cells["Значение коэффицента"].Value.ToString();
+                    f.textBoxNameCoef.Text = row.Cells["Наименование"].Value.ToString();
+                    f.textBoxFullDesc.Text = row.Cells["Полное наименование"].Value.ToString();
+                    f.textBoxComment.Text = row.Cells["Комментарий"].Value.ToString();
+                    f.textBoxDetail.Text = row.Cells["Уточнение"].Value.ToString();
+
+                    f.textBoxCoeff.Text = row.Cells["Значение коэффицента"].Value.ToString();
                     f.comboBoxFormEducation.SelectedItem    = row.Cells["Форма обучения"].Value;
                     f.comboBoxYear.SelectedItem             = Convert.ToInt32(row.Cells["Календарный год"].Value);
                     
@@ -49,7 +83,9 @@ namespace Report
                     }
                 }
             }
+            
             f.ShowDialog();
+            FillDataGrid();
         }
         public bool CountSelectedRows (string tooltip)
         {
@@ -75,6 +111,7 @@ namespace Report
             f.Text = "Добавление";
             f.StatusOperation = 1;            
             f.ShowDialog();
+            FillDataGrid();
         }
 
         private void FormКоэффиценты_Load(object sender, EventArgs e)
@@ -86,43 +123,13 @@ namespace Report
                 comboBoxYear.Items.Add(++y);
             } while (y != DateTime.Today.Year);
             comboBoxYear.SelectedItem = y;
-            comboBox1_SelectionChangeCommitted(sender, e);
+            FillDataGrid();
+            //comboBox1_SelectionChangeCommitted(sender, e);
         }
 
         public void comboBox1_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            SQliteDB db = new SQliteDB();
-            string query = "SELECT " +
-                            "КорректирующиеКоэффиценты.Наименование, " +
-                            "КорректирующиеКоэффиценты.ПолноеНаименование as 'Полное наименование'," +
-                            "КорректирующиеКоэффиценты.Уточнение," +
-                            "ЗначениеКоэффицента.Значение as 'Значение коэффицента'," +
-                            "SUBSTR(ЗначениеКоэффицента.КаледндарныйГод, 0, 5) as 'Календарный год', " +
-                            "КорректирующиеКоэффиценты.Комментарий, " +
-                            "ФормаОбучения.наименование as 'Форма обучения', " +
-                            "ЗначениеКоэффицента.код " +
-                            "FROM ЗначениеКоэффицента " +
-                            "JOIN КорректирующиеКоэффиценты ON " +
-                            "КорректирующиеКоэффиценты.код = ЗначениеКоэффицента.Корректирующие_ВК " +
-                            "JOIN ФормаОбучения ON " +
-                            "ФормаОбучения.код = ЗначениеКоэффицента.ФормаОбучения_ВК " +
-                            $"WHERE ЗначениеКоэффицента.КаледндарныйГод LIKE '{comboBoxYear.SelectedItem}%'";
-
-            
-            DataTable table = new DataTable();
-            
-            SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, db.ConnectionDB);
-            
-            //SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
-            
-
-            adapter.Fill(table);
-            
-            dataGridViewCoeff.DataSource = table;
-            dataGridViewCoeff.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCoeff.Columns[0].Width = 50;
-            dataGridViewCoeff.Columns["код"].Visible = false;
-
+            FillDataGrid();
         }
 
         private void buttonAddStingPattern_Click (object sender, EventArgs e)
@@ -156,11 +163,6 @@ namespace Report
                 }
             }
             q.Delete("ЗначениеКоэффицента", "ЗначениеКоэффицента.код", string.Join(",", ListId.ToArray()));            
-        }
-
-        private void FormКоэффиценты_Activated (object sender, EventArgs e)
-        {
-            comboBox1_SelectionChangeCommitted(sender, e);
-        }
+        }        
     }
 }

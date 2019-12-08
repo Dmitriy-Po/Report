@@ -140,7 +140,7 @@
             this.Name = "FormКоэффиценты";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Корректирующие коэффиценты";
-            this.Activated += new System.EventHandler(this.FormКоэффиценты_Activated);
+            
             this.Load += new System.EventHandler(this.FormКоэффиценты_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCoeff)).EndInit();
             this.ResumeLayout(false);

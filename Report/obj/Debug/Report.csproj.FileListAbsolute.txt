@@ -63,3 +63,5 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormGroups.resources
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormGroupAdd.resources
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormListKoef.resources
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormListBaseGroup.resources

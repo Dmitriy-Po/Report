@@ -272,6 +272,7 @@ namespace Report.Forms
 
         private void buttonShowReport_Click (object sender, EventArgs e)
         {
+            /*Ошибка неучёта специальностей связанна с форматом года в таблице Численность обучающихся*/
             try
             {
                 decimal coef = Convert.ToDecimal(textBoxCoef.Text);

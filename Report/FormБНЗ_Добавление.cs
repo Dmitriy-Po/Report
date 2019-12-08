@@ -11,10 +11,10 @@ namespace Report
     {
         SQliteDB db;
         DataSet dataset;    
-        DataTable table0;
-        DataTable table1;        
-        SQLiteDataAdapter adapter;
-        SQLiteCommandBuilder command;
+        public DataTable table0;
+        DataTable table1, table_list;        
+        SQLiteDataAdapter adapter, adapter_list;
+        SQLiteCommandBuilder command, command_list;
         public List<КорректирующиеКоэффиценты> ListKK = new List<КорректирующиеКоэффиценты>();              
 
 
@@ -31,21 +31,22 @@ namespace Report
             do
             {
                 comboBoxYear.Items.Add(++y);
-            } while (y != DateTime.Now.Year);
+            } while (y != DateTime.Now.Year);            
         }     
         void FillDataGrid ()
         {
-            string query =                           
+            string query =
                             "SELECT КорректирующиеКоэффиценты.код, Наименование, Уточнение " +
                             "FROM КоррКоэффицентБазовогоНорматива " +
                             "JOIN КорректирующиеКоэффиценты ON КорректирующиеКоэффиценты.код = КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК " +
                             $"WHERE КоррКоэффицентБазовогоНорматива.Календарный_год LIKE '{comboBoxYear.SelectedItem.ToString()}%' " +
                             $"AND КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}; " +
 
-                            // Table 1.
+                            //Table1
                             "SELECT КорректирующиеКоэффиценты.код, Наименование, Уточнение FROM КорректирующиеКоэффиценты WHERE КорректирующиеКоэффиценты.код " +
                             "NOT IN(SELECT КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК FROM КоррКоэффицентБазовогоНорматива " +
-                           $"WHERE КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}); ";
+                            $"WHERE КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}); ";
+
 
 
             db = new SQliteDB();
@@ -57,12 +58,12 @@ namespace Report
                 dataset = new DataSet();
 
                 table0 = new DataTable();
-                table1 = new DataTable();
+                table1 = new DataTable();                
 
                 adapter.Fill(dataset);
 
                 table0 = dataset.Tables[0];
-                table1 = dataset.Tables[1];
+                table1 = dataset.Tables[1];               
 
                 dataGridViewKoef.DataSource = table0;
                 dataGridViewKoef.Columns[0].Width = 25;
@@ -71,12 +72,11 @@ namespace Report
                 dataGridViewKoef.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
                 ListKK.Clear();
-                comboBoxCorrectKoef.Items.Clear();
                 foreach (DataRow row in table1.Rows)
                 {
                     ListKK.Add(new КорректирующиеКоэффиценты(Convert.ToInt32(row[0]), row[1].ToString(), row[2].ToString()));
                 }
-                comboBoxCorrectKoef.Items.AddRange(ListKK.Select(x => x.Наименование).ToArray());
+
             }
         }
         void Operation ()
@@ -172,7 +172,8 @@ namespace Report
         }
         void UpdateRecord (int id)//обновление
         {
-            SQliteDB database = new SQliteDB();            
+            SQliteDB database = new SQliteDB();
+            string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
             using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
             {
@@ -180,7 +181,9 @@ namespace Report
 
                 SQLiteCommand command = new SQLiteCommand($"UPDATE БазовыйНормативЗатрат SET Наименование = '{textBoxDesc.Text}', "+
                                                             $"Полное_наименование = '{textBoxFillDesc.Text}', Комментарий = '{textBoxComment.Text}' " +
-                                                            $"WHERE БазовыйНормативЗатрат.код = {CurrentDataRow}"
+                                                            $"WHERE БазовыйНормативЗатрат.код = {CurrentDataRow}; "+
+                                                            $"UPDATE КоррКоэффицентБазовогоНорматива SET Календарный_год = '{DATE}' "+
+                                                            $"WHERE КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}"
                                                             , connection);
 
                 command.ExecuteNonQuery();
@@ -188,30 +191,40 @@ namespace Report
         }
         void InsertRecord ()//сохранение
         {
-            SQliteDB database = new SQliteDB();            
-            string query = "SELECT * FROM БазовыйНормативЗатрат";
+            //SQliteDB database = new SQliteDB();            
+            //string query = "SELECT * FROM БазовыйНормативЗатрат";            
 
-            using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
-            {
-                connection.Open();
+            //using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
+            //{
+            //    connection.Open();
 
-                adapter = new SQLiteDataAdapter(query, connection);
-                table0 = new DataTable();
-                DataRow new_row = table0.NewRow();
+            //    adapter = new SQLiteDataAdapter(query, connection);
+            //    table0 = new DataTable();                
 
-                adapter.Fill(table0); 
+            //    DataRow new_row = table0.NewRow();               
 
-                new_row[1] = textBoxDesc.Text;
-                new_row[2] = textBoxFillDesc.Text;
-                new_row[3] = textBoxComment.Text;
+            //    adapter.Fill(table0);                 
+
+            //    new_row[1] = textBoxDesc.Text;
+            //    new_row[2] = textBoxFillDesc.Text;
+            //    new_row[3] = textBoxComment.Text;
+
+            //    table0.Rows.Add(new_row);
+
+            //    SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
                 
+            //    adapter.Update(table0);
 
-                SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
+            //    // Вставка записей из DataGid.
+            //    //string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
+            //    //foreach (DataRow row in dataGridViewKoef.Rows)
+            //    //{
+            //    //    SQLiteCommand c = new SQLiteCommand("INSERT INTO КоррКоэффицентБазовогоНорматива(Календарный_год, Базовый_норматив_ВК, Корр_коэфф_ВК) "+
+            //    //    $"VALUES ('{DATE}', (select MAX(код) from БазовыйНормативЗатрат), {row["код"]})", connection);
+            //    //    c.ExecuteNonQuery(); 
+            //    //}
 
-                table0.Rows.Add(new_row);
-                adapter.Update(table0);
-
-            }
+            //}
         }
 
 
@@ -224,38 +237,35 @@ namespace Report
 
         private void buttonAddKoef_Click (object sender, EventArgs e)
         {
-           /*
-            * Кнопка пока не задейсвован. Но позже может потребоваться.
-            * Для отдельной формы, на окторой будут отображены корректирующие коэффиценты 
-            * с дополнительним полем - Уточнение. По этому полю, можно будет дополнить условия проверки на будликаты.
-            * */
+            /*
+             * Кнопка пока не задейсвован. Но позже может потребоваться.
+             * Для отдельной формы, на окторой будут отображены корректирующие коэффиценты 
+             * с дополнительним полем - Уточнение. По этому полю, можно будет дополнить условия проверки на будликаты.
+             * */
+            FormListKoef lk = new FormListKoef();
+            lk.CurrentRow = CurrentDataRow;
+            lk.DATE = comboBoxYear.SelectedItem.ToString();
+
+            lk.ShowDialog();
+            FillDataGrid();
         }
 
         private void comboBoxCorrectKoef_SelectionChangeCommitted (object sender, EventArgs e)
         {
+            
+        }
+
+        private void FormБНЗ_Добавление_FormClosed (object sender, FormClosedEventArgs e)
+        {
             db = new SQliteDB();
-            ComboBox item = (ComboBox)sender;
-
-            using (SQLiteConnection connection = new SQLiteConnection(db.ConnectionDB))
-            {
-                connection.Open();
-                adapter = new SQLiteDataAdapter("SELECT * FROM КоррКоэффицентБазовогоНорматива", connection);
-                table1 = new DataTable();
-                adapter.Fill(table1);
-
-                DataRow newrow = table1.NewRow();
-
-                newrow["Календарный_год"]       = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01");
-                newrow["Базовый_норматив_ВК"]   = CurrentDataRow;
-                newrow["Корр_коэфф_ВК"]         = Convert.ToInt32(ListKK.Where(x => x.Наименование.Contains(item.SelectedItem.ToString())).Select(x => x.id).ElementAt(0));
-
-                command = new SQLiteCommandBuilder(adapter);
-
-                table1.Rows.Add(newrow);
-                adapter.Update(table1);
-
-                item.Items.Remove(item.SelectedItem);                
-                FillDataGrid();
+            using (SQLiteConnection c = new SQLiteConnection(db.ConnectionDB))
+            {                
+                c.Open();
+                /*Проверка на удаление только по одному признаку - пустое поле наименование.
+                 * Возможно, следут добавить ещё два условия для удаления. 
+                 * */ 
+                SQLiteCommand cm = new SQLiteCommand("DELETE FROM БазовыйНормативЗатрат WHERE БазовыйНормативЗатрат.Наименование = '';", c);
+                cm.ExecuteNonQueryAsync();
             }
         }
 

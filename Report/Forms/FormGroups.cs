@@ -29,7 +29,13 @@ namespace Report.Forms
             SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB);
             connection.Open();
 
-            Adapter = new SQLiteDataAdapter("select * from СтоимостнаяГруппаКалГода", connection);
+            Adapter = new SQLiteDataAdapter("SELECT DISTINCT(СтоимостнаяГруппаКалГода.код), "+
+                            "СтоимостнаяГруппаКалГода.Наименование,СтоимостнаяГруппаКалГода.ПолноеНаименование, "+
+                            "СтоимостнаяГруппаКалГода.Комментарий, СтоимостнаяГруппаКалГода.КалендарныйГод "+
+                            "FROM БНЗСтоимостнойГруппы " +
+                            "JOIN СтоимостнаяГруппаКалГода ON СтоимостнаяГруппаКалГода.код = БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК "+
+                            $"WHERE БНЗСтоимостнойГруппы.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'", connection);
+
             Table = new DataTable();
             Adapter.Fill(Table);                       
 
@@ -118,7 +124,19 @@ namespace Report.Forms
             fadd.ShowDialog();
             FillDataGrid();
         }
+        int AddFictiveRow ()
+        {
+            DB = new SQliteDB();
+            using (SQLiteConnection conn = new SQLiteConnection(DB.ConnectionDB))
+            {
+                conn.Open();
+                SQLiteCommand command = new SQLiteCommand("INSERT INTO СтоимостнаяГруппаКалГода(Наименование) VALUES ('');", conn);
+                command.ExecuteNonQuery();
 
+                command.CommandText = "select MAX(СтоимостнаяГруппаКалГода.код) as 'код' FROM СтоимостнаяГруппаКалГода;";
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+        }
 
 
         private void FormGroups_Load (object sender, EventArgs e)
@@ -150,7 +168,9 @@ namespace Report.Forms
             FormGroupAdd f = new FormGroupAdd();
             f.FillCombobox();
             f.Text = "Добавление группы";
-            f.StatusOperation = 1;
+            f.StatusOperation = 3;
+            f.CurrentDataRow_id = AddFictiveRow();
+            
             f.ShowDialog();
             FillDataGrid();
         }
@@ -169,6 +189,11 @@ namespace Report.Forms
             {
                 FillComponents(true);
             }
+        }
+
+        private void comboBoxYear_SelectionChangeCommitted (object sender, EventArgs e)
+        {
+            FillDataGrid();
         }
     }
 }

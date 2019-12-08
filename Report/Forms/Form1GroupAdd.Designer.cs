@@ -88,6 +88,7 @@
             this.buttonAddKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonAddKoef.TabIndex = 25;
             this.buttonAddKoef.UseVisualStyleBackColor = true;
+            this.buttonAddKoef.Click += new System.EventHandler(this.buttonAddKoef_Click);
             // 
             // textBoxFillDesc
             // 
@@ -220,6 +221,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormGroupAdd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGroupAdd_FormClosing);
             this.Load += new System.EventHandler(this.FormGroupAdd_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewБНЗ_Группы)).EndInit();
             this.ResumeLayout(false);
