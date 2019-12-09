@@ -50,11 +50,11 @@ namespace Report
 
 
             db = new SQliteDB();
-            using (SQLiteConnection conection = new SQLiteConnection(db.ConnectionDB))
-            {
-                conection.Open();
+            //using (SQLiteConnection conection = new SQLiteConnection(db.ConnectionDB))
+            //{
+            //    conection.Open();
 
-                adapter = new SQLiteDataAdapter(query, conection);
+                adapter = new SQLiteDataAdapter(query, db.ConnectionDB);
                 dataset = new DataSet();
 
                 table0 = new DataTable();
@@ -77,7 +77,7 @@ namespace Report
                     ListKK.Add(new КорректирующиеКоэффиценты(Convert.ToInt32(row[0]), row[1].ToString(), row[2].ToString()));
                 }
 
-            }
+            
         }
         void Operation ()
         {
@@ -177,10 +177,11 @@ namespace Report
 
             using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
             {
-                connection.Open();             
+                connection.Open();
 
-                SQLiteCommand command = new SQLiteCommand($"UPDATE БазовыйНормативЗатрат SET Наименование = '{textBoxDesc.Text}', "+
-                                                            $"Полное_наименование = '{textBoxFillDesc.Text}', Комментарий = '{textBoxComment.Text}' " +
+                SQLiteCommand command = new SQLiteCommand($"UPDATE БазовыйНормативЗатрат SET Наименование = '{textBoxDesc.Text}', " +
+                                                            $"Полное_наименование = '{textBoxFillDesc.Text}', Комментарий = '{textBoxComment.Text}', " +
+                                                            $"КалендарныйГод = '{DATE}' " +
                                                             $"WHERE БазовыйНормативЗатрат.код = {CurrentDataRow}; "+
                                                             $"UPDATE КоррКоэффицентБазовогоНорматива SET Календарный_год = '{DATE}' "+
                                                             $"WHERE КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}"
@@ -237,11 +238,6 @@ namespace Report
 
         private void buttonAddKoef_Click (object sender, EventArgs e)
         {
-            /*
-             * Кнопка пока не задейсвован. Но позже может потребоваться.
-             * Для отдельной формы, на окторой будут отображены корректирующие коэффиценты 
-             * с дополнительним полем - Уточнение. По этому полю, можно будет дополнить условия проверки на будликаты.
-             * */
             FormListKoef lk = new FormListKoef();
             lk.CurrentRow = CurrentDataRow;
             lk.DATE = comboBoxYear.SelectedItem.ToString();
@@ -271,35 +267,42 @@ namespace Report
 
         private void buttonDeleteKoef_Click (object sender, EventArgs e)
         {
-            List<string> ListId = new List<string>();
+            DialogResult result = MessageBox.Show("Вы действительно хотите удлать запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            SQliteDB q = new SQliteDB();
-            foreach (DataGridViewRow row in dataGridViewKoef.Rows)
+            if (result.Equals(DialogResult.Yes))
             {
-                if (Convert.ToBoolean(row.Cells[0].Value))
+                List<string> ListId = new List<string>();
+
+                SQliteDB q = new SQliteDB();
+                foreach (DataGridViewRow row in dataGridViewKoef.Rows)
                 {
-                    ListId.Add(row.Cells["код"].Value.ToString());                    
+                    if (Convert.ToBoolean(row.Cells[0].Value))
+                    {
+                        ListId.Add(row.Cells["код"].Value.ToString());
+                    }
                 }
-            }
-            foreach (DataGridViewRow row in dataGridViewKoef.Rows)
-            {
-                if (Convert.ToBoolean(row.Cells[0].Value))
+                foreach (DataGridViewRow row in dataGridViewKoef.Rows)
                 {
-                    dataGridViewKoef.Rows.Remove(row);
+                    if (Convert.ToBoolean(row.Cells[0].Value))
+                    {
+                        dataGridViewKoef.Rows.Remove(row);
+                    }
                 }
-            }
-            
-            //q.Delete("КоррКоэффицентБазовогоНорматива", "КоррКоэффицентБазовогоНорматива.код", string.Join(",", ListId.ToArray()));
-            string s = string.Join(",", ListId.ToArray());
 
-            using (SQLiteConnection connection = new SQLiteConnection(q.ConnectionDB))
-            {
-                connection.Open();
-                SQLiteCommand command = new SQLiteCommand("DELETE FROM КоррКоэффицентБазовогоНорматива WHERE " +
-                                                            $"КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК IN({s}) AND " +
-                                                            $"КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}", connection);
-                command.ExecuteNonQuery();
 
+                //q.Delete("КоррКоэффицентБазовогоНорматива", "КоррКоэффицентБазовогоНорматива.код", string.Join(",", ListId.ToArray()));
+                string s = string.Join(",", ListId.ToArray());
+
+                using (SQLiteConnection connection = new SQLiteConnection(q.ConnectionDB))
+                {
+                    connection.Open();
+                    SQLiteCommand command = new SQLiteCommand("DELETE FROM КоррКоэффицентБазовогоНорматива WHERE " +
+                                                                $"КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК IN({s}) AND " +
+                                                                $"КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}", connection);
+                    command.ExecuteNonQuery();
+
+                }
+                FillDataGrid(); 
             }
         }
 

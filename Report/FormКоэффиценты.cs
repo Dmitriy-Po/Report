@@ -16,6 +16,9 @@ namespace Report
             FormEducation.Fill(ListEducation);
             КорректирующиеКоэффиценты.Fill(ListCoef);
         }
+
+
+
         public List<FormEducation> ListEducation = new List<FormEducation>();
         public List<КорректирующиеКоэффиценты> ListCoef = new List<КорректирующиеКоэффиценты>();
 

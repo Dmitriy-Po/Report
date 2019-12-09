@@ -43,7 +43,6 @@
             this.textBoxDesc = new System.Windows.Forms.TextBox();
             this.buttonSaveAndClose = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.comboBoxNormativ = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewБНЗ_Группы)).BeginInit();
             this.SuspendLayout();
@@ -56,9 +55,9 @@
             this.dataGridViewБНЗ_Группы.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.check});
             this.dataGridViewБНЗ_Группы.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridViewБНЗ_Группы.Location = new System.Drawing.Point(0, 284);
+            this.dataGridViewБНЗ_Группы.Location = new System.Drawing.Point(0, 246);
             this.dataGridViewБНЗ_Группы.Name = "dataGridViewБНЗ_Группы";
-            this.dataGridViewБНЗ_Группы.Size = new System.Drawing.Size(684, 178);
+            this.dataGridViewБНЗ_Группы.Size = new System.Drawing.Size(684, 216);
             this.dataGridViewБНЗ_Группы.TabIndex = 31;
             this.dataGridViewБНЗ_Группы.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewБНЗ_Группы_CellEndEdit);
             // 
@@ -72,7 +71,7 @@
             // 
             this.buttonDeleteKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDeleteKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonDeleteKoef.Image")));
-            this.buttonDeleteKoef.Location = new System.Drawing.Point(43, 249);
+            this.buttonDeleteKoef.Location = new System.Drawing.Point(43, 215);
             this.buttonDeleteKoef.Name = "buttonDeleteKoef";
             this.buttonDeleteKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonDeleteKoef.TabIndex = 26;
@@ -83,7 +82,7 @@
             // 
             this.buttonAddKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAddKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddKoef.Image")));
-            this.buttonAddKoef.Location = new System.Drawing.Point(12, 249);
+            this.buttonAddKoef.Location = new System.Drawing.Point(12, 215);
             this.buttonAddKoef.Name = "buttonAddKoef";
             this.buttonAddKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonAddKoef.TabIndex = 25;
@@ -178,15 +177,6 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // comboBoxNormativ
-            // 
-            this.comboBoxNormativ.FormattingEnabled = true;
-            this.comboBoxNormativ.Location = new System.Drawing.Point(22, 194);
-            this.comboBoxNormativ.Name = "comboBoxNormativ";
-            this.comboBoxNormativ.Size = new System.Drawing.Size(370, 21);
-            this.comboBoxNormativ.TabIndex = 33;
-            this.comboBoxNormativ.SelectionChangeCommitted += new System.EventHandler(this.comboBoxNormativ_SelectionChangeCommitted);
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -216,7 +206,6 @@
             this.Controls.Add(this.textBoxDesc);
             this.Controls.Add(this.buttonSaveAndClose);
             this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.comboBoxNormativ);
             this.Controls.Add(this.label5);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormGroupAdd";
@@ -245,7 +234,6 @@
         public System.Windows.Forms.TextBox textBoxDesc;
         private System.Windows.Forms.Button buttonSaveAndClose;
         private System.Windows.Forms.Button buttonSave;
-        public System.Windows.Forms.ComboBox comboBoxNormativ;
         private System.Windows.Forms.Label label5;
     }
 }

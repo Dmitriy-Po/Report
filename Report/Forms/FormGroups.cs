@@ -25,22 +25,24 @@ namespace Report.Forms
         void FillDataGrid ()
         {
             DB = new SQliteDB();
+            using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
+            {
+                connection.Open();
+                DB = new SQliteDB();
+                //string q = "SELECT DISTINCT(СтоимостнаяГруппаКалГода.код), " +
+                //                "СтоимостнаяГруппаКалГода.Наименование,СтоимостнаяГруппаКалГода.ПолноеНаименование, " +
+                //                "СтоимостнаяГруппаКалГода.Комментарий, СтоимостнаяГруппаКалГода.КалендарныйГод " +
+                //                "FROM БНЗСтоимостнойГруппы " +
+                //                "JOIN СтоимостнаяГруппаКалГода ON СтоимостнаяГруппаКалГода.код = БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК " +
+                //                $"WHERE БНЗСтоимостнойГруппы.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
+                string q = $"SELECT * FROM СтоимостнаяГруппаКалГода WHERE СтоимостнаяГруппаКалГода.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
 
-            SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB);
-            connection.Open();
+                Adapter = new SQLiteDataAdapter(q, connection);
 
-            Adapter = new SQLiteDataAdapter("SELECT DISTINCT(СтоимостнаяГруппаКалГода.код), "+
-                            "СтоимостнаяГруппаКалГода.Наименование,СтоимостнаяГруппаКалГода.ПолноеНаименование, "+
-                            "СтоимостнаяГруппаКалГода.Комментарий, СтоимостнаяГруппаКалГода.КалендарныйГод "+
-                            "FROM БНЗСтоимостнойГруппы " +
-                            "JOIN СтоимостнаяГруппаКалГода ON СтоимостнаяГруппаКалГода.код = БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК "+
-                            $"WHERE БНЗСтоимостнойГруппы.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'", connection);
-
-            Table = new DataTable();
-            Adapter.Fill(Table);                       
-
-            dataGridViewGoups.DataSource = Table;
-            connection.Close();
+                Table = new DataTable();
+                Adapter.Fill(Table);
+                dataGridViewGoups.DataSource = Table;
+            };
 
         }
         void FillComboBox ()
@@ -55,23 +57,31 @@ namespace Report.Forms
         }
         void DeleteSelectedRows ()
         {
-            DB = new SQliteDB();
-            DialogResult result = MessageBox.Show("Вы действительно хотите удлать запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            
+            DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result.Equals(DialogResult.Yes))
             {
+                List<object> list_id = new List<object>();
+                DB = new SQliteDB();
                 foreach (DataGridViewRow row in dataGridViewGoups.Rows)
                 {
                     if (Convert.ToBoolean(row.Cells[0].Value))
                     {
-                        dataGridViewGoups.Rows.Remove(row);
+                        list_id.Add(row.Cells["код"].Value);
                     }
                 }
-                Adapter = new SQLiteDataAdapter("select СтоимостнаяГруппаКалГода.код from СтоимостнаяГруппаКалГода", DB.ConnectionDB);
-                Command = new SQLiteCommandBuilder(Adapter);
+                using (SQLiteConnection conn = new SQLiteConnection(DB.ConnectionDB))
+                {
+                    conn.Open();                   
 
-                Adapter.Update(Table);
+                    string id = string.Join(",", list_id);
+                    SQLiteCommand comm = new SQLiteCommand("DELETE FROM СтоимостнаяГруппаКалГода "+
+                                $"WHERE СтоимостнаяГруппаКалГода.код IN({id})", conn);
 
+                    comm.ExecuteNonQuery();
+                }
+                FillDataGrid();
             }
         }
         bool CountSelectedRows (string tooltip)

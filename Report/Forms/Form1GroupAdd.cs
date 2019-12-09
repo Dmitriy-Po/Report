@@ -222,19 +222,30 @@ namespace Report.Forms
         }
         void DeleteSelectedRows ()
         {
-            DialogResult result = MessageBox.Show("Вы действительно хотите удлать запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result.Equals(DialogResult.Yes))
             {
+                List<object> list_id = new List<object>();
                 foreach (DataGridViewRow row in dataGridViewБНЗ_Группы.Rows)
                 {
                     if (Convert.ToBoolean(row.Cells[0].Value))
                     {
-                        dataGridViewБНЗ_Группы.Rows.Remove(row);
+                        list_id.Add(row.Cells["код"].Value);
                     }
                 }
-                CommndBuilder = new SQLiteCommandBuilder(AdapterGroup);
-                AdapterGroup.Update(TableGroup);
+
+                DB = new SQliteDB();
+                using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
+                {
+                    connection.Open();
+                    string id = string.Join(",", list_id);
+
+                    Command = new SQLiteCommand("DELETE FROM БНЗСтоимостнойГруппы " +
+                                $"WHERE БНЗСтоимостнойГруппы.код IN({id})", connection);
+                    Command.ExecuteNonQuery();
+                }
+                FillDataGridGroups();
             }
         }
 

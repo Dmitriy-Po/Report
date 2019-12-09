@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Windows.Forms;
@@ -10,7 +11,7 @@ namespace Report
         SQliteDB db;
         DataTable table;
         SQLiteDataAdapter adapter;
-        SQLiteCommandBuilder command;
+        SQLiteCommand command;
 
         public FormБазовыеНормативыЗатрат()
         {
@@ -82,38 +83,49 @@ namespace Report
         }
         void DeleteSelectedRows ()
         {
-            DialogResult result = MessageBox.Show("Вы действительно хотите удлать запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result.Equals(DialogResult.Yes))
             {
+                db = new SQliteDB();
+                List<object> list_id = new List<object>();
+
                 foreach (DataGridViewRow row in dataGridViewNormals.Rows)
                 {
                     if (Convert.ToBoolean(row.Cells[0].Value))
                     {
-                        dataGridViewNormals.Rows.Remove(row);
+                        list_id.Add(row.Cells["код"].Value);
                     }
                 }
-
-                using (SQLiteConnection connection = new SQLiteConnection(db.ConnectionDB))
+                               
+                string id = string.Join(",", list_id);
+                using (SQLiteConnection c = new SQLiteConnection(db.ConnectionDB))
                 {
-                    connection.Open();
-                    command = new SQLiteCommandBuilder(adapter);
+                    c.Open();
+                    command = new SQLiteCommand("DELETE FROM БазовыйНормативЗатрат " +
+                                            $"WHERE БазовыйНормативЗатрат.код IN({id})", c);
 
-                    adapter.Update(table);
+                    command.ExecuteNonQuery(); 
                 }
+                FillDataGrid();
             }
         }
         void FillDataGrid ()
         {
             // Зполение DataGrid.
             db = new SQliteDB();
-            /* Недоработка - выбираются все строки. Следует изменить на выбор нормативов с существующими коэффицентами. Вложенным запросом. */
-            string query = "SELECT DISTINCT(БазовыйНормативЗатрат.код), "+
-                            "БазовыйНормативЗатрат.Наименование, "+
-                            "Полное_наименование, "+
-                            "Комментарий "+
-                            "FROM КоррКоэффицентБазовогоНорматива JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК "+
-                            $"WHERE КоррКоэффицентБазовогоНорматива.Календарный_год LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
+            
+            string query =
+                            $"SELECT БазовыйНормативЗатрат.код, БазовыйНормативЗатрат.Наименование," +
+                                "БазовыйНормативЗатрат.Полное_наименование,"+
+                                "БазовыйНормативЗатрат.Комментарий "+                            
+                                $"FROM БазовыйНормативЗатрат WHERE БазовыйНормативЗатрат.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
+                            //"SELECT DISTINCT(БазовыйНормативЗатрат.код), "+
+                            //"БазовыйНормативЗатрат.Наименование, "+
+                            //"Полное_наименование, "+
+                            //"Комментарий "+
+                            //"FROM КоррКоэффицентБазовогоНорматива JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК "+
+                            //$"WHERE КоррКоэффицентБазовогоНорматива.Календарный_год LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
 
             table = new DataTable();
 
@@ -127,7 +139,7 @@ namespace Report
             dataGridViewNormals.Columns["Наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewNormals.Columns["Полное_наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             dataGridViewNormals.Columns["Комментарий"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewNormals.Columns["код"].Visible = false;
+            dataGridViewNormals.Columns["код"].Visible = false;            
         }
 
 
