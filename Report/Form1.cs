@@ -17,14 +17,10 @@ namespace Report
             //заполнение коллекций
             TableFilial.Fill(ListFilial);
             TableSKill.Fill(ListSkill);
-            TableSpecial.Fill(ListSpecial);           
-            
+            TableSpecial.Fill(ListSpecial);
 
-            /*---------------------------------------------------------*/
-            //comboBoxFil.SelectedIndexChanged += (s, e) => DataFilter();
-            //comboBoxSpec.SelectedIndexChanged += (s, e) => DataFilter();
-            //textBoxYear.TextChanged += (s, e) => DataFilter();
-            //checkBoxStudent_inv.Click += (s, e) => DataFilter();
+
+            
 
         }
 
@@ -36,7 +32,17 @@ namespace Report
         public List<TableFilial>  ListFilial = new List<TableFilial>();
         public List<TableSKill>   ListSkill = new List<TableSKill>();
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
-        public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();            
+        public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
+        
+        
+        void i ()
+        {
+            /*---------------------------------------------------------*/
+            comboBoxFil.SelectedIndexChanged += (s, e) => DataFilter();
+            comboBoxSpec.SelectedIndexChanged += (s, e) => DataFilter();
+            comboBoxYear.SelectedIndexChanged += (s, e) => DataFilter();
+            checkBoxStudent_inv.Click += (s, e) => DataFilter();
+        }            
         
         public void FillComboBoxes ()
         {
@@ -57,22 +63,29 @@ namespace Report
         }
         void DeleteSelectedRows ()
         {
-            DB = new SQliteDB();
-            DialogResult result = MessageBox.Show("Вы действительно хотите удлать запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result.Equals(DialogResult.Yes))
             {
+                List<object> list_id = new List<object>();
                 foreach (DataGridViewRow row in dataGridViewMain.Rows)
                 {
                     if (Convert.ToBoolean(row.Cells[0].Value))
                     {
-                        dataGridViewMain.Rows.Remove(row);
+                        list_id.Add(row.Cells["код"].Value);
                     }
                 }
-                Adapter = new SQLiteDataAdapter("select ЧисленностьОбучающихся.код from ЧисленностьОбучающихся", DB.ConnectionDB);
-                Command = new SQLiteCommandBuilder(Adapter);
 
-                Adapter.Update(Table);
+                DB = new SQliteDB();
+                using (SQLiteConnection conect = new SQLiteConnection(DB.ConnectionDB))
+                {
+                    conect.Open();
+                    string id = string.Join(",", list_id);
+                    SQLiteCommand comand = new SQLiteCommand("DELETE FROM ЧисленностьОбучающихся WHERE "+
+                                    $"ЧисленностьОбучающихся.код IN({id})", conect);
+                    comand.ExecuteNonQuery();
+                }
+                FillDataGrid();
 
             }
         }
@@ -97,6 +110,7 @@ namespace Report
                     fadd.textBoxОчное.Text          = row.Cells["Очное"].Value.ToString();
                     fadd.textBoxОчно_заочное.Text   = row.Cells["Очно-заочное"].Value.ToString();
                     fadd.textBoxЗаочное.Text        = row.Cells["Заочное"].Value.ToString();
+                    fadd.checkBoxStdInv.Checked = Convert.ToBoolean(row.Cells["Студент инвалид"].Value);
 
                     if (IsEditingMode)
                     {
@@ -169,8 +183,8 @@ namespace Report
                 //              };
 
 
-                dataGridViewMain.DataSource = null;
-                dataGridViewMain.Rows.Clear();
+                //dataGridViewMain.DataSource = null;
+                //dataGridViewMain.Rows.Clear();
                 dataGridViewMain.DataSource = newlist.ToArray();
 
                 
@@ -198,13 +212,7 @@ namespace Report
             else return true;
         }
 
-                      
-        public void RefreshDataGridCiew()
-        {
-            //dataGridViewMain.DataSource = null;
-            //dataGridViewMain.Rows.Clear();
-            //FillDataGrid();
-        }
+       
         public void FillDataGrid()
         {
             #region OLD
@@ -439,11 +447,7 @@ namespace Report
             FillComboBoxes();
             FillDataGrid();
         }
-
-        private void бДToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            RefreshDataGridCiew();
-        }
+                
 
         private void dataGridViewMain_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -529,18 +533,7 @@ namespace Report
         {
             
         }
-
-        private void buttonRefresh_Click(object sender, EventArgs e)
-        {
-            RefreshDataGridCiew();
-            //RefreshDataGridCiew();
-            //SQliteDB q = new SQliteDB();
-            //DataContext x = new DataContext("Data Source=ReportDB.db;");
-
-            //var table = from t in x.GetTable<TableFilial>()
-            //            where t.id > 5
-            //            select t;
-        }
+                
 
         private void базовыеНормативыЗатратToolStripMenuItem_Click(object sender, EventArgs e)
         {

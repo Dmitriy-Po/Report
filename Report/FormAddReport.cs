@@ -125,7 +125,7 @@ namespace Report
 
                 Adapter.Fill(Table);
 
-                new_row[1] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01");
+                new_row[1] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
                 new_row[2] = textBoxОчное.Text;
                 new_row[3] = textBoxОчно_заочное.Text;
                 new_row[4] = textBoxЗаочное.Text;

@@ -51,10 +51,9 @@
             this.сформироватьОтчётToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonRefresh = new System.Windows.Forms.Button();
+            this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBoxYear = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewMain)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -266,7 +265,6 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.comboBoxYear);
-            this.groupBox1.Controls.Add(this.buttonRefresh);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.buttonDeleteSelected);
@@ -285,15 +283,13 @@
             this.groupBox1.Text = "Отбор по данным";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
-            // buttonRefresh
+            // comboBoxYear
             // 
-            this.buttonRefresh.Location = new System.Drawing.Point(271, 99);
-            this.buttonRefresh.Name = "buttonRefresh";
-            this.buttonRefresh.Size = new System.Drawing.Size(144, 23);
-            this.buttonRefresh.TabIndex = 16;
-            this.buttonRefresh.Text = "Обновить список";
-            this.buttonRefresh.UseVisualStyleBackColor = true;
-            this.buttonRefresh.Click += new System.EventHandler(this.buttonRefresh_Click);
+            this.comboBoxYear.FormattingEnabled = true;
+            this.comboBoxYear.Location = new System.Drawing.Point(323, 36);
+            this.comboBoxYear.Name = "comboBoxYear";
+            this.comboBoxYear.Size = new System.Drawing.Size(230, 21);
+            this.comboBoxYear.TabIndex = 17;
             // 
             // label3
             // 
@@ -312,14 +308,6 @@
             this.label2.Size = new System.Drawing.Size(96, 13);
             this.label2.TabIndex = 14;
             this.label2.Text = "Календарный год";
-            // 
-            // comboBoxYear
-            // 
-            this.comboBoxYear.FormattingEnabled = true;
-            this.comboBoxYear.Location = new System.Drawing.Point(323, 36);
-            this.comboBoxYear.Name = "comboBoxYear";
-            this.comboBoxYear.Size = new System.Drawing.Size(230, 21);
-            this.comboBoxYear.TabIndex = 17;
             // 
             // FormListCountStudent
             // 
@@ -362,7 +350,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.DataGridView dataGridViewMain;
-        private System.Windows.Forms.Button buttonRefresh;
         private System.Windows.Forms.ToolStripMenuItem нормативыToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem базовыеНормативыЗатратToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem коэффицентыToolStripMenuItem;

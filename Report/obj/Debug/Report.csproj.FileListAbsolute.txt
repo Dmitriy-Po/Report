@@ -51,6 +51,10 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\bin\
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\bin\Debug\System.Data.SQLite.xml
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormListCountStudent.resources
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormAddReport.resources
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormListKoef.resources
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormGroupAdd.resources
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormGroups.resources
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormListBaseGroup.resources
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormСозданиеОтчёта.resources
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Form_КК_Добавление.resources
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormБазовыеНормативыЗатрат.resources
@@ -60,8 +64,3 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csproj.GenerateResource.Cache
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.exe
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.pdb
-C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormGroups.resources
-C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormGroupAdd.resources
-C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
-C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.FormListKoef.resources
-C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormListBaseGroup.resources

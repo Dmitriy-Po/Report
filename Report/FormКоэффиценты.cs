@@ -16,9 +16,7 @@ namespace Report
             FormEducation.Fill(ListEducation);
             КорректирующиеКоэффиценты.Fill(ListCoef);
         }
-
-
-
+        
         public List<FormEducation> ListEducation = new List<FormEducation>();
         public List<КорректирующиеКоэффиценты> ListCoef = new List<КорректирующиеКоэффиценты>();
 
@@ -107,6 +105,30 @@ namespace Report
             }
             else return true;
         }
+        void DeleteSelectedRows ()
+        {
+            DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result.Equals(DialogResult.Yes))
+            {
+                List<string> ListId = new List<string>();
+                SQliteDB q = new SQliteDB();
+
+                foreach (DataGridViewRow row in dataGridViewCoeff.Rows)
+                {
+                    if (Convert.ToBoolean(row.Cells[0].Value))
+                    {
+                        ListId.Add(row.Cells["код"].Value.ToString());
+                    }
+                }
+                q.Delete("ЗначениеКоэффицента", "ЗначениеКоэффицента.код", string.Join(",", ListId.ToArray()));
+            }
+            FillDataGrid();
+        }
+
+
+
+
         private void buttonAddNewString_Click (object sender, EventArgs e)
         {
             Form_КК_Добавление f = new Form_КК_Добавление();
@@ -154,18 +176,20 @@ namespace Report
 
         private void buttonDeleteSelected_Click (object sender, EventArgs e)
         {
-            List<string> ListId = new List<string>();
-
-            SQliteDB q = new SQliteDB();
+            UInt32 count = 0;
             foreach (DataGridViewRow row in dataGridViewCoeff.Rows)
             {
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
-                    ListId.Add(row.Cells["код"].Value.ToString());
-                    dataGridViewCoeff.Rows.Remove(row);
+                    count++;
                 }
             }
-            q.Delete("ЗначениеКоэффицента", "ЗначениеКоэффицента.код", string.Join(",", ListId.ToArray()));            
+            if (count == 0)
+            {
+                MessageBox.Show($"Выберите одну или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            else DeleteSelectedRows();
         }        
     }
 }
