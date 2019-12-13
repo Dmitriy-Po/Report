@@ -35,13 +35,19 @@ namespace Report.Forms
                 //                "FROM БНЗСтоимостнойГруппы " +
                 //                "JOIN СтоимостнаяГруппаКалГода ON СтоимостнаяГруппаКалГода.код = БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК " +
                 //                $"WHERE БНЗСтоимостнойГруппы.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
-                string q = $"SELECT * FROM СтоимостнаяГруппаКалГода WHERE СтоимостнаяГруппаКалГода.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
+                string q = $"SELECT СтоимостнаяГруппаКалГода.код, Наименование, "+
+                    "ПолноеНаименование as 'Полное наименование', "+
+                    "Комментарий, SUBSTR(КалендарныйГод, 1,4) as 'Календарный год' "+                    
+                    $"FROM СтоимостнаяГруппаКалГода WHERE СтоимостнаяГруппаКалГода.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
 
                 Adapter = new SQLiteDataAdapter(q, connection);
 
                 Table = new DataTable();
                 Adapter.Fill(Table);
                 dataGridViewGoups.DataSource = Table;
+                dataGridViewGoups.Columns[1].Visible = false;
+                dataGridViewGoups.Columns[0].Width = 30;
+                dataGridViewGoups.Columns["Полное наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             };
 
         }
@@ -112,7 +118,7 @@ namespace Report.Forms
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
                     fadd.textBoxDesc.Text           = row.Cells["Наименование"].Value.ToString();
-                    fadd.textBoxFillDesc.Text       = row.Cells["ПолноеНаименование"].Value.ToString();
+                    fadd.textBoxFillDesc.Text       = row.Cells["Полное наименование"].Value.ToString();
                     fadd.textBoxComment.Text        = row.Cells["Комментарий"].Value.ToString();
                     fadd.comboBoxYear.SelectedItem = comboBoxYear.SelectedItem;
 
@@ -126,7 +132,7 @@ namespace Report.Forms
                     {
                         fadd.Text = "Создание по шаблону";
                         fadd.StatusOperation = 2;
-                        fadd.CurrentDataRow_id = 0;    // 0 - для режима Создать по шаблону.
+                        fadd.CurrentDataRow_id = Convert.ToInt32(row.Cells["код"].Value);    // 0 - для режима Создать по шаблону.
                     }
                 }
             }
@@ -167,7 +173,7 @@ namespace Report.Forms
             }
             if (count == 0)
             {
-                MessageBox.Show($"Выберите ОДНУ или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Выберите одну или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             else DeleteSelectedRows();

@@ -47,6 +47,11 @@
             this.textBoxDetail = new System.Windows.Forms.TextBox();
             this.textBoxComment = new System.Windows.Forms.TextBox();
             this.checkBoxStdInv = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,7 +99,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(24, 58);
+            this.label8.Location = new System.Drawing.Point(14, 58);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(96, 13);
             this.label8.TabIndex = 28;
@@ -103,7 +108,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(24, 85);
+            this.label6.Location = new System.Drawing.Point(14, 85);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(99, 13);
             this.label6.TabIndex = 24;
@@ -115,12 +120,12 @@
             this.textBoxCoeff.Name = "textBoxCoeff";
             this.textBoxCoeff.Size = new System.Drawing.Size(245, 20);
             this.textBoxCoeff.TabIndex = 21;
-            this.textBoxCoeff.Text = "00.00";
+            this.textBoxCoeff.Text = "00,00";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(24, 32);
+            this.label5.Location = new System.Drawing.Point(14, 32);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(58, 13);
             this.label5.TabIndex = 22;
@@ -128,6 +133,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.comboBoxYear);
             this.groupBox1.Controls.Add(this.comboBoxFormEducation);
             this.groupBox1.Controls.Add(this.textBoxCoeff);
@@ -144,6 +152,7 @@
             // comboBoxYear
             // 
             this.comboBoxYear.FormattingEnabled = true;
+            this.comboBoxYear.ItemHeight = 13;
             this.comboBoxYear.Location = new System.Drawing.Point(129, 85);
             this.comboBoxYear.Name = "comboBoxYear";
             this.comboBoxYear.Size = new System.Drawing.Size(245, 21);
@@ -215,11 +224,68 @@
             this.checkBoxStdInv.Text = "Студент инвалид";
             this.checkBoxStdInv.UseVisualStyleBackColor = true;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.ForeColor = System.Drawing.Color.Crimson;
+            this.label7.Location = new System.Drawing.Point(190, 37);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(196, 15);
+            this.label7.TabIndex = 39;
+            this.label7.Text = "* - Обязательно для заполнения";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label9.ForeColor = System.Drawing.Color.Crimson;
+            this.label9.Location = new System.Drawing.Point(123, 69);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(14, 18);
+            this.label9.TabIndex = 40;
+            this.label9.Text = "*";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label13.ForeColor = System.Drawing.Color.Crimson;
+            this.label13.Location = new System.Drawing.Point(111, 30);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(14, 18);
+            this.label13.TabIndex = 41;
+            this.label13.Text = "*";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label10.ForeColor = System.Drawing.Color.Crimson;
+            this.label10.Location = new System.Drawing.Point(111, 58);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(14, 18);
+            this.label10.TabIndex = 42;
+            this.label10.Text = "*";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label11.ForeColor = System.Drawing.Color.Crimson;
+            this.label11.Location = new System.Drawing.Point(111, 83);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(14, 18);
+            this.label11.TabIndex = 43;
+            this.label11.Text = "*";
+            // 
             // Form_КК_Добавление
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(404, 443);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.checkBoxStdInv);
             this.Controls.Add(this.textBoxComment);
             this.Controls.Add(this.textBoxDetail);
@@ -263,5 +329,10 @@
         public System.Windows.Forms.TextBox textBoxDetail;
         public System.Windows.Forms.TextBox textBoxComment;
         public System.Windows.Forms.CheckBox checkBoxStdInv;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label9;
     }
 }

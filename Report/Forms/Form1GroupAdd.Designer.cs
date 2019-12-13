@@ -44,6 +44,9 @@
             this.buttonSaveAndClose = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewБНЗ_Группы)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,9 +58,9 @@
             this.dataGridViewБНЗ_Группы.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.check});
             this.dataGridViewБНЗ_Группы.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridViewБНЗ_Группы.Location = new System.Drawing.Point(0, 246);
+            this.dataGridViewБНЗ_Группы.Location = new System.Drawing.Point(0, 267);
             this.dataGridViewБНЗ_Группы.Name = "dataGridViewБНЗ_Группы";
-            this.dataGridViewБНЗ_Группы.Size = new System.Drawing.Size(684, 216);
+            this.dataGridViewБНЗ_Группы.Size = new System.Drawing.Size(635, 195);
             this.dataGridViewБНЗ_Группы.TabIndex = 31;
             this.dataGridViewБНЗ_Группы.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewБНЗ_Группы_CellEndEdit);
             // 
@@ -71,7 +74,7 @@
             // 
             this.buttonDeleteKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDeleteKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonDeleteKoef.Image")));
-            this.buttonDeleteKoef.Location = new System.Drawing.Point(43, 215);
+            this.buttonDeleteKoef.Location = new System.Drawing.Point(43, 236);
             this.buttonDeleteKoef.Name = "buttonDeleteKoef";
             this.buttonDeleteKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonDeleteKoef.TabIndex = 26;
@@ -82,7 +85,7 @@
             // 
             this.buttonAddKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAddKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddKoef.Image")));
-            this.buttonAddKoef.Location = new System.Drawing.Point(12, 215);
+            this.buttonAddKoef.Location = new System.Drawing.Point(12, 236);
             this.buttonAddKoef.Name = "buttonAddKoef";
             this.buttonAddKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonAddKoef.TabIndex = 25;
@@ -92,15 +95,16 @@
             // textBoxFillDesc
             // 
             this.textBoxFillDesc.Location = new System.Drawing.Point(150, 88);
+            this.textBoxFillDesc.Multiline = true;
             this.textBoxFillDesc.Name = "textBoxFillDesc";
-            this.textBoxFillDesc.Size = new System.Drawing.Size(242, 20);
+            this.textBoxFillDesc.Size = new System.Drawing.Size(460, 20);
             this.textBoxFillDesc.TabIndex = 22;
             // 
             // textBoxComment
             // 
             this.textBoxComment.Location = new System.Drawing.Point(150, 114);
             this.textBoxComment.Name = "textBoxComment";
-            this.textBoxComment.Size = new System.Drawing.Size(242, 20);
+            this.textBoxComment.Size = new System.Drawing.Size(460, 20);
             this.textBoxComment.TabIndex = 23;
             // 
             // label4
@@ -145,14 +149,14 @@
             this.comboBoxYear.ItemHeight = 13;
             this.comboBoxYear.Location = new System.Drawing.Point(150, 140);
             this.comboBoxYear.Name = "comboBoxYear";
-            this.comboBoxYear.Size = new System.Drawing.Size(242, 21);
+            this.comboBoxYear.Size = new System.Drawing.Size(460, 21);
             this.comboBoxYear.TabIndex = 24;
             // 
             // textBoxDesc
             // 
             this.textBoxDesc.Location = new System.Drawing.Point(150, 62);
             this.textBoxDesc.Name = "textBoxDesc";
-            this.textBoxDesc.Size = new System.Drawing.Size(242, 20);
+            this.textBoxDesc.Size = new System.Drawing.Size(460, 20);
             this.textBoxDesc.TabIndex = 21;
             // 
             // buttonSaveAndClose
@@ -181,18 +185,54 @@
             // 
             this.label5.AutoSize = true;
             this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label5.Location = new System.Drawing.Point(22, 174);
+            this.label5.Location = new System.Drawing.Point(12, 202);
             this.label5.Name = "label5";
             this.label5.Padding = new System.Windows.Forms.Padding(20, 1, 20, 1);
             this.label5.Size = new System.Drawing.Size(259, 17);
             this.label5.TabIndex = 32;
             this.label5.Text = "Добавление базовых нормативов затрат\r\n";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label6.ForeColor = System.Drawing.Color.Crimson;
+            this.label6.Location = new System.Drawing.Point(130, 65);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(14, 18);
+            this.label6.TabIndex = 43;
+            this.label6.Text = "*";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.ForeColor = System.Drawing.Color.Crimson;
+            this.label7.Location = new System.Drawing.Point(414, 24);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(196, 15);
+            this.label7.TabIndex = 42;
+            this.label7.Text = "* - Обязательно для заполнения";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label8.ForeColor = System.Drawing.Color.Crimson;
+            this.label8.Location = new System.Drawing.Point(130, 143);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(14, 18);
+            this.label8.TabIndex = 44;
+            this.label8.Text = "*";
+            // 
             // FormGroupAdd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 462);
+            this.ClientSize = new System.Drawing.Size(635, 462);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.dataGridViewБНЗ_Группы);
             this.Controls.Add(this.buttonDeleteKoef);
             this.Controls.Add(this.buttonAddKoef);
@@ -235,5 +275,8 @@
         private System.Windows.Forms.Button buttonSaveAndClose;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }

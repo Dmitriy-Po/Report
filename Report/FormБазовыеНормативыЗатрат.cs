@@ -137,7 +137,7 @@ namespace Report
             dataGridViewNormals.Columns[0].Width = 50;
             dataGridViewNormals.Columns[1].Width = 50;
             dataGridViewNormals.Columns["Наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewNormals.Columns["Полное_наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            dataGridViewNormals.Columns["Полное_наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewNormals.Columns["Комментарий"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             dataGridViewNormals.Columns["код"].Visible = false;            
         }

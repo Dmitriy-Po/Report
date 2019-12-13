@@ -38,6 +38,7 @@ namespace Report
 
                 dataGridViewAddKoef.DataSource = table;
                 dataGridViewAddKoef.Columns["код"].Visible = false;
+                dataGridViewAddKoef.Columns["Наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
         }
 

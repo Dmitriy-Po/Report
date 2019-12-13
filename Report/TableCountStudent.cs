@@ -3,7 +3,7 @@
     public class TableCountStudent
     {
         public TableCountStudent () { }
-        public TableCountStudent (int id_filial, string filial, string special, string skill, int ochnaya, int ocjno_zaochnaya, int zaochnaya, int year)
+        public TableCountStudent (int id_filial, string filial, string special, string skill, int ochnaya, int ocjno_zaochnaya, int zaochnaya, int year, bool std_inv)
         {
             this.id_filial = id_filial;
             Filial = filial;
@@ -13,6 +13,7 @@
             ochno_zaocjnoe = ocjno_zaochnaya;
             zaochnoe = zaochnaya;
             this.year = year;
+            this.student_inv = std_inv;
         }
 
 

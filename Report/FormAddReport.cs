@@ -35,7 +35,9 @@ namespace Report
             {
                 comboBoxYear.Items.Add(++y);
             } while (y != DateTime.Today.Year);
+            
             comboBoxYear.SelectedItem = y;
+            
         }
         void Operation ()
         {
@@ -185,7 +187,7 @@ namespace Report
             int id_skill    = ListCount.ListSkill.Where(x => x.desc.Contains(comboBoxSkill.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
             
             string update = "UPDATE ЧисленностьОбучающихся SET "+
-                            $"год = {DATE}, "+
+                            $"год = '{DATE}', "+
                             $"очное = {textBoxОчное.Text}, "+
                             $"очно_заочное = {textBoxОчно_заочное.Text}, "+
                             $"заочное = {textBoxЗаочное.Text}, "+
@@ -298,7 +300,26 @@ namespace Report
             }
             catch (FormatException)
             {
-                MessageBox.Show("В полях количество, должно быть указанно положительное число или ноль");
+                MessageBox.Show("В полях <количество>, должно быть указанно целое положительное число или ноль.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return false;
+            }
+
+        }
+        bool IsRequired()
+        {
+            int fil, spec, skill = 0;
+
+            fil     = comboBoxFilial.SelectedIndex;
+            spec    = comboBoxSpecial.SelectedIndex;
+            skill   = comboBoxSkill.SelectedIndex;
+
+            if ((fil >= 0) && (spec >= 0) && (skill >= 0))
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Заполните все обязательные поля.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -398,13 +419,20 @@ namespace Report
         
         public void buttonSave_Click(object sender, EventArgs e)
         {
-
+            if (IsCorrect() && IsRequired())
+            {
+                Operation();
+            }
+            
         }
 
         private void buttonSaveAndClose_Click(object sender, EventArgs e)
         {
-            Operation();
-            Close();
+            if (IsCorrect() && IsRequired())
+            {
+                Operation();
+                Close(); 
+            }
 
             #region OLD
             //сохранить и закрыть форму        

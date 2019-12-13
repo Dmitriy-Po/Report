@@ -10,7 +10,7 @@ namespace Report
 
     {        
         
-        public SQLiteConnection ConnectionDB = new SQLiteConnection("Data Source=ReportDB.db; Version=3;");
+        public SQLiteConnection ConnectionDB = new SQLiteConnection("Data Source=ReportDB.db; Version=3; foreign keys=true;");
         public SQLiteDataReader Select (string name_table)
         {            
             SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM "+name_table, ConnectionDB);            
@@ -68,6 +68,7 @@ namespace Report
             SQLiteCommand command = new SQLiteCommand
                 ($"DELETE FROM {table} WHERE {column} in({id})", ConnectionDB);
             ConnectionDB.Open();
+            
             command.ExecuteNonQuery();
             ConnectionDB.Close();
         }

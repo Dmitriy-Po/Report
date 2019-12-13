@@ -31,7 +31,8 @@ namespace Report
                             "SUBSTR(ЗначениеКоэффицента.КаледндарныйГод, 0, 5) as 'Календарный год', " +
                             "КорректирующиеКоэффиценты.Комментарий,  " +
                             "ФормаОбучения.наименование as 'Форма обучения', " +
-                            "ЗначениеКоэффицента.код " +
+                            "ЗначениеКоэффицента.код, " +
+                            "ЗначениеКоэффицента.Корректирующие_ВК " +
                             "FROM ЗначениеКоэффицента LEFT JOIN КорректирующиеКоэффиценты ON ЗначениеКоэффицента.Корректирующие_ВК = КорректирующиеКоэффиценты.код " +
                             "JOIN ФормаОбучения ON ФормаОбучения.код = ЗначениеКоэффицента.ФормаОбучения_ВК " +
                             $"WHERE ЗначениеКоэффицента.КаледндарныйГод LIKE '{comboBoxYear.SelectedItem}%'";
@@ -50,6 +51,7 @@ namespace Report
             dataGridViewCoeff.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewCoeff.Columns[0].Width = 50;
             dataGridViewCoeff.Columns["код"].Visible = false;
+            dataGridViewCoeff.Columns["Корректирующие_ВК"].Visible = false;
         }
         void FillComponents (bool IsEditingMode)
         {
@@ -118,10 +120,10 @@ namespace Report
                 {
                     if (Convert.ToBoolean(row.Cells[0].Value))
                     {
-                        ListId.Add(row.Cells["код"].Value.ToString());
+                        ListId.Add(row.Cells["Корректирующие_ВК"].Value.ToString());
                     }
                 }
-                q.Delete("ЗначениеКоэффицента", "ЗначениеКоэффицента.код", string.Join(",", ListId.ToArray()));
+                q.Delete("КорректирующиеКоэффиценты", "КорректирующиеКоэффиценты.код", string.Join(",", ListId.ToArray()));
             }
             FillDataGrid();
         }
@@ -134,7 +136,8 @@ namespace Report
             Form_КК_Добавление f = new Form_КК_Добавление();
             f.FillElements();
             f.Text = "Добавление";
-            f.StatusOperation = 1;            
+            f.StatusOperation = 1;
+            f.comboBoxYear.SelectedItem = comboBoxYear.SelectedItem;            
             f.ShowDialog();
             FillDataGrid();
         }
@@ -186,7 +189,7 @@ namespace Report
             }
             if (count == 0)
             {
-                MessageBox.Show($"Выберите одну или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Выберите одну или несколько строк для операции удаления.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             else DeleteSelectedRows();

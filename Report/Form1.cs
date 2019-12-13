@@ -19,8 +19,12 @@ namespace Report
             TableSKill.Fill(ListSkill);
             TableSpecial.Fill(ListSpecial);
 
+            /*---------------------------------------------------------*/
+            comboBoxFil.SelectedIndexChanged += (s, e) => DataFilter();
+            comboBoxSpec.SelectedIndexChanged += (s, e) => DataFilter();
+            comboBoxYear.SelectedIndexChanged += (s, e) => DataFilter();
+            checkBoxStudent_inv.Click += (s, e) => DataFilter();
 
-            
 
         }
 
@@ -34,15 +38,7 @@ namespace Report
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
         public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
         
-        
-        void i ()
-        {
-            /*---------------------------------------------------------*/
-            comboBoxFil.SelectedIndexChanged += (s, e) => DataFilter();
-            comboBoxSpec.SelectedIndexChanged += (s, e) => DataFilter();
-            comboBoxYear.SelectedIndexChanged += (s, e) => DataFilter();
-            checkBoxStudent_inv.Click += (s, e) => DataFilter();
-        }            
+                 
         
         public void FillComboBoxes ()
         {
@@ -50,8 +46,11 @@ namespace Report
             SqlMyDataReader("Специальности", 1, comboBoxSpec);
             comboBoxFil.Items.Insert(0, "Все филиалы");
             comboBoxSpec.Items.Insert(0, "Все специальности");
+            comboBoxYear.Items.Insert(0, "Все года");
+
             comboBoxFil.SelectedIndex = 0;
             comboBoxSpec.SelectedIndex = 0;
+            comboBoxYear.SelectedIndex = 0;
            
             // Заполнение comboboxYear.            
             int y = DateTime.Today.Year - 3;
@@ -105,12 +104,12 @@ namespace Report
                     fadd.comboBoxFilial.SelectedItem      = row.Cells["Филиал"].Value;
                     fadd.comboBoxSpecial.SelectedItem     = row.Cells["Специальность"].Value;
                     fadd.comboBoxSkill.SelectedItem       = row.Cells["Квалификация"].Value;
-                    fadd.comboBoxYear.SelectedItem        = comboBoxYear.SelectedItem;
+                    fadd.comboBoxYear.SelectedItem        = Convert.ToInt32(row.Cells["Год"].Value);
                     
                     fadd.textBoxОчное.Text          = row.Cells["Очное"].Value.ToString();
-                    fadd.textBoxОчно_заочное.Text   = row.Cells["Очно-заочное"].Value.ToString();
+                    fadd.textBoxОчно_заочное.Text   = row.Cells["Очно_заочное"].Value.ToString();
                     fadd.textBoxЗаочное.Text        = row.Cells["Заочное"].Value.ToString();
-                    fadd.checkBoxStdInv.Checked = Convert.ToBoolean(row.Cells["Студент инвалид"].Value);
+                    fadd.checkBoxStdInv.Checked = Convert.ToBoolean(row.Cells["Студент_инвалид"].Value);
 
                     if (IsEditingMode)
                     {
@@ -135,59 +134,60 @@ namespace Report
         {
             try
             {
-
-                //var newlist = ListCountStudent
-                //        .Where(x => x.Filial.Contains(comboBoxFil.SelectedItem.ToString()) &&
-                //                    x.Special.Contains(comboBoxSpec.SelectedItem.ToString()) &&
-                //                    x.year == Convert.ToInt32(textBoxYear.Text) &&
-                //                    x.student_inv.Equals(checkBoxStudent_inv.Checked))
-                //        .Select(x => x).Distinct().ToList();
-
                 var newlist = from result in ListCountStudent                              
                               select new
                               {
-                                  Год           = result.year,
-                                  Филиал        = result.Filial,
-                                  Специальость  = result.Special
+                                  код = result.id_filial,
+                                  Год = result.year,                                  
+                                  Филиал = result.Filial,
+                                  Специальность = result.Special,
+                                  Квалификация = result.Skill,
+                                  Очное = result.ochnoe,
+                                  Очно_заочное = result.ochno_zaocjnoe,
+                                  Заочное = result.zaochnoe,
+                                  Студент_инвалид = result.student_inv                                  
                               };
+
+
+                if (comboBoxYear.SelectedIndex > 0)
+                {
+
+                    newlist = from result in newlist
+                              where result.Год == Convert.ToInt32(comboBoxYear.SelectedItem)
+                              select result;                              
+
+                }
 
                 if (comboBoxFil.SelectedIndex > 0)
                 {
-                    newlist = from result in ListCountStudent
-                              where result.Filial.Contains(comboBoxFil.SelectedItem.ToString())
-                              select new
-                              {
-                                  Год = result.year,
-                                  Филиал = result.Filial,
-                                  Специальость = result.Special
-                              };
+                    newlist = from result in newlist
+                              where result.Филиал.Contains(comboBoxFil.SelectedItem.ToString())
+                              select result;
                 }
 
                 if (comboBoxSpec.SelectedIndex > 0)
                 {
-                    newlist = from result in ListCountStudent
-                              where result.Special.Contains(comboBoxSpec.SelectedItem.ToString())
-                              select new
-                              {
-                                  Год = result.year,
-                                  Филиал = result.Filial,
-                                  Специальость = result.Special
-                              };
+                    newlist = from result in newlist
+                              where result.Специальность.Contains(comboBoxSpec.SelectedItem.ToString())
+                              select result;
+                }
+                if (checkBoxStudent_inv.Checked)
+                {
+                    newlist = from result in newlist
+                              where result.Студент_инвалид.Equals(checkBoxStudent_inv.Checked)
+                              select result;
                 }
 
-                //var newlist = from result in ListCountStudent
-                //              where result.Filial.Contains(comboBoxFil.SelectedItem.ToString())
-                //              select new { Год = result.year,
-                //                  Филиал = result.Filial,
-                //                  Специальость = result.Special
-                //              };
-
-
-                //dataGridViewMain.DataSource = null;
-                //dataGridViewMain.Rows.Clear();
-                dataGridViewMain.DataSource = newlist.ToArray();
+                //var newlist = ListCountStudent.FindAll(x => x.Filial.Contains(comboBoxFil.SelectedItem.ToString()));
+                //newlist.FindAll(x => x.Special.Contains(comboBoxSpec.SelectedItem.ToString()));
 
                 
+                dataGridViewMain.DataSource = newlist.ToArray();
+                dataGridViewMain.ColumnHeadersHeight = 28;
+
+                dataGridViewMain.Columns["код"].Visible = false;
+                dataGridViewMain.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridViewMain.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             }
             catch (FormatException)
             {
@@ -270,15 +270,15 @@ namespace Report
             
             #endregion
             string query = " SELECT " +
-            "ЧисленностьОбучающихся.год as 'Год', " +
+            "SUBSTR(ЧисленностьОбучающихся.год, 1, 4) as 'Год', " +
             "Filial.id as 'Структурное код', " +
             "Filial.full_desc as 'Филиал', " +
             "Специальности.наименование as 'Специальность', " +
             "Квалификации.наименование as 'Квалификация', " +
             "ЧисленностьОбучающихся.очное as 'Очное', " +
-            "ЧисленностьОбучающихся.очно_заочное as 'Очно-заочное', " +
+            "ЧисленностьОбучающихся.очно_заочное as 'Очно_заочное', " +
             "ЧисленностьОбучающихся.заочное as 'Заочное', " +
-            "ЧисленностьОбучающихся.студент_инвалид as 'Студент инвалид', " +
+            "ЧисленностьОбучающихся.студент_инвалид as 'Студент_инвалид', " +
             "ЧисленностьОбучающихся.код as 'код' " +
             "FROM ЧисленностьОбучающихся " +
             "INNER JOIN Filial ON " +
@@ -296,9 +296,22 @@ namespace Report
             Table = new DataTable();
             Adapter.Fill(Table);
 
+            dataGridViewMain.DataSource = null;
             dataGridViewMain.DataSource = Table;
             dataGridViewMain.Columns[2].Visible = false;
             dataGridViewMain.Columns[10].Visible = false;
+
+            dataGridViewMain.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewMain.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+
+            ListCountStudent.Clear();
+            foreach (DataRow row in Table.Rows)
+            {
+                ListCountStudent.Add(new TableCountStudent(
+                        Convert.ToInt32(row["код"]), row["Филиал"].ToString(), row["Специальность"].ToString(),
+                        row["Квалификация"].ToString(), Convert.ToInt32(row["Очное"]), 
+                        Convert.ToInt32(row["Очно_заочное"]), Convert.ToInt32(row["Заочное"]), Convert.ToInt32(row["Год"]), Convert.ToBoolean(row["Студент_инвалид"])));
+            }
 
             connection.Close();
         }

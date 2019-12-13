@@ -296,16 +296,56 @@ namespace Report
         {
             
         }
+        bool IsCorrect ()
+        {
+            try
+            {
+                decimal k = Convert.ToDecimal(textBoxCoeff.Text);
+                if (k >= 0)
+                {
+                    return true;
+                }
+                MessageBox.Show("Значение должно быть больше или равно нулю.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;                
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Введено не числовое значние. Введите число.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+        }
+        bool IsRequired ()
+        {
+            int f, y = 0;
+            f = comboBoxFormEducation.SelectedIndex;
+            y = comboBoxYear.SelectedIndex;
+
+            if ((!string.IsNullOrEmpty(textBoxNameCoef.Text)) && (f >= 0) && (y >=0))
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Заполните все обязательные поля.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+        }
 
         private void buttonSave_Click (object sender, EventArgs e)
         {
-            Operation();           
+            if (IsCorrect() && IsRequired())
+            {
+                Operation();  
+            }          
         }
 
         private void buttonSaveAndClose_Click (object sender, EventArgs e)
         {
-            Operation();            
-            Close();
+            if (IsCorrect() && IsRequired())
+            {
+                Operation();
+                Close(); 
+            }
         }
     }
 }

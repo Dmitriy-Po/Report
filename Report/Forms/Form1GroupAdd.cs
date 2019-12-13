@@ -21,7 +21,7 @@ namespace Report.Forms
         SQLiteCommandBuilder CommndBuilder;
         List<БазовыеНормативыЗатрат> ListNormals = new List<БазовыеНормативыЗатрат>();
 
-        public ushort StatusOperation { get; set; } /*Для выбора режима Редактирования, Добавления или Дубликата */
+        public ushort StatusOperation { get; set; } /*Для выбора режима Редактирования, Добавления или Создания по шаблону*/
         public int CurrentDataRow_id { get; set; }
 
 
@@ -187,7 +187,7 @@ namespace Report.Forms
                             "БНЗСтоимостнойГруппы.Бакалавриат, " +
                             "БНЗСтоимостнойГруппы.Магистратура, " +
                             "БНЗСтоимостнойГруппы.Аспирантура, " +
-                            "БНЗСтоимостнойГруппы.СПО, " +
+                            //"БНЗСтоимостнойГруппы.СПО, " +
                             "БНЗСтоимостнойГруппы.КалендарныйГод, " +
                             "БНЗСтоимостнойГруппы.БНЗ_ВК, " +
                             "БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК " +
@@ -209,15 +209,25 @@ namespace Report.Forms
             TableGroup = ds.Tables[0];
 
             dataGridViewБНЗ_Группы.DataSource = TableGroup;
+
             /*формирование внешнего вида таблицы*/
+            dataGridViewБНЗ_Группы.Columns["код"].Visible = false;
+            dataGridViewБНЗ_Группы.Columns["КалендарныйГод"].Visible = false;
+            dataGridViewБНЗ_Группы.Columns["БНЗ_ВК"].Visible = false;
+            dataGridViewБНЗ_Группы.Columns["СтоимостнаяГруппаКалГода_ВК"].Visible = false;
+            dataGridViewБНЗ_Группы.Columns["Базовый норматив"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            dataGridViewБНЗ_Группы.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewБНЗ_Группы.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewБНЗ_Группы.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
 
             ListNormals.Clear();
-            //comboBoxNormativ.Items.Clear();
+            
             foreach (DataRow row in ds.Tables[1].Rows)
             {
                 ListNormals.Add(new БазовыеНормативыЗатрат(Convert.ToInt32(row[0]), row[1].ToString()));
-            }
-            //comboBoxNormativ.Items.AddRange(ListNormals.Select(x => x.Desc).ToArray());
+            }            
 
         }
         void DeleteSelectedRows ()
@@ -248,22 +258,53 @@ namespace Report.Forms
                 FillDataGridGroups();
             }
         }
-
+        bool IsCorrect ()
+        {
+            int year = comboBoxYear.SelectedIndex;
+            if (!string.IsNullOrWhiteSpace(textBoxDesc.Text) && year >= 0)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Заполните все обязательные поля.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+        }
 
         private void buttonSaveAndClose_Click (object sender, EventArgs e)
         {
-            Operation();
-            Close();
+            if (IsCorrect())
+            {
+                Operation();
+                Close(); 
+            }
         }
 
         private void buttonDeleteKoef_Click (object sender, EventArgs e)
         {
-            DeleteSelectedRows();
+            UInt32 count = 0;
+            foreach (DataGridViewRow row in dataGridViewБНЗ_Группы.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[0].Value))
+                {
+                    count++;
+                }
+            }
+            if (count == 0)
+            {
+                MessageBox.Show($"Выберите одну или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            else DeleteSelectedRows();
         }
 
         private void buttonSave_Click (object sender, EventArgs e)
         {
-            Operation();
+            if (IsCorrect())
+            {
+                Operation(); 
+            }
         }
 
         private void comboBoxNormativ_SelectionChangeCommitted (object sender, EventArgs e)
@@ -322,25 +363,32 @@ namespace Report.Forms
             }
         }
 
+               
+
         private void FormGroupAdd_Load (object sender, EventArgs e)
         {
             FillDataGridGroups();
         }
+                
 
-        private void dataGridViewБНЗ_Группы_CellEndEdit (object sender, DataGridViewCellEventArgs e)
+        void AddChanges ()
         {
-            string select = "SELECT БНЗСтоимостнойГруппы.код, " +                            
+            string select = "SELECT БНЗСтоимостнойГруппы.код, " +
                             "БНЗСтоимостнойГруппы.Бакалавриат, " +
                             "БНЗСтоимостнойГруппы.Магистратура, " +
-                            "БНЗСтоимостнойГруппы.Аспирантура, " +
-                            "БНЗСтоимостнойГруппы.СПО " +
+                            "БНЗСтоимостнойГруппы.Аспирантура " +
+                            //"БНЗСтоимостнойГруппы.СПО " +
                             "FROM БНЗСтоимостнойГруппы";
 
 
             AdapterGroup = new SQLiteDataAdapter(select, DB.ConnectionDB);
             CommndBuilder = new SQLiteCommandBuilder(AdapterGroup);
             AdapterGroup.Update(TableGroup);
+        }
 
+        private void dataGridViewБНЗ_Группы_CellEndEdit (object sender, DataGridViewCellEventArgs e)
+        {
+            AddChanges();
         }
     }
 }

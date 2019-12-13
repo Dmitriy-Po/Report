@@ -265,9 +265,9 @@ namespace Report
             }
         }
 
-        private void buttonDeleteKoef_Click (object sender, EventArgs e)
+        void DeleteSelectedRows ()
         {
-            DialogResult result = MessageBox.Show("Вы действительно хотите удлать запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result.Equals(DialogResult.Yes))
             {
@@ -281,13 +281,13 @@ namespace Report
                         ListId.Add(row.Cells["код"].Value.ToString());
                     }
                 }
-                foreach (DataGridViewRow row in dataGridViewKoef.Rows)
-                {
-                    if (Convert.ToBoolean(row.Cells[0].Value))
-                    {
-                        dataGridViewKoef.Rows.Remove(row);
-                    }
-                }
+                //foreach (DataGridViewRow row in dataGridViewKoef.Rows)
+                //{
+                //    if (Convert.ToBoolean(row.Cells[0].Value))
+                //    {
+                //        dataGridViewKoef.Rows.Remove(row);
+                //    }
+                //}
 
 
                 //q.Delete("КоррКоэффицентБазовогоНорматива", "КоррКоэффицентБазовогоНорматива.код", string.Join(",", ListId.ToArray()));
@@ -302,19 +302,58 @@ namespace Report
                     command.ExecuteNonQuery();
 
                 }
-                FillDataGrid(); 
+                FillDataGrid();
             }
         }
 
+        private void buttonDeleteKoef_Click (object sender, EventArgs e)
+        {
+            UInt32 count = 0;
+            foreach (DataGridViewRow row in dataGridViewKoef.Rows)
+            {
+                if (Convert.ToBoolean(row.Cells[0].Value))
+                {
+                    count++;
+                }
+            }
+            if (count == 0)
+            {
+                MessageBox.Show($"Выберите одну или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            else DeleteSelectedRows();
+        }
+        bool IsCorrect ()
+        {
+            int year = comboBoxYear.SelectedIndex;
+            if (!string.IsNullOrWhiteSpace(textBoxDesc.Text) && year >= 0)
+            {
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Заполните все обязательные поля.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+        }
+
+
+
         private void buttonSaveAndClose_Click (object sender, EventArgs e)
         {
-            Operation();
-            Close();
+            if (IsCorrect())
+            {
+                Operation();
+                Close(); 
+            }
         }
 
         private void buttonSave_Click (object sender, EventArgs e)
         {
-            Operation();
+            if (IsCorrect())
+            {
+                Operation(); 
+            }
         }
     }
 }
