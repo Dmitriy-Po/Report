@@ -187,7 +187,7 @@ namespace Report.Forms
                             "БНЗСтоимостнойГруппы.Бакалавриат, " +
                             "БНЗСтоимостнойГруппы.Магистратура, " +
                             "БНЗСтоимостнойГруппы.Аспирантура, " +
-                            //"БНЗСтоимостнойГруппы.СПО, " +
+                            "БНЗСтоимостнойГруппы.СПО, " +
                             "БНЗСтоимостнойГруппы.КалендарныйГод, " +
                             "БНЗСтоимостнойГруппы.БНЗ_ВК, " +
                             "БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК " +
@@ -220,7 +220,8 @@ namespace Report.Forms
             dataGridViewБНЗ_Группы.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewБНЗ_Группы.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewБНЗ_Группы.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
+            dataGridViewБНЗ_Группы.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            
 
             ListNormals.Clear();
             
@@ -369,18 +370,27 @@ namespace Report.Forms
         {
             FillDataGridGroups();
         }
-                
+
+        private void dataGridViewБНЗ_Группы_CellBeginEdit (object sender, DataGridViewCellCancelEventArgs e)
+        {
+            AddChanges();
+        }
+
+        private void dataGridViewБНЗ_Группы_CellStateChanged (object sender, DataGridViewCellStateChangedEventArgs e)
+        {
+            AddChanges();
+        }
 
         void AddChanges ()
         {
             string select = "SELECT БНЗСтоимостнойГруппы.код, " +
                             "БНЗСтоимостнойГруппы.Бакалавриат, " +
                             "БНЗСтоимостнойГруппы.Магистратура, " +
-                            "БНЗСтоимостнойГруппы.Аспирантура " +
-                            //"БНЗСтоимостнойГруппы.СПО " +
+                            "БНЗСтоимостнойГруппы.Аспирантура, " +
+                            "БНЗСтоимостнойГруппы.СПО " +
                             "FROM БНЗСтоимостнойГруппы";
 
-
+            
             AdapterGroup = new SQLiteDataAdapter(select, DB.ConnectionDB);
             CommndBuilder = new SQLiteCommandBuilder(AdapterGroup);
             AdapterGroup.Update(TableGroup);

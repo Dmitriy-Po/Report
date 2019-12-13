@@ -62,7 +62,9 @@
             this.dataGridViewБНЗ_Группы.Name = "dataGridViewБНЗ_Группы";
             this.dataGridViewБНЗ_Группы.Size = new System.Drawing.Size(635, 195);
             this.dataGridViewБНЗ_Группы.TabIndex = 31;
+            this.dataGridViewБНЗ_Группы.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridViewБНЗ_Группы_CellBeginEdit);
             this.dataGridViewБНЗ_Группы.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewБНЗ_Группы_CellEndEdit);
+            this.dataGridViewБНЗ_Группы.CellStateChanged += new System.Windows.Forms.DataGridViewCellStateChangedEventHandler(this.dataGridViewБНЗ_Группы_CellStateChanged);
             // 
             // check
             // 
