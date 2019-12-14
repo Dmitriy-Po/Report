@@ -278,6 +278,7 @@ namespace Report.Forms
             if (IsCorrect())
             {
                 Operation();
+                AddChanges();
                 Close(); 
             }
         }

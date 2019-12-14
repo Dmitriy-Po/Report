@@ -46,13 +46,13 @@ namespace Report.Forms
                                 "ЧисленностьОбучающихся.очное as 'Очное', "+
                                 "ЧисленностьОбучающихся.очно_заочное as 'Очно-заочное', "+
                                 "ЧисленностьОбучающихся.заочное as 'Заочное', "+
-                                "ЧисленностьОбучающихся.год, " +
+                                "SUBSTR(ЧисленностьОбучающихся.год, 1, 4) as 'год', " +
                                 "ЧисленностьОбучающихся.студент_инвалид " +
                                 "FROM ЧисленностьОбучающихся " +
                                 "JOIN Filial ON ЧисленностьОбучающихся.стуктурное_подразделение_ВК = Filial.id " +
                                 "JOIN Специальности ON ЧисленностьОбучающихся.специальность_ВК = Специальности.код " +
                                 "JOIN Квалификации  ON ЧисленностьОбучающихся.квалификация_ВК = Квалификации.код " +
-                                $"WHERE ЧисленностьОбучающихся.год = {year}; " + /*Выбор года подставить аргументом функции*/
+                                $"WHERE ЧисленностьОбучающихся.год LIKE '{year}%'; " + /*Выбор года подставить аргументом функции*/
 
                             // Table 4
                             "SELECT id, full_desc FROM Filial; ";
@@ -260,7 +260,8 @@ namespace Report.Forms
                     GridReport.Rows.Add("Аспирантура", Math.Round(_Aspirant, 2));
                     GridReport.Rows.Add("Бакалавриат, специалитет", Math.Round(_Bakalavr, 2));
                     GridReport.Rows.Add("Магистратура", Math.Round(_Magistr, 2));
-                    GridReport.Rows.Add("Асстентура", Math.Round(_SPO, 2));
+                    //GridReport.Rows.Add("Асстентура", Math.Round(_SPO, 2));
+                    
                     flag = false; 
                 }
 
@@ -296,7 +297,7 @@ namespace Report.Forms
 
                 object oMissing = System.Reflection.Missing.Value;
                 object oEndOfDoc = "\\endofdoc"; /* \endofdoc is a predefined bookmark */
-                string[] spec = new string[] { "Бакалавриат, специалитет", "Магистратура", "Аспирантура", "Ассистентура" };
+                string[] spec = new string[] { "Бакалавриат, специалитет", "Магистратура", "Аспирантура" };
 
                 _Application WORD = new Word.Application();
                 _Document MyDoc = WORD.Documents.Add(Visible: true);
