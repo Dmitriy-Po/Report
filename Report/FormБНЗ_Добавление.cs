@@ -192,40 +192,44 @@ namespace Report
         }
         void InsertRecord ()//сохранение
         {
-            //SQliteDB database = new SQliteDB();            
-            //string query = "SELECT * FROM БазовыйНормативЗатрат";            
+            SQliteDB database = new SQliteDB();
+            string query = "SELECT * FROM БазовыйНормативЗатрат";
 
-            //using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
-            //{
-            //    connection.Open();
+            using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
+            {
+                connection.Open();
 
-            //    adapter = new SQLiteDataAdapter(query, connection);
-            //    table0 = new DataTable();                
+                adapter = new SQLiteDataAdapter(query, connection);
+                table0 = new DataTable();
 
-            //    DataRow new_row = table0.NewRow();               
+                DataRow new_row = table0.NewRow();
 
-            //    adapter.Fill(table0);                 
+                adapter.Fill(table0);
 
-            //    new_row[1] = textBoxDesc.Text;
-            //    new_row[2] = textBoxFillDesc.Text;
-            //    new_row[3] = textBoxComment.Text;
+                new_row[1] = textBoxDesc.Text;
+                new_row[2] = textBoxFillDesc.Text;
+                new_row[3] = textBoxComment.Text;
 
-            //    table0.Rows.Add(new_row);
+                string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
-            //    SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
-                
-            //    adapter.Update(table0);
+                new_row[4] = DATE;
 
-            //    // Вставка записей из DataGid.
-            //    //string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
-            //    //foreach (DataRow row in dataGridViewKoef.Rows)
-            //    //{
-            //    //    SQLiteCommand c = new SQLiteCommand("INSERT INTO КоррКоэффицентБазовогоНорматива(Календарный_год, Базовый_норматив_ВК, Корр_коэфф_ВК) "+
-            //    //    $"VALUES ('{DATE}', (select MAX(код) from БазовыйНормативЗатрат), {row["код"]})", connection);
-            //    //    c.ExecuteNonQuery(); 
-            //    //}
+                table0.Rows.Add(new_row);
 
-            //}
+                SQLiteCommandBuilder command = new SQLiteCommandBuilder(adapter);
+
+                adapter.Update(table0);
+
+                //Вставка записей из DataGid.
+                //string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
+                foreach (DataGridViewRow row in dataGridViewKoef.Rows)
+                {
+                    SQLiteCommand c = new SQLiteCommand("INSERT INTO КоррКоэффицентБазовогоНорматива(Календарный_год, Базовый_норматив_ВК, Корр_коэфф_ВК) " +
+                    $"VALUES ('{DATE}', (select MAX(код) from БазовыйНормативЗатрат), {row.Cells["код"].Value.ToString()})", connection);
+                    c.ExecuteNonQuery();
+                }
+
+            }
         }
 
 
