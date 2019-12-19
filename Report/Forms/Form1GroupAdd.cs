@@ -195,10 +195,15 @@ namespace Report.Forms
                             $"WHERE БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК = {CurrentDataRow_id} " +
                             $"AND БНЗСтоимостнойГруппы.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'; " +
 
-                            //Table 1.
+                            // Table 1.
                             "SELECT БазовыйНормативЗатрат.код, Наименование FROM БазовыйНормативЗатрат WHERE БазовыйНормативЗатрат.код " +
                             "NOT IN(SELECT БНЗСтоимостнойГруппы.БНЗ_ВК FROM БНЗСтоимостнойГруппы WHERE " +
-                            $"БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК = {CurrentDataRow_id})";
+                            $"БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК = {CurrentDataRow_id}); " +
+
+                            // Tbale 2.                            
+                            "SELECT Специальности.код, наименование FROM СпециальностьСтоимостнойГруппы "+
+                            "JOIN Специальности ON Специальности.код = СпециальностьСтоимостнойГруппы.код_специальность "+
+                            $"WHERE СпециальностьСтоимостнойГруппы.код_группа = {CurrentDataRow_id}; ";
 
 
             ds = new DataSet();
@@ -221,7 +226,15 @@ namespace Report.Forms
             dataGridViewБНЗ_Группы.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewБНЗ_Группы.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewБНЗ_Группы.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            
+
+
+            /*формирование внешнего вида таблицы*/
+            dataGridViewGroups.DataSource = ds.Tables[2];
+
+            dataGridViewGroups.Columns["код"].Visible = false;
+            dataGridViewGroups.Columns["наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+
 
             ListNormals.Clear();
             
@@ -233,31 +246,64 @@ namespace Report.Forms
         }
         void DeleteSelectedRows ()
         {
-            DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result.Equals(DialogResult.Yes))
+            if (tabControl1.SelectedIndex == 0)
             {
-                List<object> list_id = new List<object>();
-                foreach (DataGridViewRow row in dataGridViewБНЗ_Группы.Rows)
+                DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result.Equals(DialogResult.Yes))
                 {
-                    if (Convert.ToBoolean(row.Cells[0].Value))
+                    List<object> list_id = new List<object>();
+                    foreach (DataGridViewRow row in dataGridViewБНЗ_Группы.Rows)
                     {
-                        list_id.Add(row.Cells["код"].Value);
+                        if (Convert.ToBoolean(row.Cells[0].Value))
+                        {
+                            list_id.Add(row.Cells["код"].Value);
+                        }
                     }
-                }
 
-                DB = new SQliteDB();
-                using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
-                {
-                    connection.Open();
-                    string id = string.Join(",", list_id);
+                    DB = new SQliteDB();
+                    using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
+                    {
+                        connection.Open();
+                        string id = string.Join(",", list_id);
 
-                    Command = new SQLiteCommand("DELETE FROM БНЗСтоимостнойГруппы " +
-                                $"WHERE БНЗСтоимостнойГруппы.код IN({id})", connection);
-                    Command.ExecuteNonQuery();
+                        Command = new SQLiteCommand("DELETE FROM БНЗСтоимостнойГруппы " +
+                                    $"WHERE БНЗСтоимостнойГруппы.код IN({id})", connection);
+                        Command.ExecuteNonQuery();
+                    }
+                    FillDataGridGroups();
                 }
-                FillDataGridGroups();
             }
+            else if (tabControl1.SelectedIndex == 1)
+            {
+                DialogResult result = MessageBox.Show("Вы действительно хотите удалить запись?", "Вопрос", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result.Equals(DialogResult.Yes))
+                {
+                    List<object> list_id = new List<object>();
+                    foreach (DataGridViewRow row in dataGridViewGroups.Rows)
+                    {
+                        if (Convert.ToBoolean(row.Cells[0].Value))
+                        {
+                            list_id.Add(row.Cells["код"].Value);
+                        }
+                    }
+
+                    DB = new SQliteDB();
+                    using (SQLiteConnection connection = new SQLiteConnection(DB.ConnectionDB))
+                    {
+                        connection.Open();
+                        string id = string.Join(",", list_id);
+
+                        Command = new SQLiteCommand("DELETE FROM СпециальностьСтоимостнойГруппы " +
+                                    $"WHERE СпециальностьСтоимостнойГруппы.код_специальность IN({id})", connection);
+                        Command.ExecuteNonQuery();
+                    }
+                    FillDataGridGroups();
+                }
+            }
+
+            
         }
         bool IsCorrect ()
         {
@@ -282,23 +328,38 @@ namespace Report.Forms
                 Close(); 
             }
         }
-
-        private void buttonDeleteKoef_Click (object sender, EventArgs e)
+        UInt32 Rows (DataGridViewRowCollection rows)
         {
             UInt32 count = 0;
-            foreach (DataGridViewRow row in dataGridViewБНЗ_Группы.Rows)
+            foreach (DataGridViewRow row in rows)
             {
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
                     count++;
                 }
             }
-            if (count == 0)
+            return count;
+        }
+        private void buttonDeleteKoef_Click (object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 0)
             {
-                MessageBox.Show($"Выберите одну или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                if (Rows(dataGridViewБНЗ_Группы.Rows) == 0)
+                {
+                    MessageBox.Show($"Выберите одну или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else DeleteSelectedRows();
             }
-            else DeleteSelectedRows();
+            else if (tabControl1.SelectedIndex == 1)
+            {
+                if (Rows(dataGridViewGroups.Rows) == 0)
+                {
+                    MessageBox.Show($"Выберите одну или несколько строк для операции удаления", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else DeleteSelectedRows();
+            }
+                        
+            
         }
 
         private void buttonSave_Click (object sender, EventArgs e)
@@ -343,12 +404,23 @@ namespace Report.Forms
         }
 
         private void buttonAddKoef_Click (object sender, EventArgs e)
-        {
-            FormListBaseGroup fb = new FormListBaseGroup();
-            fb.DATE = comboBoxYear.SelectedItem.ToString();
-            fb.CurrentRow = CurrentDataRow_id;
-            fb.ShowDialog();
-            FillDataGridGroups();
+        { 
+            if (tabControl1.SelectedIndex == 0)
+            {
+                FormListBaseGroup fb = new FormListBaseGroup();
+                fb.DATE = comboBoxYear.SelectedItem.ToString();
+                fb.CurrentRow = CurrentDataRow_id;
+                fb.ShowDialog();
+                FillDataGridGroups();
+            }
+            else if (tabControl1.SelectedIndex == 1)
+            {
+                FormListSpecialAndGroups fsg = new FormListSpecialAndGroups();
+                fsg.DATE = comboBoxYear.SelectedItem.ToString();
+                fsg.CurrentRow = CurrentDataRow_id;
+                fsg.ShowDialog();
+                FillDataGridGroups();
+            }
         }
 
         private void FormGroupAdd_FormClosing (object sender, FormClosingEventArgs e)

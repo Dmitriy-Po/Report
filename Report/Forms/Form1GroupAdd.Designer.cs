@@ -43,11 +43,19 @@
             this.textBoxDesc = new System.Windows.Forms.TextBox();
             this.buttonSaveAndClose = new System.Windows.Forms.Button();
             this.buttonSave = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.dataGridViewGroups = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewБНЗ_Группы)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGroups)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridViewБНЗ_Группы
@@ -57,10 +65,10 @@
             this.dataGridViewБНЗ_Группы.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewБНЗ_Группы.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.check});
-            this.dataGridViewБНЗ_Группы.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridViewБНЗ_Группы.Location = new System.Drawing.Point(0, 267);
+            this.dataGridViewБНЗ_Группы.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewБНЗ_Группы.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewБНЗ_Группы.Name = "dataGridViewБНЗ_Группы";
-            this.dataGridViewБНЗ_Группы.Size = new System.Drawing.Size(635, 195);
+            this.dataGridViewБНЗ_Группы.Size = new System.Drawing.Size(621, 223);
             this.dataGridViewБНЗ_Группы.TabIndex = 31;
             this.dataGridViewБНЗ_Группы.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridViewБНЗ_Группы_CellBeginEdit);
             this.dataGridViewБНЗ_Группы.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewБНЗ_Группы_CellEndEdit);
@@ -76,7 +84,7 @@
             // 
             this.buttonDeleteKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDeleteKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonDeleteKoef.Image")));
-            this.buttonDeleteKoef.Location = new System.Drawing.Point(43, 236);
+            this.buttonDeleteKoef.Location = new System.Drawing.Point(37, 176);
             this.buttonDeleteKoef.Name = "buttonDeleteKoef";
             this.buttonDeleteKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonDeleteKoef.TabIndex = 26;
@@ -87,7 +95,7 @@
             // 
             this.buttonAddKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAddKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddKoef.Image")));
-            this.buttonAddKoef.Location = new System.Drawing.Point(12, 236);
+            this.buttonAddKoef.Location = new System.Drawing.Point(6, 176);
             this.buttonAddKoef.Name = "buttonAddKoef";
             this.buttonAddKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonAddKoef.TabIndex = 25;
@@ -183,17 +191,6 @@
             this.buttonSave.UseVisualStyleBackColor = true;
             this.buttonSave.Click += new System.EventHandler(this.buttonSave_Click);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label5.Location = new System.Drawing.Point(12, 202);
-            this.label5.Name = "label5";
-            this.label5.Padding = new System.Windows.Forms.Padding(20, 1, 20, 1);
-            this.label5.Size = new System.Drawing.Size(259, 17);
-            this.label5.TabIndex = 32;
-            this.label5.Text = "Добавление базовых нормативов затрат\r\n";
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -227,15 +224,66 @@
             this.label8.TabIndex = 44;
             this.label8.Text = "*";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tabControl1.Location = new System.Drawing.Point(0, 207);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(635, 255);
+            this.tabControl1.TabIndex = 45;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.dataGridViewБНЗ_Группы);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(627, 229);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Базовые нормативы";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.dataGridViewGroups);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(627, 229);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Стоимостные группы";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewGroups
+            // 
+            this.dataGridViewGroups.AllowUserToAddRows = false;
+            this.dataGridViewGroups.AllowUserToDeleteRows = false;
+            this.dataGridViewGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1});
+            this.dataGridViewGroups.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewGroups.Location = new System.Drawing.Point(3, 3);
+            this.dataGridViewGroups.Name = "dataGridViewGroups";
+            this.dataGridViewGroups.Size = new System.Drawing.Size(621, 223);
+            this.dataGridViewGroups.TabIndex = 33;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "";
+            this.Column1.Name = "Column1";
+            // 
             // FormGroupAdd
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(635, 462);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.dataGridViewБНЗ_Группы);
             this.Controls.Add(this.buttonDeleteKoef);
             this.Controls.Add(this.buttonAddKoef);
             this.Controls.Add(this.textBoxFillDesc);
@@ -248,13 +296,16 @@
             this.Controls.Add(this.textBoxDesc);
             this.Controls.Add(this.buttonSaveAndClose);
             this.Controls.Add(this.buttonSave);
-            this.Controls.Add(this.label5);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormGroupAdd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormGroupAdd_FormClosing);
             this.Load += new System.EventHandler(this.FormGroupAdd_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewБНЗ_Группы)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGroups)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -276,9 +327,13 @@
         public System.Windows.Forms.TextBox textBoxDesc;
         private System.Windows.Forms.Button buttonSaveAndClose;
         private System.Windows.Forms.Button buttonSave;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn Column1;
+        public System.Windows.Forms.DataGridView dataGridViewGroups;
     }
 }

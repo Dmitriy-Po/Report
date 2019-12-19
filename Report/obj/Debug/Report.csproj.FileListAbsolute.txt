@@ -65,3 +65,4 @@ C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.exe
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.pdb
 C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.csprojResolveAssemblyReference.cache
+C:\Users\Дмитрий\Documents\Visual Studio 2015\Projects\Report\Report\obj\Debug\Report.Forms.FormListSpecialAndGroups.resources
