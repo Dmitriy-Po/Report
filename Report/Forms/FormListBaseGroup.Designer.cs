@@ -77,10 +77,10 @@
             this.dataGridViewBaseNormal.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewBaseNormal.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCheck});
-            this.dataGridViewBaseNormal.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewBaseNormal.Dock = System.Windows.Forms.DockStyle.Top;
             this.dataGridViewBaseNormal.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewBaseNormal.Name = "dataGridViewBaseNormal";
-            this.dataGridViewBaseNormal.Size = new System.Drawing.Size(695, 411);
+            this.dataGridViewBaseNormal.Size = new System.Drawing.Size(695, 359);
             this.dataGridViewBaseNormal.TabIndex = 3;
             // 
             // ColumnCheck

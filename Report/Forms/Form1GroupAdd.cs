@@ -425,6 +425,7 @@ namespace Report.Forms
 
         private void FormGroupAdd_FormClosing (object sender, FormClosingEventArgs e)
         {
+            AddChanges();
             DB = new SQliteDB();
             using (SQLiteConnection c = new SQLiteConnection(DB.ConnectionDB))
             {
@@ -434,7 +435,7 @@ namespace Report.Forms
                  * */
                 SQLiteCommand cm = new SQLiteCommand("DELETE FROM СтоимостнаяГруппаКалГода WHERE СтоимостнаяГруппаКалГода.Наименование = '';", c);
                 cm.ExecuteNonQueryAsync();
-            }
+            }            
         }
 
                

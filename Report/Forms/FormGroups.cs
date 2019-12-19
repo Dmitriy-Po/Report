@@ -124,7 +124,7 @@ namespace Report.Forms
 
                     if (IsEditingMode)
                     {
-                        fadd.Text = "Редактирование норматива";
+                        fadd.Text = "Редактирование группы";
                         fadd.StatusOperation = 3;
                         fadd.CurrentDataRow_id = Convert.ToInt32(row.Cells["код"].Value);    // получение строки для использования в функции IsDuplicate.
                     }

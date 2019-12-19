@@ -77,10 +77,10 @@
             this.dataGridViewSpecial.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewSpecial.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnCheck});
-            this.dataGridViewSpecial.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewSpecial.Dock = System.Windows.Forms.DockStyle.Top;
             this.dataGridViewSpecial.Location = new System.Drawing.Point(0, 0);
             this.dataGridViewSpecial.Name = "dataGridViewSpecial";
-            this.dataGridViewSpecial.Size = new System.Drawing.Size(695, 407);
+            this.dataGridViewSpecial.Size = new System.Drawing.Size(695, 355);
             this.dataGridViewSpecial.TabIndex = 5;
             // 
             // ColumnCheck

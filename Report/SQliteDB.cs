@@ -13,7 +13,7 @@ namespace Report
         public SQLiteConnection ConnectionDB = new SQLiteConnection("Data Source=ReportDB.db; Version=3; foreign keys=true;");
         public SQLiteDataReader Select (string name_table)
         {            
-            SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM "+name_table, ConnectionDB);            
+            SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM "+name_table + " ORDER BY 2", ConnectionDB);            
             /*добавить ограничение на выборку элементов из бд, равной 10.*/
             ConnectionDB.Open();
             SQLiteDataReader r = cmd.ExecuteReader();
