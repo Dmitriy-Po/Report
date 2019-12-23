@@ -13,7 +13,7 @@ namespace Report.Classes
         public FormEducation(int id, string description)
         {
             this.id = id;            
-            Desc = description;
+            this.FullDesc = description;
         }
         public void SetCorrectCoef(ЗначениеКоэффицента val)
         {
@@ -31,7 +31,7 @@ namespace Report.Classes
 
             while (reader.Read())
             {
-                List.Add(new FormEducation(Convert.ToInt32(reader[0]), reader[1].ToString()));
+                List.Add(new FormEducation(Convert.ToInt32(reader[0]), reader[2].ToString()));
             }
         }
     }

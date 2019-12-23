@@ -30,9 +30,10 @@ namespace Report
                             "ЗначениеКоэффицента.Значение as 'Значение коэффицента', " +
                             "SUBSTR(ЗначениеКоэффицента.КаледндарныйГод, 0, 5) as 'Календарный год', " +
                             "КорректирующиеКоэффиценты.Комментарий,  " +
-                            "ФормаОбучения.наименование as 'Форма обучения', " +
+                            "ФормаОбучения.полное_наименование as 'Форма обучения', " +
                             "ЗначениеКоэффицента.код, " +
-                            "ЗначениеКоэффицента.Корректирующие_ВК " +
+                            "ЗначениеКоэффицента.Корректирующие_ВК, " +
+                            "КорректирующиеКоэффиценты.СтудентИнвалид " +
                             "FROM ЗначениеКоэффицента LEFT JOIN КорректирующиеКоэффиценты ON ЗначениеКоэффицента.Корректирующие_ВК = КорректирующиеКоэффиценты.код " +
                             "JOIN ФормаОбучения ON ФормаОбучения.код = ЗначениеКоэффицента.ФормаОбучения_ВК " +
                             $"WHERE ЗначениеКоэффицента.КаледндарныйГод LIKE '{comboBoxYear.SelectedItem}%'";
@@ -63,20 +64,22 @@ namespace Report
             {
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
-                    f.textBoxNameCoef.Text = row.Cells["Наименование"].Value.ToString();
-                    f.textBoxFullDesc.Text = row.Cells["Полное наименование"].Value.ToString();
-                    f.textBoxComment.Text = row.Cells["Комментарий"].Value.ToString();
-                    f.textBoxDetail.Text = row.Cells["Уточнение"].Value.ToString();
+                    f.textBoxNameCoef.Text  = row.Cells["Наименование"].Value.ToString();
+                    f.textBoxFullDesc.Text  = row.Cells["Полное наименование"].Value.ToString();
+                    f.textBoxComment.Text   = row.Cells["Комментарий"].Value.ToString();
+                    f.textBoxDetail.Text    = row.Cells["Уточнение"].Value.ToString();
 
-                    f.textBoxCoeff.Text = row.Cells["Значение коэффицента"].Value.ToString();
+                    f.textBoxCoeff.Text                     = row.Cells["Значение коэффицента"].Value.ToString();
                     f.comboBoxFormEducation.SelectedItem    = row.Cells["Форма обучения"].Value;
                     f.comboBoxYear.SelectedItem             = Convert.ToInt32(row.Cells["Календарный год"].Value);
-                    
+                    f.checkBoxStdInv.Checked                = Convert.ToBoolean(row.Cells["СтудентИнвалид"].Value);
+
                     if (IsEditingMode)
                     {
                         f.Text = "Редактирование";
                         f.StatusOperation = 3;
                         f.CurrentDataRow = Convert.ToInt32(row.Cells["код"].Value);    // получение строки для использования в функции IsDuplicate.
+                        f.CurrentDataRow_id_kk = Convert.ToInt32(row.Cells["Корректирующие_ВК"].Value);
                     }
                     else
                     {

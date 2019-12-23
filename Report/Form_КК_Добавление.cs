@@ -16,12 +16,13 @@ namespace Report
             InitializeComponent();
         }
         public int CurrentDataRow { get; set; }
+        public int CurrentDataRow_id_kk { get; set; }
         public ushort StatusOperation { get; set; }
         public void FillElements ()
         {
             // заполнение combobox данными из табилцы Форма обучения, Даты.
             FormКоэффиценты c = new FormКоэффиценты();
-            comboBoxFormEducation.Items.AddRange(c.ListEducation.Select(x => x.Desc).ToArray());            
+            comboBoxFormEducation.Items.AddRange(c.ListEducation.Select(x => x.FullDesc).ToArray());            
 
             int y = DateTime.Now.Year - 3;
             do
@@ -39,7 +40,7 @@ namespace Report
             // Дубликат - исходя из выбранных полей на форме.
 
             var id_coef = fk.ListCoef.Where(x => x.Наименование.Contains(textBoxNameCoef.Text)).Select(i => i.id);
-            var id_form = fk.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
+            var id_form = fk.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
             string value_coef = textBoxCoeff.Text.Replace(",", ".");
             int year = Convert.ToInt32(comboBoxYear.SelectedItem);
 
@@ -162,7 +163,7 @@ namespace Report
 
             #endregion
             //запись из коллекции - формы обучения.
-            id[1] = form_coef.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.Text)).Select(x => x.id).ElementAt(0);
+            id[1] = form_coef.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.Text)).Select(x => x.id).ElementAt(0);
 
             string[] val = { Math.Round( Convert.ToDecimal(textBoxCoeff.Text), 2 ).ToString(),
                 comboBoxYear.Text +"-01-01", id[0].ToString(), id[1].ToString() };
@@ -209,17 +210,25 @@ namespace Report
             using (SQLiteConnection connection = new SQLiteConnection(database.ConnectionDB))
             {
                 connection.Open();                
-
+                
                 var id_coef = fcoef.ListCoef.Where(x => x.Наименование.Contains(textBoxNameCoef.Text)).Select(i => i.id);
-                var id_form = fcoef.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
+                var id_form = fcoef.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
                 decimal value_coef = Convert.ToDecimal(textBoxCoeff.Text.Replace('.', ','));
 
                 string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");                
 
                 SQLiteCommand command = new SQLiteCommand("UPDATE ЗначениеКоэффицента SET "+
-                                $"Значение = {textBoxCoeff.Text.Replace(",", ".")}, КаледндарныйГод = '{DATE}', "+
-                                    $"Корректирующие_ВК = {Convert.ToInt32(id_coef.ElementAt(0))}, ФормаОбучения_ВК = {Convert.ToInt32(id_form.ElementAt(0))} " +
-                                    $"WHERE ЗначениеКоэффицента.код = {id}", connection);
+                                    $"Значение = {textBoxCoeff.Text.Replace(",", ".")}, КаледндарныйГод = '{DATE}', "+
+                                    $"ФормаОбучения_ВК = {Convert.ToInt32(id_form.ElementAt(0))} " +
+                                    $"WHERE ЗначениеКоэффицента.код = {id}; "+
+                                    
+                                    "UPDATE КорректирующиеКоэффиценты SET "+
+                                    $"Наименование          = '{textBoxNameCoef.Text}', " +
+                                    $"ПолноеНаименование    = '{textBoxFullDesc.Text}', " +
+                                    $"Уточнение             = '{textBoxDetail.Text}', " +
+                                    $"Комментарий           = '{textBoxComment.Text}', " +
+                                    $"СтудентИнвалид       = '{checkBoxStdInv.Checked}' " +
+                                    $"WHERE КорректирующиеКоэффиценты.код = {CurrentDataRow_id_kk}", connection);
 
 
                 command.ExecuteNonQuery();                
@@ -265,7 +274,7 @@ namespace Report
                 adapter.Fill(table);
 
                 //var id_coef = fcoef.ListCoef.Where(x => x.Наименование.Contains(comboBoxCorrectCoef.SelectedItem.ToString())).Select(i => i.id);
-                var id_form = fcoef.ListEducation.Where(x => x.Desc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
+                var id_form = fcoef.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
                 decimal value_coef = Convert.ToDecimal(textBoxCoeff.Text);
                 string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
@@ -281,7 +290,7 @@ namespace Report
                 table.Rows.Add(new_row);                
                 adapter.Update(table);
 
-
+                
                 /*-------------------*/
                 SQLiteCommand new_command = new SQLiteCommand("INSERT INTO ЗначениеКоэффицента(Значение, КаледндарныйГод, Корректирующие_ВК, ФормаОбучения_ВК) "+
                                                     $"VALUES({textBoxCoeff.Text.Replace(",", ".")}, '{DATE}', "+
@@ -320,7 +329,7 @@ namespace Report
             f = comboBoxFormEducation.SelectedIndex;
             y = comboBoxYear.SelectedIndex;
 
-            if ((!string.IsNullOrEmpty(textBoxNameCoef.Text)) && (f >= 0) && (y >=0))
+            if ((!string.IsNullOrWhiteSpace(textBoxNameCoef.Text)) && (f >= 0) && (y >=0))
             {
                 return true;
             }

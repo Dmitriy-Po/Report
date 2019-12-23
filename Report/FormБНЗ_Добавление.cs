@@ -183,6 +183,7 @@ namespace Report
                                                             $"Полное_наименование = '{textBoxFillDesc.Text}', Комментарий = '{textBoxComment.Text}', " +
                                                             $"КалендарныйГод = '{DATE}' " +
                                                             $"WHERE БазовыйНормативЗатрат.код = {CurrentDataRow}; "+
+                                                            /*добавить update к таблице БНЗСтоимостнойГруппы*/
                                                             $"UPDATE КоррКоэффицентБазовогоНорматива SET Календарный_год = '{DATE}' "+
                                                             $"WHERE КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = {CurrentDataRow}"
                                                             , connection);

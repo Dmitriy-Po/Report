@@ -183,7 +183,7 @@ namespace Report.Forms
                 int r = 0;
 
                 // Коэффицент формы обучения.
-                decimal[] coef_priv = { 1, 0.25m, 0.1m };
+                decimal[] coef_form = { 1, 0.25m, 0.1m };
 
 
                 decimal Bakalavr = 0m;
@@ -235,10 +235,10 @@ namespace Report.Forms
                         SPO         += Math.Round(SummOnGroups_AndSpecial[3, j] * ArrayOfCountStudents[3, i], 2);
                         
                     }
-                    _Bakalavr   += Math.Round(Bakalavr    * coef_priv[i], 2);
-                    _Magistr    += Math.Round(Magistr     * coef_priv[i], 2);
-                    _Aspirant   += Math.Round(Aspirant    * coef_priv[i], 2);
-                    _SPO        += Math.Round(SPO         * coef_priv[i], 2);
+                    _Bakalavr   += Math.Round(Bakalavr    * coef_form[i], 2);
+                    _Magistr    += Math.Round(Magistr     * coef_form[i], 2);
+                    _Aspirant   += Math.Round(Aspirant    * coef_form[i], 2);
+                    _SPO        += Math.Round(SPO         * coef_form[i], 2);
 
                     Bakalavr    = 0;
                     Magistr     = 0;
