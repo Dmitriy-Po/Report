@@ -40,7 +40,7 @@ namespace Report
             // Дубликат - исходя из выбранных полей на форме.
 
             var id_coef = fk.ListCoef.Where(x => x.Наименование.Contains(textBoxNameCoef.Text)).Select(i => i.id);
-            var id_form = fk.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
+            //var id_form = fk.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
             string value_coef = textBoxCoeff.Text.Replace(",", ".");
             int year = Convert.ToInt32(comboBoxYear.SelectedItem);
 
@@ -50,7 +50,7 @@ namespace Report
                 {
                     string query = "SELECT * FROM ЗначениеКоэффицента " +
                                     $"WHERE ЗначениеКоэффицента.Корректирующие_ВК = {Convert.ToInt32(id_coef.ElementAt(0))} " +
-                                    $"AND ЗначениеКоэффицента.ФормаОбучения_ВК = {Convert.ToInt32(id_form.ElementAt(0))} " +
+                                    //$"AND ЗначениеКоэффицента.ФормаОбучения_ВК = {Convert.ToInt32(id_form.ElementAt(0))} " +
                                     $"AND ЗначениеКоэффицента.КаледндарныйГод LIKE '{year}%' " +
                                     $"AND ЗначениеКоэффицента.Значение = {value_coef};";
 
@@ -212,14 +212,23 @@ namespace Report
                 connection.Open();                
                 
                 var id_coef = fcoef.ListCoef.Where(x => x.Наименование.Contains(textBoxNameCoef.Text)).Select(i => i.id);
-                var id_form = fcoef.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
+                int id_form = 0;
                 decimal value_coef = Convert.ToDecimal(textBoxCoeff.Text.Replace('.', ','));
+
+                try
+                {
+                   id_form = fcoef.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id).ElementAt(0);
+                }
+                catch (NullReferenceException)
+                {
+                    id_form = 0;
+                }
 
                 string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");                
 
                 SQLiteCommand command = new SQLiteCommand("UPDATE ЗначениеКоэффицента SET "+
                                     $"Значение = {textBoxCoeff.Text.Replace(",", ".")}, КаледндарныйГод = '{DATE}', "+
-                                    $"ФормаОбучения_ВК = {Convert.ToInt32(id_form.ElementAt(0))} " +
+                                    $"ФормаОбучения_ВК = {id_form} " +
                                     $"WHERE ЗначениеКоэффицента.код = {id}; "+
                                     
                                     "UPDATE КорректирующиеКоэффиценты SET "+
@@ -274,7 +283,15 @@ namespace Report
                 adapter.Fill(table);
 
                 //var id_coef = fcoef.ListCoef.Where(x => x.Наименование.Contains(comboBoxCorrectCoef.SelectedItem.ToString())).Select(i => i.id);
-                var id_form = fcoef.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id);
+                int id_form = 0;
+                try
+                {
+                   id_form  = fcoef.ListEducation.Where(x => x.FullDesc.Contains(comboBoxFormEducation.SelectedItem.ToString())).Select(i => i.id).ElementAt(0);
+                }
+                catch (NullReferenceException)
+                {
+                    id_form = 0;
+                }
                 decimal value_coef = Convert.ToDecimal(textBoxCoeff.Text);
                 string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
@@ -294,7 +311,7 @@ namespace Report
                 /*-------------------*/
                 SQLiteCommand new_command = new SQLiteCommand("INSERT INTO ЗначениеКоэффицента(Значение, КаледндарныйГод, Корректирующие_ВК, ФормаОбучения_ВК) "+
                                                     $"VALUES({textBoxCoeff.Text.Replace(",", ".")}, '{DATE}', "+
-                                                    $"((SELECT MAX(КорректирующиеКоэффиценты.код) FROM КорректирующиеКоэффиценты)), {id_form.ElementAt(0)})", connection);
+                                                    $"((SELECT MAX(КорректирующиеКоэффиценты.код) FROM КорректирующиеКоэффиценты)), {id_form})", connection);
                 new_command.ExecuteNonQuery();
                                
                 
@@ -325,11 +342,10 @@ namespace Report
         }
         bool IsRequired ()
         {
-            int f, y = 0;
-            f = comboBoxFormEducation.SelectedIndex;
+            int y = 0;            
             y = comboBoxYear.SelectedIndex;
 
-            if ((!string.IsNullOrWhiteSpace(textBoxNameCoef.Text)) && (f >= 0) && (y >=0))
+            if ((!string.IsNullOrWhiteSpace(textBoxNameCoef.Text)) && (y >=0))
             {
                 return true;
             }
