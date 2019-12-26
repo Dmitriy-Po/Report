@@ -98,7 +98,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FormListKoef";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Список доступных коэфицентов";
+            this.Text = "Список корректирующих коэфицентов";
             this.Load += new System.EventHandler(this.FormListKoef_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAddKoef)).EndInit();

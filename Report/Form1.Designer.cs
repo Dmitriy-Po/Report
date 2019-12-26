@@ -211,14 +211,14 @@
             this.нормативыToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.базовыеНормативыЗатратToolStripMenuItem});
             this.нормативыToolStripMenuItem.Name = "нормативыToolStripMenuItem";
-            this.нормативыToolStripMenuItem.Size = new System.Drawing.Size(84, 20);
-            this.нормативыToolStripMenuItem.Text = "Нормативы";
+            this.нормативыToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
+            this.нормативыToolStripMenuItem.Text = "Статьи затрат";
             // 
             // базовыеНормативыЗатратToolStripMenuItem
             // 
             this.базовыеНормативыЗатратToolStripMenuItem.Name = "базовыеНормативыЗатратToolStripMenuItem";
-            this.базовыеНормативыЗатратToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.базовыеНормативыЗатратToolStripMenuItem.Text = "Базовые нормативы затрат...";
+            this.базовыеНормативыЗатратToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.базовыеНормативыЗатратToolStripMenuItem.Text = "Затраты...";
             this.базовыеНормативыЗатратToolStripMenuItem.Click += new System.EventHandler(this.базовыеНормативыЗатратToolStripMenuItem_Click);
             // 
             // коэффицентыToolStripMenuItem

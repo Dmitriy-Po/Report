@@ -44,7 +44,7 @@ namespace Report
         {
             SqlMyDataReader("Filial", 2, comboBoxFil);            
             SqlMyDataReader("Специальности", 1, comboBoxSpec);
-            comboBoxFil.Items.Insert(0, "Все филиалы");
+            comboBoxFil.Items.Insert(0, "Все подразделения");
             comboBoxSpec.Items.Insert(0, "Все специальности");
             comboBoxYear.Items.Insert(0, "Все года");
 
@@ -101,7 +101,7 @@ namespace Report
             {
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
-                    fadd.comboBoxFilial.SelectedItem      = row.Cells["Филиал"].Value;
+                    fadd.comboBoxFilial.SelectedItem      = row.Cells["Подразделение"].Value;
                     fadd.comboBoxSpecial.SelectedItem     = row.Cells["Специальность"].Value;
                     fadd.comboBoxSkill.SelectedItem       = row.Cells["Квалификация"].Value;
                     fadd.comboBoxYear.SelectedItem        = Convert.ToInt32(row.Cells["Год"].Value);
@@ -138,8 +138,8 @@ namespace Report
                               select new
                               {
                                   код = result.id_filial,
-                                  Год = result.year,                                  
-                                  Филиал = result.Filial,
+                                  Год = result.year,
+                                  Подразделение = result.Filial,
                                   Специальность = result.Special,
                                   Квалификация = result.Skill,
                                   Очное = result.ochnoe,
@@ -161,7 +161,7 @@ namespace Report
                 if (comboBoxFil.SelectedIndex > 0)
                 {
                     newlist = from result in newlist
-                              where result.Филиал.Contains(comboBoxFil.SelectedItem.ToString())
+                              where result.Подразделение.Contains(comboBoxFil.SelectedItem.ToString())
                               select result;
                 }
 
@@ -272,7 +272,7 @@ namespace Report
             string query = " SELECT " +
             "SUBSTR(ЧисленностьОбучающихся.год, 1, 4) as 'Год', " +
             "Filial.id as 'Структурное код', " +
-            "Filial.full_desc as 'Филиал', " +
+            "Filial.full_desc as 'Подразделение', " +
             "Специальности.наименование as 'Специальность', " +
             "Квалификации.наименование as 'Квалификация', " +
             "ЧисленностьОбучающихся.очное as 'Очное', " +
@@ -308,7 +308,7 @@ namespace Report
             foreach (DataRow row in Table.Rows)
             {
                 ListCountStudent.Add(new TableCountStudent(
-                        Convert.ToInt32(row["код"]), row["Филиал"].ToString(), row["Специальность"].ToString(),
+                        Convert.ToInt32(row["код"]), row["Подразделение"].ToString(), row["Специальность"].ToString(),
                         row["Квалификация"].ToString(), Convert.ToInt32(row["Очное"]), 
                         Convert.ToInt32(row["Очно_заочное"]), Convert.ToInt32(row["Заочное"]), Convert.ToInt32(row["Год"]), Convert.ToBoolean(row["Студент_инвалид"])));
             }

@@ -139,7 +139,7 @@
             this.Controls.Add(this.buttonAddNewString);
             this.Name = "FormБазовыеНормативыЗатрат";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Базовые нормативы затрат";
+            this.Text = "Статьи затрат";
             this.Load += new System.EventHandler(this.FormБазовыеНормативыЗатрат_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewNormals)).EndInit();
             this.ResumeLayout(false);

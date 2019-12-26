@@ -48,7 +48,7 @@ namespace Report
 
                     if (IsEditingMode)
                     {
-                        fadd.Text = "Редактирование норматива";
+                        fadd.Text = "Редактирование статьи затрат";
                         fadd.StatusOperation = 3;
                         fadd.CurrentDataRow = Convert.ToInt32(row.Cells["код"].Value);    // получение строки для использования в функции IsDuplicate.
                     }
@@ -148,7 +148,7 @@ namespace Report
             FormБНЗ_Добавление f = new FormБНЗ_Добавление();
             f.FillCombobox();
             f.comboBoxYear.SelectedItem = comboBoxYear.SelectedItem;
-            f.Text = "Добавление норматива";
+            f.Text = "Добавление статьи затрат";
             f.StatusOperation = 3;
             f.CurrentDataRow = AddFictiveRow();
             f.ShowDialog();

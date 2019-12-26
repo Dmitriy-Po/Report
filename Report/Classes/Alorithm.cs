@@ -68,8 +68,11 @@ namespace Report.Classes
                                    ));
                 }
                 // Конец заполнения коллекции Численности обучающихся.
-                
-                
+
+                //foreach (var item in ListStudent)
+                //{
+                //    item.ochnoe * 
+                //}
 
 
             }
