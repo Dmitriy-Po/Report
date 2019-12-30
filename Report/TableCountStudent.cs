@@ -15,7 +15,17 @@
             this.year = year;
             this.student_inv = std_inv;
         }
-
+        public TableCountStudent (int id_filial, int special, int skill, int ochnaya, int ocjno_zaochnaya, int zaochnaya, int year, bool std_inv)
+        {
+            this.id_filial = id_filial;
+            this.Special_id = special;
+            this.Skill_id = skill;
+            this.ochnoe = ochnaya;
+            this.ochno_zaocjnoe = ocjno_zaochnaya;
+            this.zaochnoe = zaochnaya;
+            this.year = year;
+            this.student_inv = std_inv;
+        }
 
         public int id { get; set; }
         public int id_filial { get; set; }
@@ -30,7 +40,9 @@
 
         public string Filial { get; set; }
         public string Special { get; set; }
-        public string Skill { get; set; }     
+        public int Special_id { get; set; }
+        public string Skill { get; set; }
+        public int Skill_id { get; set; }     
 
     }
 }

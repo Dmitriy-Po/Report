@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Report.Forms;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -16,19 +17,23 @@ namespace Report.Classes
 
 
         public Algorithm () { }
+
+
+
+
         public void Calculate (int year)
         {
             SQliteDB DB = new SQliteDB();
-            using (connection = new SQLiteConnection(DB.ConnectionDB))
-            {
+            connection = new SQLiteConnection(DB.ConnectionDB);
+            //connection.Open();
+            //{
                 connection.Open();
 
                 string query = 
                                 // Table 0.
-                                "SELECT Filial.id as 'Филиал_код', " +
-                                "Filial.full_desc as 'Филиал', " +
-                                "Специальности.наименование as 'Специальность', " +
-                                "Квалификации.наименование as 'Квалификация',  " +
+                                "SELECT Filial.id as 'Филиал_код', " +                                
+                                "Специальности.код as 'Специальность', " +
+                                "Квалификации.код as 'Квалификация',  " +
                                 "ЧисленностьОбучающихся.очное as 'Очное', " +
                                 "ЧисленностьОбучающихся.очно_заочное as 'Очно-заочное', " +
                                 "ЧисленностьОбучающихся.заочное as 'Заочное', " +
@@ -44,38 +49,176 @@ namespace Report.Classes
                                 "SELECT ЗначениеКоэффицента.Значение FROM ЗначениеКоэффицента "+
                                 "JOIN КорректирующиеКоэффиценты ON КорректирующиеКоэффиценты.код = ЗначениеКоэффицента.Корректирующие_ВК "+
                                 "JOIN КоррКоэффицентБазовогоНорматива ON КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК = ЗначениеКоэффицента.Корректирующие_ВК "+
-                                $"WHERE КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = 75; ";
+                                $"WHERE КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК = 75; " +
+
+                                // Table 2.
+                                $"SELECT * FROM БНЗСтоимостнойГруппы WHERE БНЗСтоимостнойГруппы.КалендарныйГод LIKE '{year}%'; " +
+
+                                // Table 3.
+                                $"SELECT СтоимостнаяГруппаКалГода.код, Наименование FROM СтоимостнаяГруппаКалГода WHERE СтоимостнаяГруппаКалГода.КалендарныйГод LIKE '{year}%'; " +
+                                
+                                // Table 4.
+                                $"SELECT * FROM СпециальностьСтоимостнойГруппы; " +
+                                
+                                // Table 5.
+                                "SELECT id, full_desc FROM Filial; " +
+
+                                // Table 6.
+                                "SELECT Квалификации.код FROM Квалификации; ";
 
                 Adapter = new SQLiteDataAdapter(query, connection);
+                Dataset = new DataSet();
                 Adapter.Fill(Dataset);
-                
-                
+
+
                 // Заполнение колекции Численности обучающихся.
                 List<TableCountStudent> ListStudent = new List<TableCountStudent>();
                 foreach (DataRow item in Dataset.Tables[0].AsEnumerable())
                 {
                     ListStudent.Add(new TableCountStudent(
-                                        Convert.ToInt32(item[0]),
-                                        Convert.ToString(item[1]),
-                                        Convert.ToString(item[2]),
-                                        Convert.ToString(item[3]),
+                                        Convert.ToInt32(item[0]),                                        
+                                        Convert.ToInt32(item[1]),
+                                        Convert.ToInt32(item[2]),
 
+                                        Convert.ToInt32(item[3]),
                                         Convert.ToInt32(item[4]),
                                         Convert.ToInt32(item[5]),
-                                        Convert.ToInt32(item[6]),
-                                        Convert.ToInt32(item[7]), 
-                                        Convert.ToBoolean(item[8])
+                                        Convert.ToInt32(item[6]), 
+                                        Convert.ToBoolean(item[7])
                                    ));
                 }
                 // Конец заполнения коллекции Численности обучающихся.
 
+                // Заполнение коллекции Базовых нормативвов затрат стоимостной группы.
+                List<БазовыйНормативЗатратСтоимостнойГруппы> bnzsg = new List<БазовыйНормативЗатратСтоимостнойГруппы>();
+                foreach (DataRow row in Dataset.Tables[2].AsEnumerable())
+                {
+                    bnzsg.Add(new БазовыйНормативЗатратСтоимостнойГруппы(
+                        new decimal[] {
+                            Convert.ToInt32(row["Бакалавриат"]),
+                            Convert.ToInt32(row["Магистратура"]),
+                            Convert.ToInt32(row["Аспирантура"]),
+                            Convert.ToInt32(row["СПО"])
+                        },
+                        Convert.ToInt32(row["БНЗ_ВК"]),
+                        Convert.ToInt32(row["СтоимостнаяГруппаКалГода_ВК"])
+                        ));
+                }
+                // Конец заполнения коллекции Базовых нормативвов затрат стоимостной группы.
+
+                // Заполнение списка групп на текущий год.
+                List<СтоимостнаяГруппаКалендарногоГода> groups = new List<СтоимостнаяГруппаКалендарногоГода>();
+                foreach (DataRow row in Dataset.Tables[3].AsEnumerable())
+                {
+                    groups.Add(new СтоимостнаяГруппаКалендарногоГода(
+                        Convert.ToInt32(row[0]),
+                        Convert.ToString(row[1])
+                        ));
+                }
+                // конец заполнения списка групп на текущий год.
+
+                // Заполнение коллекции стоимостных групп.
+                List<СпециальностьСтоимостнойГруппы> spec_group = new List<СпециальностьСтоимостнойГруппы>();
+                foreach (DataRow row in Dataset.Tables[4].AsEnumerable())
+                {
+                    spec_group.Add(new СпециальностьСтоимостнойГруппы(
+                        Convert.ToInt32(row[0]), Convert.ToInt32(row[1])));
+                }
+            // Конец заполнения коллекции стоимостных групп.
+
+            foreach (var filial in Dataset.Tables[5].AsEnumerable())
+            {
+                var list_student = from l in ListStudent
+                                   where l.id_filial == Convert.ToInt32(filial[0])
+                                   select l;
+
+                foreach (var skill in Dataset.Tables[6].AsEnumerable())
+                {
+                    var spec_list = from s in list_student
+                                    where s.Skill_id == Convert.ToInt32(skill[0])
+                                    select s;
+
+                    foreach (var item in spec_group)
+                    {
+
+                    }
+
+                    foreach (var item in spec_list)
+                    {
+
+                    }
+                }
+                
+            }
+
+            //var List = from l in ListStudent
+            //           group l by l.id_filial into newgroup
+            //           select new
+            //           {
+            //               ochnoe = newgroup.Sum(s => s.ochnoe),
+            //               och_zao = newgroup.Sum(s => s.ochno_zaocjnoe),
+            //               zao = newgroup.Sum(s => s.zaochnoe)
+            //           };   
+            
+            //    foreach (int filial in ListStudent.Select(x => x.id_filial))
+            //    {                
+            //        foreach (var group in spec_group)
+            //        {
+            //            var bnz = bnzsg.Where(x => x.id_group == group.id_group);
+            //            var spc = ListStudent.FindAll(x => x.Special_id == group.id_spec);
+
+            //            foreach (var item in bnz)
+            //            {
+            //                foreach (var s in spc)
+            //                {
+            //                    item.Бакалавриат_Специалитет *= (s.ochnoe + s.ochno_zaocjnoe + s.zaochnoe);
+            //                    item.Аспирантура *= (s.ochnoe + s.ochno_zaocjnoe + s.zaochnoe);
+            //                    item.Магистратура *= (s.ochnoe + s.ochno_zaocjnoe + s.zaochnoe);
+            //                    item.SPO *= (s.ochnoe + s.ochno_zaocjnoe + s.zaochnoe);
+            //                }
+            //            }                       
+            //        }
+            //    }
+                
+
+            connection.Close();
+            //    FormСозданиеОтчёта form = new FormСозданиеОтчёта();
+            //form.GridReport.DataSource = bnzsg;
+                //foreach (var item in bnzsg)
+                //{
+                //    form.GridReport.Rows.Add("Магистарутра", item.Магистратура);
+                //    form.GridReport.Rows.Add(item.Бакалавриат_Специалитет);
+                //    form.GridReport.Rows.Add(item.Аспирантура);
+                //    form.GridReport.Rows.Add(item.SPO);
+                //}
+                /*здесь применить group by ListStudent*/
+
                 //foreach (var item in ListStudent)
                 //{
-                //    item.ochnoe * 
+                    //item.ochnoe * 
+                //}
+                //foreach (var item in spec_group)
+                //{
+                //    var listcount = ListStudent.FindAll(x => x.Special_id == item.id_spec);
+
+                //    var bnz = bnzsg.Where(g => g.id_group == group.id_group).Select(x => x);
+                //    foreach (var normativ in bnz)
+                //    {
+                //        // Значение базового норматива умножается на 
+                //        // количество человек относительно квалификации.
+                //        foreach (var fil in listcount)
+                //        {
+                //            normativ.Бакалавриат_Специалитет *= (fil.ochnoe + fil.ochno_zaocjnoe + fil.zaochnoe);
+                //            normativ.Магистратура *= (fil.ochnoe + fil.ochno_zaocjnoe + fil.zaochnoe);
+                //            normativ.Аспирантура *= (fil.ochnoe + fil.ochno_zaocjnoe + fil.zaochnoe);
+                //            normativ.SPO *= (fil.ochnoe + fil.ochno_zaocjnoe + fil.zaochnoe);
+
+
+                //        }
+                //    }
                 //}
 
-
-            }
+            //}
         }
     }
 }

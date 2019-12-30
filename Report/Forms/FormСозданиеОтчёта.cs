@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Windows.Forms;
 using Word = Microsoft.Office.Interop.Word;
+using Report.Classes;
 
 
 
@@ -183,7 +184,7 @@ namespace Report.Forms
                 int r = 0;
 
                 // Коэффицент формы обучения.
-                decimal[] coef_form = { 1, 0.25m, 0.1m };
+                decimal[] coef_form = { 1, 1m, 1m };
 
 
                 decimal Bakalavr = 0m;
@@ -275,16 +276,18 @@ namespace Report.Forms
         private void buttonShowReport_Click (object sender, EventArgs e)
         {
             /*Ошибка неучёта специальностей связанна с форматом года в таблице Численность обучающихся*/
-            try
-            {
-                decimal coef = Convert.ToDecimal(textBoxCoef.Text);
-                Fill(comboBoxYear.SelectedItem.ToString(), coef);
-            }
-            catch (FormatException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-                          
+            //try
+            //{
+            //    decimal coef = Convert.ToDecimal(textBoxCoef.Text);
+            //    Fill(comboBoxYear.SelectedItem.ToString(), coef);
+            //}
+            //catch (FormatException ex)
+            //{
+            //    MessageBox.Show(ex.Message);
+            //}
+            Algorithm a = new Algorithm();
+            a.Calculate(2019);
+
         }
 
         private void buttonExportTo_Click (object sender, EventArgs e)

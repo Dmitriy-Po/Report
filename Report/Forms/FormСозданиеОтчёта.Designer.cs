@@ -171,8 +171,8 @@
         private System.Windows.Forms.Button buttonExportTo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxCoef;
-        private System.Windows.Forms.DataGridView GridReport;
         private System.Windows.Forms.DataGridViewTextBoxColumn Filial;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        public System.Windows.Forms.DataGridView GridReport;
     }
 }

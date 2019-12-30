@@ -18,12 +18,18 @@ namespace Report
             КалендарныйГод = year;
         }
         
+        public СтоимостнаяГруппаКалендарногоГода(int id, string desc)
+        {
+            this.id_group = id;
+            this.Наименование = desc;
+        }
         public void SetNormal (БазовыйНормативЗатратСтоимостнойГруппы new_normal)
         {
             норматив.Add(new_normal);
         }
         public List<БазовыйНормативЗатратСтоимостнойГруппы> GetNormal () => норматив;
 
+        public int id_group { get; set; }
         public string Наименование { get; set; }
         string FullDesc { get; set; }
         string Comment { get; set; }

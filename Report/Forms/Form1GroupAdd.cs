@@ -89,7 +89,7 @@ namespace Report.Forms
                 new_row[4] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
                 Table.Rows.Add(new_row);
-
+                // при создании будликата добавить копии строк в таблицу стоимотсных групп
                 SQLiteCommandBuilder command = new SQLiteCommandBuilder(Adapter);                
                 Adapter.Update(Table);
             }

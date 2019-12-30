@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Classes\Alorithm.cs" />
     <Compile Include="Classes\ClassFormEducation.cs" />
+    <Compile Include="Classes\СпециальностьСтоимостнойГруппы.cs" />
     <Compile Include="FormListKoef.cs">
       <SubType>Form</SubType>
     </Compile>
