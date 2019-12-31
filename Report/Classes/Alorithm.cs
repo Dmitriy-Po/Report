@@ -1,5 +1,6 @@
 ﻿using Report.Forms;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -8,9 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Report.Classes
+
 {
+    
     class Algorithm
     {
+        const int ID_BAKALAVR = 12;
+        const int ID_MAGISTR = 14;
+        const int ID_ASPIRANT = 13;
+        const int ID_SPO = 10;
+
         SQLiteDataAdapter Adapter;
         DataSet Dataset;
         SQLiteConnection connection;
@@ -20,8 +28,11 @@ namespace Report.Classes
 
 
 
-
-        public void Calculate (int year)
+        bool CheckSkill (int skill, DataTable table)
+        {
+            return false;
+        }
+        public Dictionary<string, decimal[]> Calculate (int year)
         {
             SQliteDB DB = new SQliteDB();
             connection = new SQLiteConnection(DB.ConnectionDB);
@@ -106,7 +117,7 @@ namespace Report.Classes
                 }
                 // Конец заполнения коллекции Базовых нормативвов затрат стоимостной группы.
 
-                // Заполнение списка групп на текущий год.
+                // Заполнение списка групп за текущий год.
                 List<СтоимостнаяГруппаКалендарногоГода> groups = new List<СтоимостнаяГруппаКалендарногоГода>();
                 foreach (DataRow row in Dataset.Tables[3].AsEnumerable())
                 {
@@ -126,30 +137,90 @@ namespace Report.Classes
                 }
             // Конец заполнения коллекции стоимостных групп.
 
+            
+            Dictionary<string, decimal[]> SummOfFilial = new Dictionary<string, decimal[]>();
+
+            // Цикл по каждому филиалу и группам.
             foreach (var filial in Dataset.Tables[5].AsEnumerable())
             {
-                var list_student = from l in ListStudent
-                                   where l.id_filial == Convert.ToInt32(filial[0])
-                                   select l;
+                decimal[] summ = new decimal[4];
+                
 
-                foreach (var skill in Dataset.Tables[6].AsEnumerable())
+                foreach (var group in groups)
                 {
-                    var spec_list = from s in list_student
-                                    where s.Skill_id == Convert.ToInt32(skill[0])
-                                    select s;
+                    List<TableCountStudent> spec_list = new List<TableCountStudent>();
+                    List<БазовыйНормативЗатратСтоимостнойГруппы> snormallist = new List<БазовыйНормативЗатратСтоимостнойГруппы>();
 
-                    foreach (var item in spec_group)
+                    foreach (var item in spec_group.Where(g => g.id_group == group.id_group))
                     {
-
+                        // Отбор специальностей, которые относятся в стоимостную группу.
+                        foreach (var list in ListStudent.Where(x => x.id_filial == Convert.ToInt32(filial["id"])).Select(x => x))
+                        {
+                            if (item.id_spec == list.Special_id)
+                            {
+                                spec_list.Add(list);
+                            }
+                        }
+                    }
+                    // Отбор БНЗ, которые относятся в стоимостную группу.
+                    foreach (var normal in bnzsg.Where(x => x.id_group == group.id_group))
+                    {
+                        snormallist.Add(normal);
                     }
 
-                    foreach (var item in spec_list)
+                    /*Magic*/
+                    foreach (var list in spec_list)
                     {
-
+                        foreach (var normal in snormallist)
+                        {
+                            switch (list.Skill_id)
+                            {
+                                case ID_BAKALAVR:                                    
+                                    summ[0] += normal.Бакалавриат_Специалитет * (list.ochnoe + list.ochno_zaocjnoe + list.zaochnoe);
+                                    break;
+                                case ID_ASPIRANT:
+                                    summ[1] += normal.Аспирантура * (list.ochnoe + list.ochno_zaocjnoe + list.zaochnoe);
+                                    break;
+                                case ID_MAGISTR:
+                                    summ[2] += normal.Магистратура * (list.ochnoe + list.ochno_zaocjnoe + list.zaochnoe);
+                                    break;
+                                case ID_SPO:
+                                    summ[3] += normal.SPO * (list.ochnoe + list.ochno_zaocjnoe + list.zaochnoe);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                     }
                 }
-                
+                SummOfFilial.Add(filial["full_desc"].ToString(), summ);
+                summ = null;
             }
+
+            
+
+            //foreach (var filial in Dataset.Tables[5].AsEnumerable())
+            //{
+            //    // Отбор по филиалам среди всего списка численности (id).
+            //    var list_student = from l in ListStudent
+            //                       where l.id_filial == Convert.ToInt32(filial[0])
+            //                       select l;
+
+            //    // Отбор квалификации среди всего списка текущего филиала.
+            //    foreach (var skill in Dataset.Tables[6].AsEnumerable())
+            //    {
+            //        var spec_list = from s in list_student
+            //                        where s.Skill_id == Convert.ToInt32(skill[0])
+            //                        select s;
+
+            //        foreach (var item in spec_list)
+            //        {
+            //            //item.
+            //        }
+                    
+            //    }
+                
+            //}
 
             //var List = from l in ListStudent
             //           group l by l.id_filial into newgroup
@@ -180,8 +251,9 @@ namespace Report.Classes
             //        }
             //    }
                 
-
+            
             connection.Close();
+            return SummOfFilial;
             //    FormСозданиеОтчёта form = new FormСозданиеОтчёта();
             //form.GridReport.DataSource = bnzsg;
                 //foreach (var item in bnzsg)

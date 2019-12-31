@@ -285,8 +285,18 @@ namespace Report.Forms
             //{
             //    MessageBox.Show(ex.Message);
             //}
+
             Algorithm a = new Algorithm();
-            a.Calculate(2019);
+            Dictionary<string, decimal[]> Result =  a.Calculate(2019);
+
+            foreach (KeyValuePair<string, decimal[]> line in Result)
+            {
+                GridReport.Rows.Add(line.Key);
+                GridReport.Rows.Add("Бакалавриат_Специалитет", line.Value[0]);
+                GridReport.Rows.Add("Аспирантура", line.Value[1]);
+                GridReport.Rows.Add("Магистратура", line.Value[2]);
+                GridReport.Rows.Add("SPO", line.Value[3]);
+            }
 
         }
 
