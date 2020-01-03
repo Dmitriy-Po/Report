@@ -23,6 +23,8 @@ namespace Report.Classes
         const int ID_FORM_O_Z = 9;
         const int ID_FORM_Z = 12;
 
+        decimal[,] ssmm;
+
         SQLiteDataAdapter Adapter;
         DataSet Dataset;
         SQLiteConnection connection;
@@ -155,12 +157,13 @@ namespace Report.Classes
                 kkbn.Add(new КорректирующийКоэффицентБазовогоНорматива(
                     Convert.ToInt32(row[0]), Convert.ToDecimal(row[1]), Convert.ToInt32(row[2])));
             }
+                     
 
-            decimal[,] ssmm = new decimal[4, 3];
-
+            decimal[,] SummOnNormals = new decimal[4, 3];
             
             foreach (var norm in bnzsg)
             {
+                ssmm = new decimal[4, 3];
                 var x = kkbn.Where(k => k.id_bnz == norm.id_normativ).Select(k => k);
 
                 foreach (var item in x.Where(f => f.id_form_education == 0).Select(f => f))
@@ -212,6 +215,14 @@ namespace Report.Classes
                             break;
                     }  
                 }
+                for (int i = 0; i < ssmm.GetLength(0); i++)
+                {
+                    for (int j = 0; j < ssmm.GetLength(1); j++)
+                    {
+                        SummOnNormals[i, j] += ssmm[i, j];
+                    }
+                }
+                ssmm = null;
             }
             /**/
             
@@ -253,16 +264,16 @@ namespace Report.Classes
                             switch (list.Skill_id)
                             {
                                 case ID_BAKALAVR:
-                                    summ[0] += (list.ochnoe * ssmm[0, 0]) + (list.ochno_zaocjnoe * ssmm[0, 1]) + (list.zaochnoe * ssmm[0, 2]);
+                                    summ[0] += (list.ochnoe * SummOnNormals[0, 0]) + (list.ochno_zaocjnoe * SummOnNormals[0, 1]) + (list.zaochnoe * SummOnNormals[0, 2]);
                                     break;
                                 case ID_ASPIRANT:
-                                    summ[1] += (list.ochnoe * ssmm[2, 0]) + (list.ochno_zaocjnoe * ssmm[2, 1]) + (list.zaochnoe * ssmm[2, 2]);
+                                    summ[1] += (list.ochnoe * SummOnNormals[2, 0]) + (list.ochno_zaocjnoe * SummOnNormals[2, 1]) + (list.zaochnoe * SummOnNormals[2, 2]);
                                     break;
                                 case ID_MAGISTR:
-                                    summ[2] += (list.ochnoe * ssmm[1, 0]) + (list.ochno_zaocjnoe * ssmm[1, 1]) + (list.zaochnoe * ssmm[1, 2]); ;
+                                    summ[2] += (list.ochnoe * SummOnNormals[1, 0]) + (list.ochno_zaocjnoe * SummOnNormals[1, 1]) + (list.zaochnoe * SummOnNormals[1, 2]); ;
                                     break;
                                 case ID_SPO:
-                                    summ[3] += (list.ochnoe * ssmm[3, 0]) + (list.ochno_zaocjnoe * ssmm[3, 1]) + (list.zaochnoe * ssmm[3, 2]); ;
+                                    summ[3] += (list.ochnoe * SummOnNormals[3, 0]) + (list.ochno_zaocjnoe * SummOnNormals[3, 1]) + (list.zaochnoe * SummOnNormals[3, 2]); ;
                                     break;
                                 default:
                                     break;
