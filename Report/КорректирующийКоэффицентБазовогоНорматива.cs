@@ -18,10 +18,11 @@ namespace Report
         {            
             КалендарныйГод = default(string);
         }
-        public КорректирующийКоэффицентБазовогоНорматива (int id_bnz, decimal values_kk)
+        public КорректирующийКоэффицентБазовогоНорматива (int id_bnz, decimal values_kk, int id_form)
         {
             this.id_bnz = id_bnz;
             this.value = values_kk;
+            this.id_form_education = id_form;
         }
         public void SetCorrectCoef (КорректирующиеКоэффиценты k)
         {
@@ -32,5 +33,6 @@ namespace Report
         string КалендарныйГод { get; set; }
         public int id_bnz { get; set; }
         public decimal value { get; set; }
+        public int id_form_education { get; set; }
     }
 }

@@ -19,6 +19,10 @@ namespace Report.Classes
         const int ID_ASPIRANT = 13;
         const int ID_SPO = 10;
 
+        const int ID_FORM_OCH = 11;
+        const int ID_FORM_O_Z = 9;
+        const int ID_FORM_Z = 12;
+
         SQLiteDataAdapter Adapter;
         DataSet Dataset;
         SQLiteConnection connection;
@@ -78,7 +82,7 @@ namespace Report.Classes
                                 "SELECT Квалификации.код FROM Квалификации; " +
 
                                 // Table 7.
-                                "SELECT БазовыйНормативЗатрат.код, ЗначениеКоэффицента.Значение "+
+                                "SELECT БазовыйНормативЗатрат.код, ЗначениеКоэффицента.Значение, ФормаОбучения_ВК " +
                                 "FROM КоррКоэффицентБазовогоНорматива "+
                                 "JOIN ЗначениеКоэффицента ON "+
                                 "КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК = ЗначениеКоэффицента.Корректирующие_ВК "+
@@ -149,17 +153,64 @@ namespace Report.Classes
             foreach (DataRow row in Dataset.Tables[7].AsEnumerable())
             {
                 kkbn.Add(new КорректирующийКоэффицентБазовогоНорматива(
-                    Convert.ToInt32(row[0]), Convert.ToDecimal(row[1])));
+                    Convert.ToInt32(row[0]), Convert.ToDecimal(row[1]), Convert.ToInt32(row[2])));
             }
+
+            decimal[,] ssmm = new decimal[4, 3];
+
+            
             foreach (var norm in bnzsg)
             {
                 var x = kkbn.Where(k => k.id_bnz == norm.id_normativ).Select(k => k);
-                foreach (var item in x)
+
+                foreach (var item in x.Where(f => f.id_form_education == 0).Select(f => f))
                 {
                     norm.Бакалавриат_Специалитет *= item.value;
                     norm.Магистратура *= item.value;
                     norm.Аспирантура *= item.value;
                     norm.SPO *= item.value;
+                }
+
+                for (int i = 0; i < ssmm.GetLength(1); i++)
+                {
+                    ssmm[0, i] = norm.Бакалавриат_Специалитет;
+                    ssmm[1, i] = norm.Магистратура;
+                    ssmm[2, i] = norm.Аспирантура;
+                    ssmm[3, i] = norm.SPO;
+                }
+
+                foreach (var item in x)
+                {
+                    
+                    switch (item.id_form_education)
+                    {
+                        case ID_FORM_OCH:
+                            {
+                                ssmm[0, 0] *= item.value;
+                                ssmm[1, 0] *= item.value;
+                                ssmm[2, 0] *= item.value;
+                                ssmm[3, 0] *= item.value;
+                            }
+                            break;
+                        case ID_FORM_O_Z:
+                            {
+                                ssmm[0, 1] *= item.value;
+                                ssmm[1, 1] *= item.value;
+                                ssmm[2, 1] *= item.value;
+                                ssmm[3, 1] *= item.value;
+                            }
+                            break;
+                        case ID_FORM_Z:
+                            {
+                                ssmm[0, 2] *= item.value;
+                                ssmm[1, 2] *= item.value;
+                                ssmm[2, 2] *= item.value;
+                                ssmm[3, 2] *= item.value;
+                            }
+                            break;
+                        default:                            
+                            break;
+                    }  
                 }
             }
             /**/
@@ -201,17 +252,17 @@ namespace Report.Classes
                         {
                             switch (list.Skill_id)
                             {
-                                case ID_BAKALAVR:                                    
-                                    summ[0] += normal.Бакалавриат_Специалитет * (list.ochnoe + list.ochno_zaocjnoe + list.zaochnoe);
+                                case ID_BAKALAVR:
+                                    summ[0] += (list.ochnoe * ssmm[0, 0]) + (list.ochno_zaocjnoe * ssmm[0, 1]) + (list.zaochnoe * ssmm[0, 2]);
                                     break;
                                 case ID_ASPIRANT:
-                                    summ[1] += normal.Аспирантура * (list.ochnoe + list.ochno_zaocjnoe + list.zaochnoe);
+                                    summ[1] += (list.ochnoe * ssmm[2, 0]) + (list.ochno_zaocjnoe * ssmm[2, 1]) + (list.zaochnoe * ssmm[2, 2]);
                                     break;
                                 case ID_MAGISTR:
-                                    summ[2] += normal.Магистратура * (list.ochnoe + list.ochno_zaocjnoe + list.zaochnoe);
+                                    summ[2] += (list.ochnoe * ssmm[1, 0]) + (list.ochno_zaocjnoe * ssmm[1, 1]) + (list.zaochnoe * ssmm[1, 2]); ;
                                     break;
                                 case ID_SPO:
-                                    summ[3] += normal.SPO * (list.ochnoe + list.ochno_zaocjnoe + list.zaochnoe);
+                                    summ[3] += (list.ochnoe * ssmm[3, 0]) + (list.ochno_zaocjnoe * ssmm[3, 1]) + (list.zaochnoe * ssmm[3, 2]); ;
                                     break;
                                 default:
                                     break;
