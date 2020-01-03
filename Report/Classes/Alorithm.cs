@@ -75,7 +75,14 @@ namespace Report.Classes
                                 "SELECT id, full_desc FROM Filial; " +
 
                                 // Table 6.
-                                "SELECT Квалификации.код FROM Квалификации; ";
+                                "SELECT Квалификации.код FROM Квалификации; " +
+
+                                // Table 7.
+                                "SELECT БазовыйНормативЗатрат.код, ЗначениеКоэффицента.Значение "+
+                                "FROM КоррКоэффицентБазовогоНорматива "+
+                                "JOIN ЗначениеКоэффицента ON "+
+                                "КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК = ЗначениеКоэффицента.Корректирующие_ВК "+
+                                "JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК; ";
 
                 Adapter = new SQLiteDataAdapter(query, connection);
                 Dataset = new DataSet();
@@ -137,6 +144,25 @@ namespace Report.Classes
                 }
             // Конец заполнения коллекции стоимостных групп.
 
+            /**/
+            List<КорректирующийКоэффицентБазовогоНорматива> kkbn = new List<КорректирующийКоэффицентБазовогоНорматива>();
+            foreach (DataRow row in Dataset.Tables[7].AsEnumerable())
+            {
+                kkbn.Add(new КорректирующийКоэффицентБазовогоНорматива(
+                    Convert.ToInt32(row[0]), Convert.ToDecimal(row[1])));
+            }
+            foreach (var norm in bnzsg)
+            {
+                var x = kkbn.Where(k => k.id_bnz == norm.id_normativ).Select(k => k);
+                foreach (var item in x)
+                {
+                    norm.Бакалавриат_Специалитет *= item.value;
+                    norm.Магистратура *= item.value;
+                    norm.Аспирантура *= item.value;
+                    norm.SPO *= item.value;
+                }
+            }
+            /**/
             
             Dictionary<string, decimal[]> SummOfFilial = new Dictionary<string, decimal[]>();
 

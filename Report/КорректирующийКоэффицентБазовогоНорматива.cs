@@ -18,6 +18,11 @@ namespace Report
         {            
             КалендарныйГод = default(string);
         }
+        public КорректирующийКоэффицентБазовогоНорматива (int id_bnz, decimal values_kk)
+        {
+            this.id_bnz = id_bnz;
+            this.value = values_kk;
+        }
         public void SetCorrectCoef (КорректирующиеКоэффиценты k)
         {
             correct_coef.Add(k);
@@ -25,5 +30,7 @@ namespace Report
         public List<КорректирующиеКоэффиценты> GetCorrectCoef () => correct_coef;
 
         string КалендарныйГод { get; set; }
+        public int id_bnz { get; set; }
+        public decimal value { get; set; }
     }
 }
