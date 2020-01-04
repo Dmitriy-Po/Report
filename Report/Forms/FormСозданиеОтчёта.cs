@@ -287,8 +287,9 @@ namespace Report.Forms
             //}
 
             Algorithm a = new Algorithm();
-            Dictionary<string, decimal[]> Result =  a.Calculate(2019);
+            Dictionary<string, decimal[]> Result =  a.Calculate(Convert.ToInt32(comboBoxYear.SelectedItem));
 
+            GridReport.Rows.Clear();
             foreach (KeyValuePair<string, decimal[]> line in Result)
             {
                 GridReport.Rows.Add(line.Key);
