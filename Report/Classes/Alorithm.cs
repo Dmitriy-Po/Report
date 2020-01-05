@@ -24,7 +24,7 @@ namespace Report.Classes
         const int ID_FORM_Z = 12;
 
         decimal[,] ssmm;
-
+        decimal[,] SummOnNormals;
         SQLiteDataAdapter Adapter;
         DataSet Dataset;
         SQLiteConnection connection;
@@ -45,8 +45,8 @@ namespace Report.Classes
             //connection.Open();
             //{
                 connection.Open();
-
-                string query = 
+            #region Заполнение коллекций
+            string query = 
                                 // Table 0.
                                 "SELECT Filial.id as 'Филиал_код', " +                                
                                 "Специальности.код as 'Специальность', " +
@@ -149,7 +149,7 @@ namespace Report.Classes
                         Convert.ToInt32(row[0]), Convert.ToInt32(row[1])));
                 }
             // Конец заполнения коллекции стоимостных групп.
-
+            
             /**/
             List<КорректирующийКоэффицентБазовогоНорматива> kkbn = new List<КорректирующийКоэффицентБазовогоНорматива>();
             foreach (DataRow row in Dataset.Tables[7].AsEnumerable())
@@ -157,72 +157,84 @@ namespace Report.Classes
                 kkbn.Add(new КорректирующийКоэффицентБазовогоНорматива(
                     Convert.ToInt32(row[0]), Convert.ToDecimal(row[1]), Convert.ToInt32(row[2])));
             }
-                     
-
-            decimal[,] SummOnNormals = new decimal[4, 3];
+            #endregion
+            // 3 - Стоимостные группы, 4 - Квалификации, 3 - Формы обучения.            
             
-            foreach (var norm in bnzsg)
+            Dictionary<int, decimal[,]> SON_g = new Dictionary<int, decimal[,]>();
+
+
+            foreach (var group in groups)
             {
-                ssmm = new decimal[4, 3];
-                var x = kkbn.Where(k => k.id_bnz == norm.id_normativ).Select(k => k);
-
-                foreach (var item in x.Where(f => f.id_form_education == 0).Select(f => f))
+                SummOnNormals = new decimal[4, 3];
+                foreach (var norm in bnzsg.Where(x => x.id_group == group.id_group))
                 {
-                    norm.Бакалавриат_Специалитет *= item.value;
-                    norm.Магистратура *= item.value;
-                    norm.Аспирантура *= item.value;
-                    norm.SPO *= item.value;
-                }
+                    ssmm = new decimal[4, 3];
+                    var kk_bnz = kkbn.Where(k => k.id_bnz == norm.id_normativ).Select(k => k);
 
-                for (int i = 0; i < ssmm.GetLength(1); i++)
-                {
-                    ssmm[0, i] = norm.Бакалавриат_Специалитет;
-                    ssmm[1, i] = norm.Магистратура;
-                    ssmm[2, i] = norm.Аспирантура;
-                    ssmm[3, i] = norm.SPO;
-                }
-
-                foreach (var item in x)
-                {
-                    
-                    switch (item.id_form_education)
+                    // Применение корректирующих коэфицентов, без формы обучения.
+                    foreach (var item in kk_bnz.Where(f => f.id_form_education == 0).Select(f => f))
                     {
-                        case ID_FORM_OCH:
-                            {
-                                ssmm[0, 0] *= item.value;
-                                ssmm[1, 0] *= item.value;
-                                ssmm[2, 0] *= item.value;
-                                ssmm[3, 0] *= item.value;
-                            }
-                            break;
-                        case ID_FORM_O_Z:
-                            {
-                                ssmm[0, 1] *= item.value;
-                                ssmm[1, 1] *= item.value;
-                                ssmm[2, 1] *= item.value;
-                                ssmm[3, 1] *= item.value;
-                            }
-                            break;
-                        case ID_FORM_Z:
-                            {
-                                ssmm[0, 2] *= item.value;
-                                ssmm[1, 2] *= item.value;
-                                ssmm[2, 2] *= item.value;
-                                ssmm[3, 2] *= item.value;
-                            }
-                            break;
-                        default:                            
-                            break;
-                    }  
-                }
-                for (int i = 0; i < ssmm.GetLength(0); i++)
-                {
-                    for (int j = 0; j < ssmm.GetLength(1); j++)
-                    {
-                        SummOnNormals[i, j] += ssmm[i, j];
+                        norm.Бакалавриат_Специалитет    *= item.value;
+                        norm.Магистратура               *= item.value;
+                        norm.Аспирантура                *= item.value;
+                        norm.SPO                        *= item.value;
                     }
+
+                    // Заполнение массива значениями базового норматива.
+                    for (int i = 0; i < ssmm.GetLength(1); i++)
+                    {
+                        ssmm[0, i] = norm.Бакалавриат_Специалитет;
+                        ssmm[1, i] = norm.Магистратура;
+                        ssmm[2, i] = norm.Аспирантура;
+                        ssmm[3, i] = norm.SPO;
+                    }
+
+                    // Применение корректирующих коэфицентов, относительно формы обучения.
+                    foreach (var item in kk_bnz)
+                    {
+                        switch (item.id_form_education)
+                        {
+                            case ID_FORM_OCH:
+                                {
+                                    ssmm[0, 0] *= item.value;
+                                    ssmm[1, 0] *= item.value;
+                                    ssmm[2, 0] *= item.value;
+                                    ssmm[3, 0] *= item.value;
+                                }
+                                break;
+                            case ID_FORM_O_Z:
+                                {
+                                    ssmm[0, 1] *= item.value;
+                                    ssmm[1, 1] *= item.value;
+                                    ssmm[2, 1] *= item.value;
+                                    ssmm[3, 1] *= item.value;
+                                }
+                                break;
+                            case ID_FORM_Z:
+                                {
+                                    ssmm[0, 2] *= item.value;
+                                    ssmm[1, 2] *= item.value;
+                                    ssmm[2, 2] *= item.value;
+                                    ssmm[3, 2] *= item.value;
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    // Суммирование нормативов по всем квалификациям.
+                    for (int i = 0; i < 4; i++)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            SummOnNormals[i, j] += ssmm[i, j];
+                        }
+                    }                    
+                    ssmm = null;
                 }
-                ssmm = null;
+                SON_g.Add(group.id_group, SummOnNormals);
+                SummOnNormals = null;
             }
             /**/
             
@@ -237,7 +249,8 @@ namespace Report.Classes
                 foreach (var group in groups)
                 {
                     List<TableCountStudent> spec_list = new List<TableCountStudent>();
-                    List<БазовыйНормативЗатратСтоимостнойГруппы> snormallist = new List<БазовыйНормативЗатратСтоимостнойГруппы>();
+                    //List<БазовыйНормативЗатратСтоимостнойГруппы> snormallist = new List<БазовыйНормативЗатратСтоимостнойГруппы>();
+                    
 
                     foreach (var item in spec_group.Where(g => g.id_group == group.id_group))
                     {
@@ -251,29 +264,29 @@ namespace Report.Classes
                         }
                     }
                     // Отбор БНЗ, которые относятся в стоимостную группу.
-                    foreach (var normal in bnzsg.Where(x => x.id_group == group.id_group))
-                    {
-                        snormallist.Add(normal);
-                    }
+                    //foreach (var normal in SON_g.Where(x => x.Key == group.id_group).Select(x => x.Value))
+                    //{
+                    //    normal;
+                    //}
 
                     /*Magic*/
                     foreach (var list in spec_list)
                     {
-                        foreach (var normal in snormallist)
+                        foreach (var normal in SON_g.Where(x => x.Key == group.id_group).Select(x => x.Value))
                         {
                             switch (list.Skill_id)
                             {
                                 case ID_BAKALAVR:
-                                    summ[0] += (list.ochnoe * SummOnNormals[0, 0]) + (list.ochno_zaocjnoe * SummOnNormals[0, 1]) + (list.zaochnoe * SummOnNormals[0, 2]);
+                                    summ[0] += (list.ochnoe * normal[0, 0]) + (list.ochno_zaocjnoe * normal[0, 1]) + (list.zaochnoe * normal[0, 2]);
                                     break;
                                 case ID_ASPIRANT:
-                                    summ[1] += (list.ochnoe * SummOnNormals[2, 0]) + (list.ochno_zaocjnoe * SummOnNormals[2, 1]) + (list.zaochnoe * SummOnNormals[2, 2]);
+                                    summ[1] += (list.ochnoe * normal[2, 0]) + (list.ochno_zaocjnoe * normal[2, 1]) + (list.zaochnoe * normal[2, 2]);
                                     break;
                                 case ID_MAGISTR:
-                                    summ[2] += (list.ochnoe * SummOnNormals[1, 0]) + (list.ochno_zaocjnoe * SummOnNormals[1, 1]) + (list.zaochnoe * SummOnNormals[1, 2]); ;
+                                    summ[2] += (list.ochnoe * normal[1, 0]) + (list.ochno_zaocjnoe * normal[1, 1]) + (list.zaochnoe * normal[1, 2]); ;
                                     break;
                                 case ID_SPO:
-                                    summ[3] += (list.ochnoe * SummOnNormals[3, 0]) + (list.ochno_zaocjnoe * SummOnNormals[3, 1]) + (list.zaochnoe * SummOnNormals[3, 2]); ;
+                                    summ[3] += (list.ochnoe * normal[3, 0]) + (list.ochno_zaocjnoe * normal[3, 1]) + (list.zaochnoe * normal[3, 2]); ;
                                     break;
                                 default:
                                     break;

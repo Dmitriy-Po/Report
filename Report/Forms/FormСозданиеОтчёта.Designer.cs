@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent ()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.buttonShowReport = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxYear = new System.Windows.Forms.ComboBox();
@@ -128,6 +130,10 @@
             // Filial
             // 
             this.Filial.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.Format = "N2";
+            dataGridViewCellStyle1.NullValue = null;
+            this.Filial.DefaultCellStyle = dataGridViewCellStyle1;
             this.Filial.HeaderText = "Филиал";
             this.Filial.Name = "Filial";
             this.Filial.ReadOnly = true;
@@ -135,6 +141,8 @@
             // Value
             // 
             this.Value.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.Value.DefaultCellStyle = dataGridViewCellStyle2;
             this.Value.HeaderText = "Сумма, руб.";
             this.Value.Name = "Value";
             this.Value.ReadOnly = true;
@@ -171,8 +179,8 @@
         private System.Windows.Forms.Button buttonExportTo;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxCoef;
+        public System.Windows.Forms.DataGridView GridReport;
         private System.Windows.Forms.DataGridViewTextBoxColumn Filial;
         private System.Windows.Forms.DataGridViewTextBoxColumn Value;
-        public System.Windows.Forms.DataGridView GridReport;
     }
 }

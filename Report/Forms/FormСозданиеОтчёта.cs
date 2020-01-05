@@ -297,7 +297,10 @@ namespace Report.Forms
                 GridReport.Rows.Add("Аспирантура", line.Value[1]);
                 GridReport.Rows.Add("Магистратура", line.Value[2]);
                 GridReport.Rows.Add("SPO", line.Value[3]);
-            }
+                GridReport.Rows.Add(new string('-', 80), $"Итого: {line.Value.Sum()}");
+                
+            }                    
+                        
 
         }
 
