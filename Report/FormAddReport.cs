@@ -92,12 +92,14 @@ namespace Report
                 int id_filial = ListCount.ListFilial.Where(x => x.full_desc.Contains(comboBoxFilial.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
                 int id_spec = ListCount.ListSpecial.Where(x => x.desc.Contains(comboBoxSpecial.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
                 int id_skill = ListCount.ListSkill.Where(x => x.desc.Contains(comboBoxSkill.SelectedItem.ToString())).Select(x => x.id).ElementAt(0);
+                bool std_int = checkBoxStdInv.Checked;
 
                 string query = "SELECT * FROM ЧисленностьОбучающихся "+
                                     $"WHERE ЧисленностьОбучающихся.стуктурное_подразделение_ВК = {id_filial} "+
                                     $"AND ЧисленностьОбучающихся.специальность_ВК = {id_spec} "+
                                     $"AND ЧисленностьОбучающихся.квалификация_ВК = {id_skill} "+
-                                    $"AND ЧисленностьОбучающихся.год LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
+                                    $"AND ЧисленностьОбучающихся.год LIKE '{comboBoxYear.SelectedItem.ToString()}%' "+
+                                    $"AND ЧисленностьОбучающихся.студент_инвалид = '{std_int}'; ";
 
                 Adapter = new SQLiteDataAdapter(query, connection);
                 Table = new DataTable();

@@ -18,7 +18,7 @@ namespace Report.Forms
         {
             InitializeComponent();
         }
-        
+        Dictionary<string, decimal[]> Result;
 
 
         Dictionary<int, string[]> Fill (string year, decimal K_equal)
@@ -287,7 +287,7 @@ namespace Report.Forms
             //}
 
             Algorithm a = new Algorithm();
-            Dictionary<string, decimal[]> Result =  a.Calculate(Convert.ToInt32(comboBoxYear.SelectedItem));
+            Result = a.Calculate(Convert.ToInt32(comboBoxYear.SelectedItem));
 
             GridReport.Rows.Clear();
             foreach (KeyValuePair<string, decimal[]> line in Result)
@@ -308,23 +308,23 @@ namespace Report.Forms
         {
             try
             {
-                decimal coef = Convert.ToDecimal(textBoxCoef.Text);
-                Dictionary<int, string[]> table = Fill(comboBoxYear.SelectedItem.ToString(), coef);
+                //decimal coef = Convert.ToDecimal(textBoxCoef.Text);
+                Dictionary<string, decimal[]> table = Result;
 
 
                 object oMissing = System.Reflection.Missing.Value;
                 object oEndOfDoc = "\\endofdoc"; /* \endofdoc is a predefined bookmark */
-                string[] spec = new string[] { "Бакалавриат, специалитет", "Магистратура", "Аспирантура" };
+                string[] spec = new string[] { "Бакалавриат, специалитет", "Аспирантура", "Магистратура", "специалитет" };
 
                 _Application WORD = new Word.Application();
                 _Document MyDoc = WORD.Documents.Add(Visible: true);
                 
 
                 // Заголовок.
-                Paragraph p0;
-                p0 = MyDoc.Content.Paragraphs.Add(ref oMissing);
-                p0.Range.Text = MyDoc.Name;
-                p0.Range.InsertParagraphAfter();                
+                //Paragraph p0;
+                //p0 = MyDoc.Content.Paragraphs.Add(ref oMissing);
+                //p0.Range.Text = MyDoc.Name;
+                //p0.Range.InsertParagraphAfter();                
 
                 Paragraph p1;
                 p1 = MyDoc.Content.Paragraphs.Add(ref oMissing);
@@ -348,26 +348,38 @@ namespace Report.Forms
                                                         "из средств субсидии федерального бюджета с учетом филиалов";
                 wtable.Rows[1].Cells[2].Range.Text = "Сумма, руб.";
                 wtable.Rows[1].Range.Font.Bold = 0;
-                wtable.Rows.Alignment = WdRowAlignment.wdAlignRowCenter;
+                wtable.Rows.Alignment = WdRowAlignment.wdAlignRowLeft;
+                
 
                 int rr = 2;
                 foreach (var item in table)
                 {
-                    //wtable.Rows[rr].Alignment = WdRowAlignment.wdAlignRowLeft;
-                    wtable.Rows[rr].Cells[1].Range.Text = item.Value[0].ToString();
-                    wtable.Rows[rr].Cells[2].Range.Text = item.Value[1].ToString();
-                    rr++;
-                    if (rr == 3)
-                    {
-                        for (int i = 2; i < 6; i++)
-                        {
-                            wtable.Rows[rr].Cells[1].Range.Text = spec[i - 2];
-                            wtable.Rows[rr].Cells[2].Range.Text = item.Value[i].ToString();
-                            wtable.Rows[rr].Range.Font.Bold = 0;
+                    wtable.Rows[rr].Alignment = WdRowAlignment.wdAlignRowLeft;
+                    wtable.Rows[rr].Cells[1].Range.Text = item.Key;
+                    
+                    for (int i = 0; i < item.Value.Count(); i++)
+                    {                        
+                        wtable.Rows.Add();
+                        rr++;
+                        wtable.Rows[rr].Cells[1].Range.Text = spec[i];
+                        wtable.Rows[rr].Cells[2].Range.Text = item.Value[i].ToString();
 
-                            rr++;
-                        }
-                    }
+                        wtable.Rows[rr].Cells[1].Range.Bold = 0;
+                        wtable.Rows[rr].Cells[2].Range.Bold = 0;                       
+                        //wtable.Rows[rr].Alignment = WdRowAlignment.wdAlignRowLeft;
+                    }                    
+                    rr++;
+                    //if (rr == 3)
+                    //{
+                    //    for (int i = 2; i < 6; i++)
+                    //    {
+                    //        wtable.Rows[rr].Cells[1].Range.Text = spec[i - 2];
+                    //        wtable.Rows[rr].Cells[2].Range.Text = item.Value[i].ToString();
+                    //        wtable.Rows[rr].Range.Font.Bold = 0;
+
+                    //        rr++;
+                    //    }
+                    //}
 
                 }
                 rr++;
@@ -376,9 +388,10 @@ namespace Report.Forms
 
                 try
                 {
-                    //MyDoc.SaveAs2($"Затраты на {comboBoxYear.SelectedItem.ToString()} год");
-                    MyDoc.Save();
+                    MyDoc.SaveAs2($"Затраты на {comboBoxYear.SelectedItem.ToString()} год.docx");
+                    //MyDoc.Save();
                     MyDoc.Close();
+                    
 
                 }
                 catch (Exception)

@@ -14,6 +14,8 @@ namespace Report.Classes
     
     class Algorithm
     {
+        // Значения констант отвечают за правильное расперделение квалификаций и форм обучения.
+        // Значения соответсвутют колючевым значениям в базе данных.
         const int ID_BAKALAVR = 12;
         const int ID_MAGISTR = 14;
         const int ID_ASPIRANT = 13;
@@ -25,6 +27,10 @@ namespace Report.Classes
 
         decimal[,] ssmm;
         decimal[,] SummOnNormals;
+
+        decimal[,] ar_sum_inv;
+        decimal[,] ar_inv;
+
         SQLiteDataAdapter Adapter;
         DataSet Dataset;
         SQLiteConnection connection;
@@ -32,12 +38,7 @@ namespace Report.Classes
 
         public Algorithm () { }
 
-
-
-        bool CheckSkill (int skill, DataTable table)
-        {
-            return false;
-        }
+                
         public Dictionary<string, decimal[]> Calculate (int year)
         {
             SQliteDB DB = new SQliteDB();
@@ -84,11 +85,12 @@ namespace Report.Classes
                                 "SELECT Квалификации.код FROM Квалификации; " +
 
                                 // Table 7.
-                                "SELECT БазовыйНормативЗатрат.код, ЗначениеКоэффицента.Значение, ФормаОбучения_ВК " +
+                                "SELECT БазовыйНормативЗатрат.код, ЗначениеКоэффицента.Значение, ФормаОбучения_ВК, КорректирующиеКоэффиценты.СтудентИнвалид " +
                                 "FROM КоррКоэффицентБазовогоНорматива "+
                                 "JOIN ЗначениеКоэффицента ON "+
                                 "КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК = ЗначениеКоэффицента.Корректирующие_ВК "+
-                                "JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК; ";
+                                "JOIN БазовыйНормативЗатрат ON БазовыйНормативЗатрат.код = КоррКоэффицентБазовогоНорматива.Базовый_норматив_ВК "+
+                                "JOIN КорректирующиеКоэффиценты ON КорректирующиеКоэффиценты.код = КоррКоэффицентБазовогоНорматива.Корр_коэфф_ВК; ";
 
                 Adapter = new SQLiteDataAdapter(query, connection);
                 Dataset = new DataSet();
@@ -114,7 +116,8 @@ namespace Report.Classes
                 // Конец заполнения коллекции Численности обучающихся.
 
                 // Заполнение коллекции Базовых нормативвов затрат стоимостной группы.
-                List<БазовыйНормативЗатратСтоимостнойГруппы> bnzsg = new List<БазовыйНормативЗатратСтоимостнойГруппы>();
+                List<БазовыйНормативЗатратСтоимостнойГруппы> bnzsg = new List<БазовыйНормативЗатратСтоимостнойГруппы>();                
+
                 foreach (DataRow row in Dataset.Tables[2].AsEnumerable())
                 {
                     bnzsg.Add(new БазовыйНормативЗатратСтоимостнойГруппы(
@@ -127,7 +130,7 @@ namespace Report.Classes
                         Convert.ToInt32(row["БНЗ_ВК"]),
                         Convert.ToInt32(row["СтоимостнаяГруппаКалГода_ВК"])
                         ));
-                }
+                }            
                 // Конец заполнения коллекции Базовых нормативвов затрат стоимостной группы.
 
                 // Заполнение списка групп за текущий год.
@@ -155,29 +158,56 @@ namespace Report.Classes
             foreach (DataRow row in Dataset.Tables[7].AsEnumerable())
             {
                 kkbn.Add(new КорректирующийКоэффицентБазовогоНорматива(
-                    Convert.ToInt32(row[0]), Convert.ToDecimal(row[1]), Convert.ToInt32(row[2])));
+                    Convert.ToInt32(row[0]), Convert.ToDecimal(row[1]), Convert.ToInt32(row[2]), Convert.ToBoolean(row[3])));
             }
             #endregion
-            // 3 - Стоимостные группы, 4 - Квалификации, 3 - Формы обучения.            
-            
+
+
+            // 3 - Стоимостные группы, 4 - Квалификации, 3 - Формы обучения. 
             Dictionary<int, decimal[,]> SON_g = new Dictionary<int, decimal[,]>();
+            Dictionary<int, decimal[,]> SUM_inv = new Dictionary<int, decimal[,]>();
 
-
+            int z = 0; // группа.
             foreach (var group in groups)
             {
-                SummOnNormals = new decimal[4, 3];
+                SummOnNormals = new decimal[4, 3];                
+
                 foreach (var norm in bnzsg.Where(x => x.id_group == group.id_group))
                 {
                     ssmm = new decimal[4, 3];
+                    ar_inv = new decimal[4, 3];
+                    ar_sum_inv = new decimal[4, 3];
+
+                    
+
+                    ar_inv[0, z] = norm.Бакалавриат_Специалитет;
+                    ar_inv[1, z] = norm.Магистратура;
+                    ar_inv[2, z] = norm.Аспирантура;
+                    ar_inv[3, z] = norm.SPO;
+
+
                     var kk_bnz = kkbn.Where(k => k.id_bnz == norm.id_normativ).Select(k => k);
 
+
                     // Применение корректирующих коэфицентов, без формы обучения.
+                    z = 0;
                     foreach (var item in kk_bnz.Where(f => f.id_form_education == 0).Select(f => f))
                     {
-                        norm.Бакалавриат_Специалитет    *= item.value;
-                        norm.Магистратура               *= item.value;
-                        norm.Аспирантура                *= item.value;
-                        norm.SPO                        *= item.value;
+                        if (item.std_inv == false)
+                        {
+                            norm.Бакалавриат_Специалитет    *= item.value;
+                            norm.Магистратура               *= item.value;
+                            norm.Аспирантура                *= item.value;
+                            norm.SPO                        *= item.value;
+                        }
+                        else
+                        {
+                            ar_inv[0, z] = item.value;
+                            ar_inv[1, z] = item.value;
+                            ar_inv[2, z] = item.value;
+                            ar_inv[3, z] = item.value;                            
+                        }
+                        
                     }
 
                     // Заполнение массива значениями базового норматива.
@@ -187,39 +217,79 @@ namespace Report.Classes
                         ssmm[1, i] = norm.Магистратура;
                         ssmm[2, i] = norm.Аспирантура;
                         ssmm[3, i] = norm.SPO;
+
+                        ar_sum_inv[0, i] = ar_inv[0, i];
+                        ar_sum_inv[1, i] = ar_inv[1, i];
+                        ar_sum_inv[2, i] = ar_inv[2, i];
+                        ar_sum_inv[3, i] = ar_inv[3, i];
                     }
 
                     // Применение корректирующих коэфицентов, относительно формы обучения.
                     foreach (var item in kk_bnz)
                     {
-                        switch (item.id_form_education)
+                        if (item.std_inv == false)
                         {
-                            case ID_FORM_OCH:
-                                {
-                                    ssmm[0, 0] *= item.value;
-                                    ssmm[1, 0] *= item.value;
-                                    ssmm[2, 0] *= item.value;
-                                    ssmm[3, 0] *= item.value;
-                                }
-                                break;
-                            case ID_FORM_O_Z:
-                                {
-                                    ssmm[0, 1] *= item.value;
-                                    ssmm[1, 1] *= item.value;
-                                    ssmm[2, 1] *= item.value;
-                                    ssmm[3, 1] *= item.value;
-                                }
-                                break;
-                            case ID_FORM_Z:
-                                {
-                                    ssmm[0, 2] *= item.value;
-                                    ssmm[1, 2] *= item.value;
-                                    ssmm[2, 2] *= item.value;
-                                    ssmm[3, 2] *= item.value;
-                                }
-                                break;
-                            default:
-                                break;
+                            switch (item.id_form_education)
+                            {
+                                case ID_FORM_OCH:
+                                    {
+                                        ssmm[0, 0] *= item.value;
+                                        ssmm[1, 0] *= item.value;
+                                        ssmm[2, 0] *= item.value;
+                                        ssmm[3, 0] *= item.value;
+                                    }
+                                    break;
+                                case ID_FORM_O_Z:
+                                    {
+                                        ssmm[0, 1] *= item.value;
+                                        ssmm[1, 1] *= item.value;
+                                        ssmm[2, 1] *= item.value;
+                                        ssmm[3, 1] *= item.value;
+                                    }
+                                    break;
+                                case ID_FORM_Z:
+                                    {
+                                        ssmm[0, 2] *= item.value;
+                                        ssmm[1, 2] *= item.value;
+                                        ssmm[2, 2] *= item.value;
+                                        ssmm[3, 2] *= item.value;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            } 
+                        }
+                        else
+                        {
+                            switch (item.id_form_education)
+                            {
+                                case ID_FORM_OCH:
+                                    {
+                                        ar_sum_inv[0, 0] *= item.value;
+                                        ar_sum_inv[1, 0] *= item.value;
+                                        ar_sum_inv[2, 0] *= item.value;
+                                        ar_sum_inv[3, 0] *= item.value;
+                                    }
+                                    break;
+                                case ID_FORM_O_Z:
+                                    {
+                                        ar_sum_inv[0, 1] *= item.value;
+                                        ar_sum_inv[1, 1] *= item.value;
+                                        ar_sum_inv[2, 1] *= item.value;
+                                        ar_sum_inv[3, 1] *= item.value;
+                                    }
+                                    break;
+                                case ID_FORM_Z:
+                                    {
+                                        ar_sum_inv[0, 2] *= item.value;
+                                        ar_sum_inv[1, 2] *= item.value;
+                                        ar_sum_inv[2, 2] *= item.value;
+                                        ar_sum_inv[3, 2] *= item.value;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                     }
 
@@ -232,19 +302,23 @@ namespace Report.Classes
                         }
                     }                    
                     ssmm = null;
+                    z++;
                 }
+                SUM_inv.Add(group.id_group, ar_sum_inv);
                 SON_g.Add(group.id_group, SummOnNormals);
                 SummOnNormals = null;
+                
             }
             /**/
             
             Dictionary<string, decimal[]> SummOfFilial = new Dictionary<string, decimal[]>();
-
+            Dictionary<string, decimal[]> SUM_fil_inv = new Dictionary<string, decimal[]>();
+            
             // Цикл по каждому филиалу и группам.
             foreach (var filial in Dataset.Tables[5].AsEnumerable())
             {
                 decimal[] summ = new decimal[4];
-                
+                decimal[] summ_inv = new decimal[4];
 
                 foreach (var group in groups)
                 {
@@ -262,136 +336,74 @@ namespace Report.Classes
                                 spec_list.Add(list);
                             }
                         }
-                    }
-                    // Отбор БНЗ, которые относятся в стоимостную группу.
-                    //foreach (var normal in SON_g.Where(x => x.Key == group.id_group).Select(x => x.Value))
-                    //{
-                    //    normal;
-                    //}
+                    }                    
 
                     /*Magic*/
                     foreach (var list in spec_list)
                     {
                         foreach (var normal in SON_g.Where(x => x.Key == group.id_group).Select(x => x.Value))
                         {
-                            switch (list.Skill_id)
+                            if (list.student_inv == false)
                             {
-                                case ID_BAKALAVR:
-                                    summ[0] += (list.ochnoe * normal[0, 0]) + (list.ochno_zaocjnoe * normal[0, 1]) + (list.zaochnoe * normal[0, 2]);
-                                    break;
-                                case ID_ASPIRANT:
-                                    summ[1] += (list.ochnoe * normal[2, 0]) + (list.ochno_zaocjnoe * normal[2, 1]) + (list.zaochnoe * normal[2, 2]);
-                                    break;
-                                case ID_MAGISTR:
-                                    summ[2] += (list.ochnoe * normal[1, 0]) + (list.ochno_zaocjnoe * normal[1, 1]) + (list.zaochnoe * normal[1, 2]); ;
-                                    break;
-                                case ID_SPO:
-                                    summ[3] += (list.ochnoe * normal[3, 0]) + (list.ochno_zaocjnoe * normal[3, 1]) + (list.zaochnoe * normal[3, 2]); ;
-                                    break;
-                                default:
-                                    break;
+                                switch (list.Skill_id)
+                                {
+                                    case ID_BAKALAVR:
+                                        summ[0] += (list.ochnoe * normal[0, 0]) + (list.ochno_zaocjnoe * normal[0, 1]) + (list.zaochnoe * normal[0, 2]);
+                                        break;
+                                    case ID_ASPIRANT:
+                                        summ[1] += (list.ochnoe * normal[2, 0]) + (list.ochno_zaocjnoe * normal[2, 1]) + (list.zaochnoe * normal[2, 2]);
+                                        break;
+                                    case ID_MAGISTR:
+                                        summ[2] += (list.ochnoe * normal[1, 0]) + (list.ochno_zaocjnoe * normal[1, 1]) + (list.zaochnoe * normal[1, 2]); ;
+                                        break;
+                                    case ID_SPO:
+                                        summ[3] += (list.ochnoe * normal[3, 0]) + (list.ochno_zaocjnoe * normal[3, 1]) + (list.zaochnoe * normal[3, 2]); ;
+                                        break;
+                                    default:
+                                        break;
+                                } 
+                            }
+                        }
+                    }
+                    foreach (var list in spec_list)
+                    {
+                        foreach (var normal in SUM_inv.Where(x => x.Key == group.id_group).Select(x => x.Value))
+                        {
+                            if (list.student_inv == true)
+                            {
+                                switch (list.Skill_id)
+                                {
+                                    case ID_BAKALAVR:
+                                        summ_inv[0] += (list.ochnoe * normal[0, 0]) + (list.ochno_zaocjnoe * normal[0, 1]) + (list.zaochnoe * normal[0, 2]);
+                                        break;
+                                    case ID_ASPIRANT:
+                                        summ_inv[1] += (list.ochnoe * normal[2, 0]) + (list.ochno_zaocjnoe * normal[2, 1]) + (list.zaochnoe * normal[2, 2]);
+                                        break;
+                                    case ID_MAGISTR:
+                                        summ_inv[2] += (list.ochnoe * normal[1, 0]) + (list.ochno_zaocjnoe * normal[1, 1]) + (list.zaochnoe * normal[1, 2]); ;
+                                        break;
+                                    case ID_SPO:
+                                        summ_inv[3] += (list.ochnoe * normal[3, 0]) + (list.ochno_zaocjnoe * normal[3, 1]) + (list.zaochnoe * normal[3, 2]); ;
+                                        break;
+                                    default:
+                                        break;
+                                } 
                             }
                         }
                     }
                 }
+                //SUM_fil_inv.Add(filial["full_desc"].ToString(), summ_inv);
+                for (int i = 0; i < summ.GetLength(0); i++)
+                {
+                    summ[i] += summ_inv[i];
+                }
                 SummOfFilial.Add(filial["full_desc"].ToString(), summ);
                 summ = null;
             }
+                       
 
-            
-
-            //foreach (var filial in Dataset.Tables[5].AsEnumerable())
-            //{
-            //    // Отбор по филиалам среди всего списка численности (id).
-            //    var list_student = from l in ListStudent
-            //                       where l.id_filial == Convert.ToInt32(filial[0])
-            //                       select l;
-
-            //    // Отбор квалификации среди всего списка текущего филиала.
-            //    foreach (var skill in Dataset.Tables[6].AsEnumerable())
-            //    {
-            //        var spec_list = from s in list_student
-            //                        where s.Skill_id == Convert.ToInt32(skill[0])
-            //                        select s;
-
-            //        foreach (var item in spec_list)
-            //        {
-            //            //item.
-            //        }
-                    
-            //    }
-                
-            //}
-
-            //var List = from l in ListStudent
-            //           group l by l.id_filial into newgroup
-            //           select new
-            //           {
-            //               ochnoe = newgroup.Sum(s => s.ochnoe),
-            //               och_zao = newgroup.Sum(s => s.ochno_zaocjnoe),
-            //               zao = newgroup.Sum(s => s.zaochnoe)
-            //           };   
-            
-            //    foreach (int filial in ListStudent.Select(x => x.id_filial))
-            //    {                
-            //        foreach (var group in spec_group)
-            //        {
-            //            var bnz = bnzsg.Where(x => x.id_group == group.id_group);
-            //            var spc = ListStudent.FindAll(x => x.Special_id == group.id_spec);
-
-            //            foreach (var item in bnz)
-            //            {
-            //                foreach (var s in spc)
-            //                {
-            //                    item.Бакалавриат_Специалитет *= (s.ochnoe + s.ochno_zaocjnoe + s.zaochnoe);
-            //                    item.Аспирантура *= (s.ochnoe + s.ochno_zaocjnoe + s.zaochnoe);
-            //                    item.Магистратура *= (s.ochnoe + s.ochno_zaocjnoe + s.zaochnoe);
-            //                    item.SPO *= (s.ochnoe + s.ochno_zaocjnoe + s.zaochnoe);
-            //                }
-            //            }                       
-            //        }
-            //    }
-                
-            
             connection.Close();
-            return SummOfFilial;
-            //    FormСозданиеОтчёта form = new FormСозданиеОтчёта();
-            //form.GridReport.DataSource = bnzsg;
-                //foreach (var item in bnzsg)
-                //{
-                //    form.GridReport.Rows.Add("Магистарутра", item.Магистратура);
-                //    form.GridReport.Rows.Add(item.Бакалавриат_Специалитет);
-                //    form.GridReport.Rows.Add(item.Аспирантура);
-                //    form.GridReport.Rows.Add(item.SPO);
-                //}
-                /*здесь применить group by ListStudent*/
-
-                //foreach (var item in ListStudent)
-                //{
-                    //item.ochnoe * 
-                //}
-                //foreach (var item in spec_group)
-                //{
-                //    var listcount = ListStudent.FindAll(x => x.Special_id == item.id_spec);
-
-                //    var bnz = bnzsg.Where(g => g.id_group == group.id_group).Select(x => x);
-                //    foreach (var normativ in bnz)
-                //    {
-                //        // Значение базового норматива умножается на 
-                //        // количество человек относительно квалификации.
-                //        foreach (var fil in listcount)
-                //        {
-                //            normativ.Бакалавриат_Специалитет *= (fil.ochnoe + fil.ochno_zaocjnoe + fil.zaochnoe);
-                //            normativ.Магистратура *= (fil.ochnoe + fil.ochno_zaocjnoe + fil.zaochnoe);
-                //            normativ.Аспирантура *= (fil.ochnoe + fil.ochno_zaocjnoe + fil.zaochnoe);
-                //            normativ.SPO *= (fil.ochnoe + fil.ochno_zaocjnoe + fil.zaochnoe);
-
-
-                //        }
-                //    }
-                //}
-
-            //}
+            return SummOfFilial;            
         }
     }
 }
