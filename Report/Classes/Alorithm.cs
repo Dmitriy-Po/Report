@@ -178,19 +178,22 @@ namespace Report.Classes
                     ar_inv = new decimal[4, 3];
                     ar_sum_inv = new decimal[4, 3];
 
-                    
 
-                    ar_inv[0, z] = norm.Бакалавриат_Специалитет;
-                    ar_inv[1, z] = norm.Магистратура;
-                    ar_inv[2, z] = norm.Аспирантура;
-                    ar_inv[3, z] = norm.SPO;
 
+                    for (int k = 0; k < ar_inv.GetLength(1); k++)
+                    {
+                        ar_inv[0, k] = norm.Бакалавриат_Специалитет;
+                        ar_inv[1, k] = norm.Магистратура;
+                        ar_inv[2, k] = norm.Аспирантура;
+                        ar_inv[3, k] = norm.SPO;
+
+                    }
 
                     var kk_bnz = kkbn.Where(k => k.id_bnz == norm.id_normativ).Select(k => k);
 
 
                     // Применение корректирующих коэфицентов, без формы обучения.
-                    z = 0;
+                    //z = 0;
                     foreach (var item in kk_bnz.Where(f => f.id_form_education == 0).Select(f => f))
                     {
                         if (item.std_inv == false)
@@ -202,10 +205,10 @@ namespace Report.Classes
                         }
                         else
                         {
-                            ar_inv[0, z] = item.value;
-                            ar_inv[1, z] = item.value;
-                            ar_inv[2, z] = item.value;
-                            ar_inv[3, z] = item.value;                            
+                            ar_inv[0, z] *= item.value;
+                            ar_inv[1, z] *= item.value;
+                            ar_inv[2, z] *= item.value;
+                            ar_inv[3, z] *= item.value;                            
                         }
                         
                     }
@@ -301,13 +304,13 @@ namespace Report.Classes
                             SummOnNormals[i, j] += ssmm[i, j];
                         }
                     }                    
-                    ssmm = null;
-                    z++;
+                    ssmm = null;                    
                 }
+                z++;
                 SUM_inv.Add(group.id_group, ar_sum_inv);
                 SON_g.Add(group.id_group, SummOnNormals);
                 SummOnNormals = null;
-                
+                ar_sum_inv = null;
             }
             /**/
             
