@@ -287,19 +287,21 @@ namespace Report.Forms
             //}
 
             Algorithm a = new Algorithm();
-            Result = a.Calculate(Convert.ToInt32(comboBoxYear.SelectedItem));
+            Algorithm2 a2 = new Algorithm2();            
+            a2.MultiplayKK();
+            //Result = a.Calculate(Convert.ToInt32(comboBoxYear.SelectedItem));
 
-            GridReport.Rows.Clear();
-            foreach (KeyValuePair<string, decimal[]> line in Result)
-            {
-                GridReport.Rows.Add(line.Key);
-                GridReport.Rows.Add("Бакалавриат_Специалитет", line.Value[0]);
-                GridReport.Rows.Add("Аспирантура", line.Value[1]);
-                GridReport.Rows.Add("Магистратура", line.Value[2]);
-                GridReport.Rows.Add("SPO", line.Value[3]);
-                GridReport.Rows.Add(new string('-', 80), $"Итого: {line.Value.Sum()}");
+            //GridReport.Rows.Clear();
+            //foreach (KeyValuePair<string, decimal[]> line in Result)
+            //{
+            //    GridReport.Rows.Add(line.Key);
+            //    GridReport.Rows.Add("Бакалавриат_Специалитет", line.Value[0]);
+            //    GridReport.Rows.Add("Аспирантура", line.Value[1]);
+            //    GridReport.Rows.Add("Магистратура", line.Value[2]);
+            //    GridReport.Rows.Add("SPO", line.Value[3]);
+            //    GridReport.Rows.Add(new string('-', 80), $"Итого: {line.Value.Sum()}");
                 
-            }                    
+            //}                    
                         
 
         }

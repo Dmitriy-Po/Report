@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Algorithm2.cs" />
     <Compile Include="Classes\Alorithm.cs" />
     <Compile Include="Classes\ClassFormEducation.cs" />
     <Compile Include="Classes\СпециальностьСтоимостнойГруппы.cs" />
