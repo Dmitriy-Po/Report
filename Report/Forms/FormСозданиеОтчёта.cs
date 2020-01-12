@@ -289,6 +289,7 @@ namespace Report.Forms
             Algorithm a = new Algorithm();
             Algorithm2 a2 = new Algorithm2();            
             a2.MultiplayKK();
+            a2.MultiplayCountStudent();
             //Result = a.Calculate(Convert.ToInt32(comboBoxYear.SelectedItem));
 
             //GridReport.Rows.Clear();
@@ -300,9 +301,9 @@ namespace Report.Forms
             //    GridReport.Rows.Add("Магистратура", line.Value[2]);
             //    GridReport.Rows.Add("SPO", line.Value[3]);
             //    GridReport.Rows.Add(new string('-', 80), $"Итого: {line.Value.Sum()}");
-                
+
             //}                    
-                        
+
 
         }
 

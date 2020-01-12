@@ -327,5 +327,94 @@ namespace Report.Classes
             }
 #endregion
         }
+        public void MultiplayCountStudent ()
+        {            
+            // Словарь подразделений со списком затрат по квалификациям.
+            Dictionary<string, decimal[]> SummOnFilial = new Dictionary<string, decimal[]>();
+            // Массив дял суммирования по квалификациям.
+            decimal[] SummOnSkill;
+
+            List<TableCountStudent> ListStudent_sel = new List<TableCountStudent>();
+
+            // Сначала, отберём специальности, которые входят в стоимостные группы.
+            foreach (var spec in spec_group.Select(x => x.id_spec))
+            {
+                foreach (var list in ListStudent)
+                {
+                    // Если специальность входяит в стоимостную группу, тогда её добавляем в список.
+                    if (spec == list.Special_id)
+                    {
+                        ListStudent_sel.Add(list);
+                    }
+                }
+            }
+
+            // Затем, выберем подразделения, которые присутствуют в списке численности.
+            var filials = ListStudent_sel.GroupBy(x => x.id_filial).Select(x => x);
+
+            
+            
+
+            // Цикл по найденным подразделениям.
+            foreach (var specials in filials)
+            {
+                SummOnSkill = new decimal[4];
+                // Цикл по специальностям в подразделении.
+                foreach (var special in specials)/*отобрать специальности, которые входят в стоимостную группу*/
+                {
+                    // отбор специальностей без студентов - инвалидов.
+                    if (special.student_inv == false)
+                    {
+                        foreach (var gr in spec_group.Where(x => x.id_spec == special.Special_id))
+                        {
+                            // Умножение нормативов на численность учащихся.
+                            foreach (var group in ListGroupsAndNormals.Where(x => x.Key == gr.id_group))
+                            {
+                                foreach (KeyValuePair<int, decimal[,]> normal in group.Value)
+                                {
+                                    CalculateNormsAndCounts(SummOnSkill, new int[] {
+                                    special.ochnoe,
+                                    special.ochno_zaocjnoe,
+                                    special.zaochnoe }, normal.Value);
+                                }
+                            } 
+                        }
+                    }
+                    // отбор специальностей студентов - инвалидов.
+                    else if (special.student_inv == true)
+                    {
+                        foreach (var gr in spec_group.Where(x => x.id_spec == special.Special_id))
+                        {
+                            // Умножение нормативов на численность учащихся.
+                            foreach (var group in ListGroupsAndNormals_inv.Where(x => x.Key == gr.id_group))
+                            {
+                                foreach (KeyValuePair<int, decimal[,]> normal in group.Value)
+                                {
+                                    CalculateNormsAndCounts(SummOnSkill, new int[] {
+                                    special.ochnoe,
+                                    special.ochno_zaocjnoe,
+                                    special.zaochnoe }, normal.Value);
+                                }
+                            }
+                        }
+                    }
+                }
+                // Добавление в коллекцию подразделений.
+                //SummOnFilial.Add(, SummOnSkill);
+                SummOnSkill = null;
+            }
+        }
+        void CalculateNormsAndCounts (decimal[] summ, int[] count, decimal[,] mass)
+        {
+            for (int i = 0; i < mass.GetLength(0); i++)
+            {
+                for (int j = 0; j < mass.GetLength(1); j++)
+                {
+                    summ[j] += (mass[i, j] * count[i]);
+                }
+            }
+            mass = null;
+            count = null;
+        }
     }
 }
