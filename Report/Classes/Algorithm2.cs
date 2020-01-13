@@ -33,7 +33,7 @@ namespace Report.Classes
         List<БазовыйНормативЗатратСтоимостнойГруппы> bnzsg;
         List<КорректирующийКоэффицентБазовогоНорматива> kkbn;
 
-        int CurrentYear = 2020;
+        public int CurrentYear = 2020;
 
         /*
          * ListGroupsAndNormals - список стоимостных групп с подсчитанными норамтивами, 
@@ -46,7 +46,9 @@ namespace Report.Classes
         Dictionary<int, Dictionary<int, decimal[,]>> ListGroupsAndNormals_inv;
 
 
-        public Algorithm2 () { }
+        public Algorithm2 (int y) {
+            CurrentYear = y;
+        }
 
         DataTable GetTable (string select_query)
         {
@@ -71,7 +73,8 @@ namespace Report.Classes
                                 "ЧисленностьОбучающихся.очно_заочное as 'Очно-заочное', " +
                                 "ЧисленностьОбучающихся.заочное as 'Заочное', " +
                                 "SUBSTR(ЧисленностьОбучающихся.год, 1, 4) as 'год', " +
-                                "ЧисленностьОбучающихся.студент_инвалид " +
+                                "ЧисленностьОбучающихся.студент_инвалид, " +
+                                "Filial.full_desc "+
                                 "FROM ЧисленностьОбучающихся " +
                                 "JOIN Filial ON ЧисленностьОбучающихся.стуктурное_подразделение_ВК = Filial.id " +
                                 "JOIN Специальности ON ЧисленностьОбучающихся.специальность_ВК = Специальности.код " +
@@ -82,6 +85,7 @@ namespace Report.Classes
             foreach (DataRow item in table.Rows)
             {
                 ListStudent.Add(new TableCountStudent(
+                                    item["full_desc"].ToString(),
                                     Convert.ToInt32(item[0]),
                                     Convert.ToInt32(item[1]),
                                     Convert.ToInt32(item[2]),
@@ -327,7 +331,7 @@ namespace Report.Classes
             }
 #endregion
         }
-        public void MultiplayCountStudent ()
+        public Dictionary<string, decimal[]> MultiplayCountStudent ()
         {            
             // Словарь подразделений со списком затрат по квалификациям.
             Dictionary<string, decimal[]> SummOnFilial = new Dictionary<string, decimal[]>();
@@ -356,11 +360,11 @@ namespace Report.Classes
             
 
             // Цикл по найденным подразделениям.
-            foreach (var specials in filials)
+            foreach (var filial in filials)
             {
                 SummOnSkill = new decimal[4];
                 // Цикл по специальностям в подразделении.
-                foreach (var special in specials)/*отобрать специальности, которые входят в стоимостную группу*/
+                foreach (var special in filial)/*отобрать специальности, которые входят в стоимостную группу*/
                 {
                     // отбор специальностей без студентов - инвалидов.
                     if (special.student_inv == false)
@@ -400,9 +404,10 @@ namespace Report.Classes
                     }
                 }
                 // Добавление в коллекцию подразделений.
-                //SummOnFilial.Add(, SummOnSkill);
+                SummOnFilial.Add(filial.FirstOrDefault().Filial, SummOnSkill);                
                 SummOnSkill = null;
             }
+            return SummOnFilial;
         }
         void CalculateNormsAndCounts (decimal[] summ, int[] count, decimal[,] mass)
         {

@@ -15,8 +15,9 @@
             this.year = year;
             this.student_inv = std_inv;
         }
-        public TableCountStudent (int id_filial, int special, int skill, int ochnaya, int ocjno_zaochnaya, int zaochnaya, int year, bool std_inv)
+        public TableCountStudent (string filial, int id_filial, int special, int skill, int ochnaya, int ocjno_zaochnaya, int zaochnaya, int year, bool std_inv)
         {
+            this.Filial = filial;
             this.id_filial = id_filial;
             this.Special_id = special;
             this.Skill_id = skill;

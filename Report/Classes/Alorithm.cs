@@ -101,17 +101,17 @@ namespace Report.Classes
                 List<TableCountStudent> ListStudent = new List<TableCountStudent>();
                 foreach (DataRow item in Dataset.Tables[0].AsEnumerable())
                 {
-                    ListStudent.Add(new TableCountStudent(
-                                        Convert.ToInt32(item[0]),                                        
-                                        Convert.ToInt32(item[1]),
-                                        Convert.ToInt32(item[2]),
+                    //ListStudent.Add(new TableCountStudent(
+                    //                    Convert.ToInt32(item[0]),                                        
+                    //                    Convert.ToInt32(item[1]),
+                    //                    Convert.ToInt32(item[2]),
 
-                                        Convert.ToInt32(item[3]),
-                                        Convert.ToInt32(item[4]),
-                                        Convert.ToInt32(item[5]),
-                                        Convert.ToInt32(item[6]), 
-                                        Convert.ToBoolean(item[7])
-                                   ));
+                    //                    Convert.ToInt32(item[3]),
+                    //                    Convert.ToInt32(item[4]),
+                    //                    Convert.ToInt32(item[5]),
+                    //                    Convert.ToInt32(item[6]), 
+                    //                    Convert.ToBoolean(item[7])
+                    //               ));
                 }
                 // Конец заполнения коллекции Численности обучающихся.
 
