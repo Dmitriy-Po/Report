@@ -335,8 +335,9 @@ namespace Report.Classes
         {            
             // Словарь подразделений со списком затрат по квалификациям.
             Dictionary<string, decimal[]> SummOnFilial = new Dictionary<string, decimal[]>();
-            // Массив дял суммирования по квалификациям.
-            decimal[] SummOnSkill;
+            // Массив для суммирования по квалификациям.
+            decimal[,] SummOnSkill_buff;
+            decimal[] SummOnSkill = new decimal[4];
 
             List<TableCountStudent> ListStudent_sel = new List<TableCountStudent>();
 
@@ -362,10 +363,15 @@ namespace Report.Classes
             // Цикл по найденным подразделениям.
             foreach (var filial in filials)
             {
+                int skill = 0;
+                int skill_inv = 0;
+                SummOnSkill_buff = new decimal[3, 4];
                 SummOnSkill = new decimal[4];
                 // Цикл по специальностям в подразделении.
                 foreach (var special in filial)/*отобрать специальности, которые входят в стоимостную группу*/
                 {
+                    
+
                     // отбор специальностей без студентов - инвалидов.
                     if (special.student_inv == false)
                     {
@@ -376,14 +382,49 @@ namespace Report.Classes
                             {
                                 foreach (KeyValuePair<int, decimal[,]> normal in group.Value)
                                 {
-                                    CalculateNormsAndCounts(SummOnSkill, new int[] {
-                                    special.ochnoe,
-                                    special.ochno_zaocjnoe,
-                                    special.zaochnoe }, normal.Value);
+                                    switch (special.Skill_id)
+                                    {
+                                        case ID_BAKALAVR:
+                                            {
+                                                CalculateNormsAndCounts(SummOnSkill_buff, 0, new int[] {
+                                                    special.ochnoe,
+                                                    special.ochno_zaocjnoe,
+                                                    special.zaochnoe }, normal.Value, 0);
+                                            }
+                                            break;
+                                        case ID_MAGISTR:
+                                            {
+                                                CalculateNormsAndCounts(SummOnSkill_buff, 1, new int[] {
+                                                    special.ochnoe,
+                                                    special.ochno_zaocjnoe,
+                                                    special.zaochnoe }, normal.Value, 1);
+                                            }
+                                            break;
+                                        case ID_ASPIRANT:
+                                            {
+                                                CalculateNormsAndCounts(SummOnSkill_buff, 2, new int[] {
+                                                    special.ochnoe,
+                                                    special.ochno_zaocjnoe,
+                                                    special.zaochnoe }, normal.Value, 2);
+                                            }
+                                            break;
+                                        case ID_SPO:
+                                            {
+                                                CalculateNormsAndCounts(SummOnSkill_buff, 3, new int[] {
+                                                    special.ochnoe,
+                                                    special.ochno_zaocjnoe,
+                                                    special.zaochnoe }, normal.Value, 3);
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                    
                                 }
                             } 
                         }
                     }
+                    
                     // отбор специальностей студентов - инвалидов.
                     else if (special.student_inv == true)
                     {
@@ -394,32 +435,70 @@ namespace Report.Classes
                             {
                                 foreach (KeyValuePair<int, decimal[,]> normal in group.Value)
                                 {
-                                    CalculateNormsAndCounts(SummOnSkill, new int[] {
-                                    special.ochnoe,
-                                    special.ochno_zaocjnoe,
-                                    special.zaochnoe }, normal.Value);
+                                    switch (special.Skill_id)
+                                    {
+                                        case ID_BAKALAVR:
+                                            {
+                                                CalculateNormsAndCounts(SummOnSkill_buff, 0, new int[] {
+                                                    special.ochnoe,
+                                                    special.ochno_zaocjnoe,
+                                                    special.zaochnoe }, normal.Value, 0);
+                                            }
+                                            break;
+                                        case ID_MAGISTR:
+                                            {
+                                                CalculateNormsAndCounts(SummOnSkill_buff, 1, new int[] {
+                                                    special.ochnoe,
+                                                    special.ochno_zaocjnoe,
+                                                    special.zaochnoe }, normal.Value, 1);
+                                            }
+                                            break;
+                                        case ID_ASPIRANT:
+                                            {
+                                                CalculateNormsAndCounts(SummOnSkill_buff, 2, new int[] {
+                                                    special.ochnoe,
+                                                    special.ochno_zaocjnoe,
+                                                    special.zaochnoe }, normal.Value, 2);
+                                            }
+                                            break;
+                                        case ID_SPO:
+                                            {
+                                                CalculateNormsAndCounts(SummOnSkill_buff, 3, new int[] {
+                                                    special.ochnoe,
+                                                    special.ochno_zaocjnoe,
+                                                    special.zaochnoe }, normal.Value, 3);
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                 }
                             }
                         }
                     }
+                    
+                }
+                                
+                for (int i = 0; i < SummOnSkill.GetLength(0); i++)
+                {
+                    SummOnSkill[i] += SummOnSkill_buff[0, i] + SummOnSkill_buff[1, i] + SummOnSkill_buff[2, i];
                 }
                 // Добавление в коллекцию подразделений.
                 SummOnFilial.Add(filial.FirstOrDefault().Filial, SummOnSkill);                
+                SummOnSkill_buff = null;
                 SummOnSkill = null;
             }
             return SummOnFilial;
         }
-        void CalculateNormsAndCounts (decimal[] summ, int[] count, decimal[,] mass)
-        {
+        void CalculateNormsAndCounts (decimal[,] summ, int skill, int[] count, decimal[,] mass, int sk)
+        {            
             for (int i = 0; i < mass.GetLength(0); i++)
             {
-                for (int j = 0; j < mass.GetLength(1); j++)
-                {
-                    summ[j] += (mass[i, j] * count[i]);
-                }
+                summ[i, sk] += (mass[i, sk] * count[i]);
             }
             mass = null;
             count = null;
+            //summ = null;
         }
     }
 }

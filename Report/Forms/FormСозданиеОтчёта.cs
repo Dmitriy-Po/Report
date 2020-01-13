@@ -274,32 +274,19 @@ namespace Report.Forms
         }
 
         private void buttonShowReport_Click (object sender, EventArgs e)
-        {
-            /*Ошибка неучёта специальностей связанна с форматом года в таблице Численность обучающихся*/
-            //try
-            //{
-            //    decimal coef = Convert.ToDecimal(textBoxCoef.Text);
-            //    Fill(comboBoxYear.SelectedItem.ToString(), coef);
-            //}
-            //catch (FormatException ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
-
-            
+        {            
             Algorithm2 a2 = new Algorithm2(Convert.ToInt32(comboBoxYear.SelectedItem));            
-            a2.MultiplayKK();          
-            
+            a2.MultiplayKK();
+            a2.MultiplayCountStudent();
             Result = a2.MultiplayCountStudent();
 
             GridReport.Rows.Clear();
             foreach (KeyValuePair<string, decimal[]> line in Result)
             {
                 GridReport.Rows.Add(line.Key);
-                GridReport.Rows.Add("Бакалавриат_Специалитет", line.Value[0]);
-                GridReport.Rows.Add("Аспирантура", line.Value[1]);
-                GridReport.Rows.Add("Магистратура", line.Value[2]);
-                GridReport.Rows.Add("SPO", line.Value[3]);
+                GridReport.Rows.Add("Бакалавриат / cпециалитет", line.Value[0] + line.Value[3]);
+                GridReport.Rows.Add("Магистратура", line.Value[1]);
+                GridReport.Rows.Add("Аспирнтура", line.Value[2]);
                 GridReport.Rows.Add(new string('-', 80), $"Итого: {line.Value.Sum()}");
 
             }
@@ -311,13 +298,18 @@ namespace Report.Forms
         {
             try
             {
-                //decimal coef = Convert.ToDecimal(textBoxCoef.Text);
+                Algorithm2 a2 = new Algorithm2(Convert.ToInt32(comboBoxYear.SelectedItem));
+                a2.MultiplayKK();
+                Result = a2.MultiplayCountStudent();
+                
+
+
                 Dictionary<string, decimal[]> table = Result;
 
 
                 object oMissing = System.Reflection.Missing.Value;
                 object oEndOfDoc = "\\endofdoc"; /* \endofdoc is a predefined bookmark */
-                string[] spec = new string[] { "Бакалавриат, специалитет", "Аспирантура", "Магистратура", "специалитет" };
+                string[] spec = new string[] { "Бакалавриат, специалитет", "Аспирантура", "Магистратура", };
 
                 _Application WORD = new Word.Application();
                 _Document MyDoc = WORD.Documents.Add(Visible: true);
@@ -360,7 +352,7 @@ namespace Report.Forms
                     wtable.Rows[rr].Alignment = WdRowAlignment.wdAlignRowLeft;
                     wtable.Rows[rr].Cells[1].Range.Text = item.Key;
                     
-                    for (int i = 0; i < item.Value.Count(); i++)
+                    for (int i = 0; i < item.Value.Count()-1; i++)
                     {                        
                         wtable.Rows.Add();
                         rr++;
@@ -387,13 +379,14 @@ namespace Report.Forms
                 }
                 rr++;
                 wtable.Rows[rr].Cells[1].Range.Text = "ИТОГО по вузу:";
-                wtable.Rows[rr].Cells[2].Range.Text = Convert.ToString(table.Sum(x => Convert.ToDecimal(x.Value[1])));
+                wtable.Rows[rr].Cells[2].Range.Text = Convert.ToString(table.Sum(x => Convert.ToDecimal(x.Value.Sum())));
 
                 try
                 {
-                    MyDoc.SaveAs2($"Затраты на {comboBoxYear.SelectedItem.ToString()} год.docx");
-                    //MyDoc.Save();
+                    //MyDoc.SaveAs2($"Затраты на {comboBoxYear.SelectedItem.ToString()} год.docx");
+                    MyDoc.Save();
                     MyDoc.Close();
+                    
                     
 
                 }
