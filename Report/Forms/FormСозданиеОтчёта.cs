@@ -284,9 +284,10 @@ namespace Report.Forms
             foreach (KeyValuePair<string, decimal[]> line in Result)
             {
                 GridReport.Rows.Add(line.Key);
-                GridReport.Rows.Add("Бакалавриат / cпециалитет", line.Value[0] + line.Value[3]);
+                GridReport.Rows.Add("Бакалавриат / cпециалитет", line.Value[0]);
                 GridReport.Rows.Add("Магистратура", line.Value[1]);
                 GridReport.Rows.Add("Аспирнтура", line.Value[2]);
+                GridReport.Rows.Add("SPO", line.Value[3]);
                 GridReport.Rows.Add(new string('-', 80), $"Итого: {line.Value.Sum()}");
 
             }
