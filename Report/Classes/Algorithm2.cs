@@ -22,7 +22,7 @@ namespace Report.Classes
         const int ID_FORM_O_Z = 9;
         const int ID_FORM_Z = 12;
 
-        const int RoundedNumber = 2;
+        const int RoundedNumber = 3;
 
         /* Для запросов к базе данных. */
         DataSet Dataset;
@@ -210,14 +210,18 @@ namespace Report.Classes
             {
                 Normal_without_inv = new Dictionary<int, decimal[,]>();
                 Normal_with_inv = new Dictionary<int, decimal[,]>();
+
+                decimal[] NormalsWithoutStdInv;
+                decimal[] NormalsWithStdInv;
+                
                 foreach (KeyValuePair<int, decimal[]> norm in group)
                 {
-                    // Массив нормативов без формы и без инвалидов.
-                    decimal[] NormalsWithoutStdInv = new decimal[norm.Value.Count()];
+                    // Массив нормативов без формы и без инвалидов.                    
+                    NormalsWithoutStdInv = new decimal[norm.Value.Count()];
                     norm.Value.CopyTo(NormalsWithoutStdInv, 0);
 
                     // Массив нормативов без формы c инвалидами.
-                    decimal[] NormalsWithStdInv = new decimal[norm.Value.Count()];
+                    NormalsWithStdInv = new decimal[norm.Value.Count()];
                     norm.Value.CopyTo(NormalsWithStdInv, 0);
 
                     // Отбор КК без формы обучения.
@@ -230,6 +234,9 @@ namespace Report.Classes
                             {
                                 NormalsWithoutStdInv[i] *= koef.value;
                                 NormalsWithoutStdInv[i] = Math.Round(NormalsWithoutStdInv[i], RoundedNumber, MidpointRounding.AwayFromZero);
+
+                                NormalsWithStdInv[i] *= koef.value;
+                                NormalsWithStdInv[i] = Math.Round(NormalsWithStdInv[i], RoundedNumber, MidpointRounding.AwayFromZero);
                             }
                         }
                         // Отбор КК студентов-инвалидов.
@@ -245,7 +252,7 @@ namespace Report.Classes
 
                     decimal[,] bnz_without_inv = new decimal[3, 4];
                     decimal[,] bnz_with_inv = new decimal[3, 4];
-
+                    
                     for (int i = 0; i < bnz_without_inv.GetLength(1); i++)
                     {
                         for (int j = 0; j < bnz_without_inv.GetLength(0); j++)
@@ -254,6 +261,8 @@ namespace Report.Classes
                             bnz_with_inv[j, i] = NormalsWithStdInv[i];
                         }
                     }
+                    
+
 
                     //Отбор КК относительно формы обучения.
                     foreach (var item in kkbn.Where(x => x.id_form_education != 0 && x.id_bnz == norm.Key))
@@ -268,7 +277,10 @@ namespace Report.Classes
                                         for (int i = 0; i < bnz_without_inv.GetLength(1); i++)
                                         {
                                             bnz_without_inv[0, i] = item.value * NormalsWithoutStdInv[i];
-                                            bnz_without_inv[0, i]  = Math.Round(bnz_without_inv[0, i], RoundedNumber, MidpointRounding.AwayFromZero);
+                                            bnz_without_inv[0, i]  = Math.Round(bnz_without_inv[0, i], RoundedNumber);
+
+                                            bnz_with_inv[0, i] *= item.value;
+                                            bnz_with_inv[0, i] = Math.Round(bnz_with_inv[0, i], RoundedNumber);
                                         }
                                     }
                                     break;
@@ -277,7 +289,10 @@ namespace Report.Classes
                                         for (int i = 0; i < bnz_without_inv.GetLength(1); i++)
                                         {
                                             bnz_without_inv[1, i] = item.value * NormalsWithoutStdInv[i];
-                                            bnz_without_inv[1, i] = Math.Round(bnz_without_inv[1, i], RoundedNumber, MidpointRounding.AwayFromZero);
+                                            bnz_without_inv[1, i] = Math.Round(bnz_without_inv[1, i], RoundedNumber);
+
+                                            bnz_with_inv[1, i] *= item.value;
+                                            bnz_with_inv[1, i] = Math.Round(bnz_with_inv[1, i], RoundedNumber);
                                         }
                                     }
                                     break;
@@ -286,7 +301,10 @@ namespace Report.Classes
                                         for (int i = 0; i < bnz_without_inv.GetLength(1); i++)
                                         {
                                             bnz_without_inv[2, i] = item.value * NormalsWithoutStdInv[i];
-                                            bnz_without_inv[2, i] = Math.Round(bnz_without_inv[2, i], RoundedNumber, MidpointRounding.AwayFromZero);
+                                            bnz_without_inv[2, i] = Math.Round(bnz_without_inv[2, i], RoundedNumber);
+
+                                            bnz_with_inv[2, i] *= item.value;
+                                            bnz_with_inv[2, i] = Math.Round(bnz_with_inv[2, i], RoundedNumber);
                                         }
                                     }
                                     break;
@@ -303,8 +321,8 @@ namespace Report.Classes
                                     {
                                         for (int i = 0; i < bnz_with_inv.GetLength(1); i++)
                                         {
-                                            bnz_with_inv[0, i] = item.value * NormalsWithStdInv[i];
-                                            bnz_with_inv[0, i] = Math.Round(bnz_with_inv[0, i], RoundedNumber, MidpointRounding.AwayFromZero);
+                                            bnz_with_inv[0, i] = item.value;
+                                            bnz_with_inv[0, i] = Math.Round(bnz_with_inv[0, i], RoundedNumber);
                                         }
                                     }
                                     break;
@@ -312,8 +330,8 @@ namespace Report.Classes
                                     {
                                         for (int i = 0; i < bnz_with_inv.GetLength(1); i++)
                                         {
-                                            bnz_with_inv[1, i] = item.value * NormalsWithStdInv[i];
-                                            bnz_with_inv[1, i] = Math.Round(bnz_with_inv[1, i], RoundedNumber, MidpointRounding.AwayFromZero);
+                                            bnz_with_inv[1, i] = item.value;
+                                            bnz_with_inv[1, i] = Math.Round(bnz_with_inv[1, i], RoundedNumber);
                                         }
                                     }
                                     break;
@@ -321,8 +339,8 @@ namespace Report.Classes
                                     {
                                         for (int i = 0; i < bnz_with_inv.GetLength(1); i++)
                                         {
-                                            bnz_with_inv[2, i] = item.value * NormalsWithStdInv[i];
-                                            bnz_with_inv[2, i] = Math.Round(bnz_with_inv[2, i], RoundedNumber, MidpointRounding.AwayFromZero);
+                                            bnz_with_inv[2, i] = item.value;
+                                            bnz_with_inv[2, i] = Math.Round(bnz_with_inv[2, i], RoundedNumber);
                                         }
                                     }
                                     break;
@@ -522,8 +540,8 @@ namespace Report.Classes
                 summ[i, sk] += (mass[i, sk] * count[i]);
                 summ[i, sk] = Math.Round(summ[i, sk], RoundedNumber, MidpointRounding.AwayFromZero);
             }
-            mass = null;
-            count = null;
+            //mass = null;
+            //count = null;
             //summ = null;
         }
     }
