@@ -348,6 +348,8 @@ namespace Report.Classes
             Dictionary<string, decimal[]> SummOnFilial = new Dictionary<string, decimal[]>();
             // Массив для суммирования по квалификациям.
             decimal[,] SummOnSkill_buff;
+            decimal[,] SummOnSkill_buff_inv;
+
             decimal[] SummOnSkill = new decimal[4];
 
             List<TableCountStudent> ListStudent_sel = new List<TableCountStudent>();
@@ -377,6 +379,7 @@ namespace Report.Classes
                 int skill = 0;
                 int skill_inv = 0;
                 SummOnSkill_buff = new decimal[3, 4];
+                SummOnSkill_buff_inv = new decimal[3, 4];
                 SummOnSkill = new decimal[4];
                 // Цикл по специальностям в подразделении.
                 foreach (var special in filial)/*отобрать специальности, которые входят в стоимостную группу*/
@@ -395,6 +398,7 @@ namespace Report.Classes
                                 {
                                     switch (special.Skill_id)
                                     {
+                                        case ID_SPO:
                                         case ID_BAKALAVR:
                                             {
                                                 CalculateNormsAndCounts(SummOnSkill_buff, 0, new int[] {
@@ -419,14 +423,14 @@ namespace Report.Classes
                                                     special.zaochnoe }, normal.Value, 2);
                                             }
                                             break;
-                                        case ID_SPO:
-                                            {
-                                                CalculateNormsAndCounts(SummOnSkill_buff, 3, new int[] {
-                                                    special.ochnoe,
-                                                    special.ochno_zaocjnoe,
-                                                    special.zaochnoe }, normal.Value, 3);
-                                            }
-                                            break;
+                                        //case ID_SPO:
+                                        //    {
+                                        //        CalculateNormsAndCounts(SummOnSkill_buff, 0, new int[] {
+                                        //            special.ochnoe,
+                                        //            special.ochno_zaocjnoe,
+                                        //            special.zaochnoe }, normal.Value, 0);
+                                        //    }
+                                        //    break;
                                         default:
                                             break;
                                     }
@@ -448,9 +452,10 @@ namespace Report.Classes
                                 {
                                     switch (special.Skill_id)
                                     {
+                                        case ID_SPO:
                                         case ID_BAKALAVR:
                                             {
-                                                CalculateNormsAndCounts(SummOnSkill_buff, 0, new int[] {
+                                                CalculateNormsAndCounts(SummOnSkill_buff_inv, 0, new int[] {
                                                     special.ochnoe,
                                                     special.ochno_zaocjnoe,
                                                     special.zaochnoe }, normal.Value, 0);
@@ -458,7 +463,7 @@ namespace Report.Classes
                                             break;
                                         case ID_MAGISTR:
                                             {
-                                                CalculateNormsAndCounts(SummOnSkill_buff, 1, new int[] {
+                                                CalculateNormsAndCounts(SummOnSkill_buff_inv, 1, new int[] {
                                                     special.ochnoe,
                                                     special.ochno_zaocjnoe,
                                                     special.zaochnoe }, normal.Value, 1);
@@ -466,20 +471,20 @@ namespace Report.Classes
                                             break;
                                         case ID_ASPIRANT:
                                             {
-                                                CalculateNormsAndCounts(SummOnSkill_buff, 2, new int[] {
+                                                CalculateNormsAndCounts(SummOnSkill_buff_inv, 2, new int[] {
                                                     special.ochnoe,
                                                     special.ochno_zaocjnoe,
                                                     special.zaochnoe }, normal.Value, 2);
                                             }
                                             break;
-                                        case ID_SPO:
-                                            {
-                                                CalculateNormsAndCounts(SummOnSkill_buff, 3, new int[] {
-                                                    special.ochnoe,
-                                                    special.ochno_zaocjnoe,
-                                                    special.zaochnoe }, normal.Value, 3);
-                                            }
-                                            break;
+                                        //case ID_SPO:
+                                        //    {
+                                        //        CalculateNormsAndCounts(SummOnSkill_buff, 0, new int[] {
+                                        //            special.ochnoe,
+                                        //            special.ochno_zaocjnoe,
+                                        //            special.zaochnoe }, normal.Value, 0);
+                                        //    }
+                                        //    break;
                                         default:
                                             break;
                                     }
@@ -489,13 +494,22 @@ namespace Report.Classes
                     }
                     
                 }
-                                
+
+                for (int i = 0; i < SummOnSkill_buff_inv.GetLength(0); i++)
+                {
+                    SummOnSkill_buff[0, i] += SummOnSkill_buff_inv[0, i];
+                    SummOnSkill_buff[1, i] += SummOnSkill_buff_inv[1, i];
+                    SummOnSkill_buff[2, i] += SummOnSkill_buff_inv[2, i];
+
+                }
+                
                 for (int i = 0; i < SummOnSkill.GetLength(0); i++)
                 {
                     SummOnSkill[i] += SummOnSkill_buff[0, i] + SummOnSkill_buff[1, i] + SummOnSkill_buff[2, i];
                 }
                 // Добавление в коллекцию подразделений.
-                SummOnFilial.Add(filial.FirstOrDefault().Filial, SummOnSkill);                
+                SummOnFilial.Add(filial.FirstOrDefault().Filial, SummOnSkill);
+                SummOnSkill_buff_inv = null;
                 SummOnSkill_buff = null;
                 SummOnSkill = null;
             }
