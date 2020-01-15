@@ -233,10 +233,10 @@ namespace Report.Classes
                             for (int i = 0; i < NormalsWithoutStdInv.Count(); i++)
                             {
                                 NormalsWithoutStdInv[i] *= koef.value;
-                                NormalsWithoutStdInv[i] = Math.Round(NormalsWithoutStdInv[i], RoundedNumber, MidpointRounding.AwayFromZero);
+                                NormalsWithoutStdInv[i] = Math.Round(NormalsWithoutStdInv[i], RoundedNumber, MidpointRounding.ToEven);
 
                                 NormalsWithStdInv[i] *= koef.value;
-                                NormalsWithStdInv[i] = Math.Round(NormalsWithStdInv[i], RoundedNumber, MidpointRounding.AwayFromZero);
+                                NormalsWithStdInv[i] = Math.Round(NormalsWithStdInv[i], RoundedNumber, MidpointRounding.ToEven);
                             }
                         }
                         // Отбор КК студентов-инвалидов.
@@ -245,7 +245,7 @@ namespace Report.Classes
                             for (int i = 0; i < NormalsWithStdInv.Count(); i++)
                             {
                                 NormalsWithStdInv[i] *= koef.value;
-                                NormalsWithStdInv[i] = Math.Round(NormalsWithStdInv[i], RoundedNumber, MidpointRounding.AwayFromZero);
+                                NormalsWithStdInv[i] = Math.Round(NormalsWithStdInv[i], RoundedNumber, MidpointRounding.ToEven);
                             }
                         }
                     }

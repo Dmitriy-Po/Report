@@ -571,5 +571,11 @@ namespace Report
             FormGroups gr = new FormGroups();
             gr.ShowDialog();
         }
+
+        private void настройкиToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FormSettingDB db = new FormSettingDB();
+            db.ShowDialog();
+        }
     }
 }

@@ -95,3 +95,4 @@ C:\Users\dpotemkin\Documents\Visual Studio 2017\Projects\forms\Report\obj\Debug\
 C:\Users\dpotemkin\Documents\Visual Studio 2017\Projects\forms\Report\obj\Debug\Report.csproj.GenerateResource.Cache
 C:\Users\dpotemkin\Documents\Visual Studio 2017\Projects\forms\Report\obj\Debug\Report.exe
 C:\Users\dpotemkin\Documents\Visual Studio 2017\Projects\forms\Report\obj\Debug\Report.pdb
+C:\Users\dpotemkin\Documents\Visual Studio 2017\Projects\forms\Report\obj\Debug\Report.Forms.FormSettingDB.resources

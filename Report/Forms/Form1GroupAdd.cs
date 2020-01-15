@@ -268,7 +268,8 @@ namespace Report.Forms
                         string id = string.Join(",", list_id);
 
                         Command = new SQLiteCommand("DELETE FROM БНЗСтоимостнойГруппы " +
-                                    $"WHERE БНЗСтоимостнойГруппы.код IN({id})", connection);
+                                    $"WHERE БНЗСтоимостнойГруппы.код IN({id})" +
+                                    $"AND БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК = {CurrentDataRow_id} ", connection);
                         Command.ExecuteNonQuery();
                     }
                     FillDataGridGroups();
@@ -296,7 +297,8 @@ namespace Report.Forms
                         string id = string.Join(",", list_id);
 
                         Command = new SQLiteCommand("DELETE FROM СпециальностьСтоимостнойГруппы " +
-                                    $"WHERE СпециальностьСтоимостнойГруппы.код_специальность IN({id})", connection);
+                                    $"WHERE СпециальностьСтоимостнойГруппы.код_специальность IN({id})" +
+                                    $"AND СпециальностьСтоимостнойГруппы.код_группа = {CurrentDataRow_id}", connection);
                         Command.ExecuteNonQuery();
                     }
                     FillDataGridGroups();
