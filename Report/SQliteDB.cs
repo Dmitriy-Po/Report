@@ -11,8 +11,8 @@ namespace Report
 
     {
         
-        public SQLiteConnection ConnectionDB = new SQLiteConnection($"Data Source={Properties.Settings.Default.PuthDB}; Version=3; foreign keys=true;");
-
+        //public SQLiteConnection ConnectionDB = new SQLiteConnection($"Data Source={Properties.Settings.Default.PuthDB}; Version=3; foreign keys=true;");
+        public SQLiteConnection ConnectionDB = new SQLiteConnection($"Data Source=ReportDB.db; Version=3; foreign keys=true;");
         public void SettingConnect(string new_puth)
         {
             Properties.Settings.Default.PuthDB = new_puth;

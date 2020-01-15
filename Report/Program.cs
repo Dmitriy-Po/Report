@@ -17,48 +17,48 @@ namespace Report
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            bool NewPuth()
-            {
-                OpenFileDialog openfile = new OpenFileDialog();
-                openfile.Filter = "Files DB | *.db";
-                openfile.Title = "Укажите путь к файлу базы данных";
+            //bool NewPuth()
+            //{
+            //    OpenFileDialog openfile = new OpenFileDialog();
+            //    openfile.Filter = "Files DB | *.db";
+            //    openfile.Title = "Укажите путь к файлу базы данных";
 
-                if (openfile.ShowDialog() == DialogResult.OK)
-                {
-                    Properties.Settings.Default.PuthDB = openfile.FileName;
-                    Properties.Settings.Default.Save();
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+            //    if (openfile.ShowDialog() == DialogResult.OK)
+            //    {
+            //        Properties.Settings.Default.PuthDB = openfile.FileName;
+            //        Properties.Settings.Default.Save();
+            //        return true;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
 
-            }
-            bool GetPuth()
-            {
-                try
-                {
-                    FileStream file_inf = new FileStream(Properties.Settings.Default.PuthDB, FileMode.Open, FileAccess.Read);
-                    return true;
-                }
-                catch (FileNotFoundException)
-                {
-                    return NewPuth();
-                }
+            //}
+            //bool GetPuth()
+            //{
+            //    try
+            //    {
+            //        FileStream file_inf = new FileStream(Properties.Settings.Default.PuthDB, FileMode.Open, FileAccess.Read);
+            //        return true;
+            //    }
+            //    catch (FileNotFoundException)
+            //    {
+            //        return NewPuth();
+            //    }
 
-            }            
-            
-            if (GetPuth())
-            {
-                Application.Run(new FormListCountStudent());                
-            }
-            else
-            {
-                Application.Exit();
-            }         
-            
+            //}            
 
+            //if (GetPuth())
+            //{
+            //    Application.Run(new FormListCountStudent());                
+            //}
+            //else
+            //{
+            //    Application.Exit();
+            //}         
+
+            Application.Run(new FormListCountStudent());
         }
     }
 }
