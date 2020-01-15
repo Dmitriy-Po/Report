@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Report.Forms;
 using System.Data;
+using System.IO;
 
 namespace Report
 {
@@ -24,8 +25,6 @@ namespace Report
             comboBoxSpec.SelectedIndexChanged += (s, e) => DataFilter();
             comboBoxYear.SelectedIndexChanged += (s, e) => DataFilter();
             checkBoxStudent_inv.Click += (s, e) => DataFilter();
-
-
         }
 
         SQliteDB DB;
@@ -37,8 +36,7 @@ namespace Report
         public List<TableSKill>   ListSkill = new List<TableSKill>();
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
         public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
-        
-                 
+         
         
         public void FillComboBoxes ()
         {

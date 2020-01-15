@@ -2,15 +2,22 @@
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
+using System.Configuration;
 
 
 namespace Report
 {
     public class SQliteDB
 
-    {        
+    {
         
-        public SQLiteConnection ConnectionDB = new SQLiteConnection("Data Source=ReportDB.db; Version=3; foreign keys=true;");
+        public SQLiteConnection ConnectionDB = new SQLiteConnection($"Data Source={Properties.Settings.Default.PuthDB}; Version=3; foreign keys=true;");
+
+        public void SettingConnect(string new_puth)
+        {
+            Properties.Settings.Default.PuthDB = new_puth;
+        }
+
         public SQLiteDataReader Select (string name_table)
         {            
             SQLiteCommand cmd = new SQLiteCommand("SELECT * FROM "+name_table + " ORDER BY 2", ConnectionDB);            
