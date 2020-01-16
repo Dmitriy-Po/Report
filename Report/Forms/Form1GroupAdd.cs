@@ -87,11 +87,86 @@ namespace Report.Forms
                 new_row[2] = textBoxFillDesc.Text;
                 new_row[3] = textBoxComment.Text;
                 new_row[4] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
+                               
 
                 Table.Rows.Add(new_row);
                 // при создании будликата добавить копии строк в таблицу стоимотсных групп
                 SQLiteCommandBuilder command = new SQLiteCommandBuilder(Adapter);                
                 Adapter.Update(Table);
+
+                //Если стаутс операции равен 2 (режим добавления дубликата)
+                if (StatusOperation == 2)
+                {
+                    AddGroupsAndNormals();
+                }
+            }
+        }
+
+        void AddGroupsAndNormals()
+        {
+            DB = new SQliteDB();
+            int id_last_group = 0;
+
+            // Получение кода зпоследней записи.
+            using (SQLiteConnection conn = new SQLiteConnection(DB.ConnectionDB))
+            {
+                conn.Open();
+                string query = "SELECT MAX(СтоимостнаяГруппаКалГода.код) FROM СтоимостнаяГруппаКалГода; ";
+
+                Adapter = new SQLiteDataAdapter(query, conn);
+
+                ds = new DataSet();
+                Adapter.Fill(ds);
+                id_last_group = Convert.ToInt32(ds.Tables[0].Rows[0][0]);
+            }
+
+            // Дополнение таблицы Специальности стоимостной группы.
+            using (SQLiteConnection conn = new SQLiteConnection(DB.ConnectionDB))
+            {
+                conn.Open();
+                Adapter = new SQLiteDataAdapter("SELECT СпециальностьСтоимостнойГруппы.код_группа, код_специальность from СпециальностьСтоимостнойГруппы; ", conn);
+
+                DataTable table = new DataTable();
+                Adapter.Fill(table);
+
+                foreach (DataGridViewRow row in dataGridViewGroups.Rows)
+                {
+                    DataRow new_row = table.NewRow();
+                    new_row[0] = id_last_group;
+                    new_row[1] = Convert.ToInt32(row.Cells["код"].Value);
+                    
+                    SQLiteCommandBuilder comand = new SQLiteCommandBuilder(Adapter);
+                    table.Rows.Add(new_row);                    
+                }
+                Adapter.Update(table);
+            }
+            // Дополнение таблицы БАН стоимостной группы.
+            using (SQLiteConnection conn = new SQLiteConnection(DB.ConnectionDB))
+            {
+                conn.Open();
+                Adapter = new SQLiteDataAdapter("SELECT * FROM БНЗСтоимостнойГруппы; ", conn);
+
+                DataTable table = new DataTable();
+                Adapter.Fill(table);
+
+                foreach (DataGridViewRow row in dataGridViewБНЗ_Группы.Rows)
+                {
+                    DataRow new_row = table.NewRow();
+                    new_row["СтоимостнаяГруппаКалГода_ВК"] = id_last_group;
+
+                    new_row["Бакалавриат"]  = Convert.ToDecimal(row.Cells["Бакалавриат"].Value);
+                    new_row["Магистратура"] = Convert.ToDecimal(row.Cells["Магистратура"].Value);
+                    new_row["Аспирантура"]  = Convert.ToDecimal(row.Cells["Аспирантура"].Value); 
+                    new_row["СПО"]          = Convert.ToDecimal(row.Cells["СПО"].Value);
+
+                    new_row["КалендарныйГод"]   = Convert.ToDateTime(row.Cells["КалендарныйГод"].Value);
+                    new_row["БНЗ_ВК"]           = Convert.ToInt32(row.Cells["БНЗ_ВК"].Value);
+
+
+                    SQLiteCommandBuilder comand = new SQLiteCommandBuilder(Adapter);
+                    table.Rows.Add(new_row);
+                }
+                Adapter.Update(table);
             }
         }
         void UpdateRecord (int id)//обновление
