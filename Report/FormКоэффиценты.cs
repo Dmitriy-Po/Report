@@ -20,6 +20,9 @@ namespace Report
         public List<FormEducation> ListEducation = new List<FormEducation>();
         public List<КорректирующиеКоэффиценты> ListCoef = new List<КорректирующиеКоэффиценты>();
 
+        // Индекс выделенной строки.
+        int CurrentRow { get; set; }
+
         void FillDataGrid ()
         {
             SQliteDB db = new SQliteDB();
@@ -56,6 +59,7 @@ namespace Report
             dataGridViewCoeff.Columns[0].Width = 50;
             dataGridViewCoeff.Columns["код"].Visible = false;
             dataGridViewCoeff.Columns["Корректирующие_ВК"].Visible = false;
+            dataGridViewCoeff.Rows[0].Selected = false;
         }
         void FillComponents (bool IsEditingMode)
         {
@@ -90,11 +94,14 @@ namespace Report
                         f.StatusOperation = 2;
                         f.CurrentDataRow = 0;    // 0 - для режима Создать по шаблону.
                     }
+                    CurrentRow = row.Index;
                 }
             }
             
             f.ShowDialog();
             FillDataGrid();
+            dataGridViewCoeff.Rows[CurrentRow].Cells[0].Value = true;
+            dataGridViewCoeff.Rows[CurrentRow].Selected = true;
         }
         public bool CountSelectedRows (string tooltip)
         {

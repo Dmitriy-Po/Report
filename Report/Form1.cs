@@ -37,7 +37,7 @@ namespace Report
         public List<TableSpecial> ListSpecial = new List<TableSpecial>();
         public List<TableCountStudent> ListCountStudent = new List<TableCountStudent>();
          
-        
+        int CurrentRow { get; set; }
         public void FillComboBoxes ()
         {
             SqlMyDataReader("Filial", 2, comboBoxFil);            
@@ -121,11 +121,14 @@ namespace Report
                         fadd.StatusOperation = 2;
                         fadd.GetCurrentrow_ID = 0;    // 0 - для режима Создать по шаблону.
                     }
+                    CurrentRow = row.Index;
                 }
             }
 
             fadd.ShowDialog();
             FillDataGrid();
+            dataGridViewMain.Rows[CurrentRow].Cells[0].Value = true;
+            dataGridViewMain.Rows[CurrentRow].Selected = true;
         }
 
         public void DataFilter ()
@@ -312,6 +315,7 @@ namespace Report
             }
 
             connection.Close();
+            dataGridViewMain.Rows[0].Selected = false;
         }
 
         public void SaveStudent(int[] column)

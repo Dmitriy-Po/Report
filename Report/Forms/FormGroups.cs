@@ -22,6 +22,7 @@ namespace Report.Forms
         SQLiteDataAdapter Adapter;
         SQLiteCommandBuilder Command;
 
+        int CurrentRow { get; set; }
         void FillDataGrid ()
         {
             DB = new SQliteDB();
@@ -48,6 +49,7 @@ namespace Report.Forms
                 dataGridViewGoups.Columns[1].Visible = false;
                 dataGridViewGoups.Columns[0].Width = 30;
                 dataGridViewGoups.Columns["Полное наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridViewGoups.Rows[0].Selected = false;
             };
 
         }
@@ -134,11 +136,14 @@ namespace Report.Forms
                         fadd.StatusOperation = 2;
                         fadd.CurrentDataRow_id = Convert.ToInt32(row.Cells["код"].Value);    // 0 - для режима Создать по шаблону.
                     }
+                    CurrentRow = row.Index;
                 }
             }
             
             fadd.ShowDialog();
             FillDataGrid();
+            dataGridViewGoups.Rows[CurrentRow].Cells[0].Value = true;
+            dataGridViewGoups.Rows[CurrentRow].Selected = true;
         }
         int AddFictiveRow ()
         {

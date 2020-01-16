@@ -13,6 +13,7 @@ namespace Report
         SQLiteDataAdapter adapter;
         SQLiteCommand command;
 
+        int CurrentRow { get; set; }
         public FormБазовыеНормативыЗатрат()
         {
             InitializeComponent();
@@ -58,11 +59,14 @@ namespace Report
                         fadd.StatusOperation = 2;
                         fadd.CurrentDataRow = Convert.ToInt32(row.Cells["код"].Value);    // 0 - для режима Создать по шаблону.
                     }
+                    CurrentRow = row.Index;
                 }
             }         
             
             fadd.ShowDialog();
             FillDataGrid();
+            dataGridViewNormals.Rows[CurrentRow].Cells[0].Value = true;
+            dataGridViewNormals.Rows[CurrentRow].Selected = true;
         }
         bool CountSelectedRows (string tooltip)
         {
@@ -139,7 +143,8 @@ namespace Report
             dataGridViewNormals.Columns["Наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewNormals.Columns["Полное_наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewNormals.Columns["Комментарий"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
-            dataGridViewNormals.Columns["код"].Visible = false;            
+            dataGridViewNormals.Columns["код"].Visible = false;
+            dataGridViewNormals.Rows[0].Selected = false;
         }
 
 
