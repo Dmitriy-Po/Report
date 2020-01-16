@@ -38,7 +38,7 @@ namespace Report.Forms
                 {
                     Properties.Settings.Default.PuthDB = file.FileName;
                     Properties.Settings.Default.Save();
-                    MessageBox.Show(this.Owner, "Настройки сохранены, программа будет перезагруженна.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(this.Owner, "Настройки сохранены, программа будет перезапущена.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     Application.Restart();
                 }
             }
