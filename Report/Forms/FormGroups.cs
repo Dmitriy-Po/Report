@@ -49,7 +49,14 @@ namespace Report.Forms
                 dataGridViewGoups.Columns[1].Visible = false;
                 dataGridViewGoups.Columns[0].Width = 30;
                 dataGridViewGoups.Columns["Полное наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                dataGridViewGoups.Rows[0].Selected = false;
+                try
+                {
+                    dataGridViewGoups.Rows[0].Selected = false;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    
+                }
             };
 
         }

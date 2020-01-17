@@ -315,7 +315,13 @@ namespace Report
             }
 
             connection.Close();
-            dataGridViewMain.Rows[0].Selected = false;
+            try
+            {
+                dataGridViewMain.Rows[0].Selected = false;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+            }
         }
 
         public void SaveStudent(int[] column)

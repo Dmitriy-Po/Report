@@ -144,7 +144,14 @@ namespace Report
             dataGridViewNormals.Columns["Полное_наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewNormals.Columns["Комментарий"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             dataGridViewNormals.Columns["код"].Visible = false;
-            dataGridViewNormals.Rows[0].Selected = false;
+            try
+            {
+                dataGridViewNormals.Rows[0].Selected = false;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                
+            }
         }
 
 

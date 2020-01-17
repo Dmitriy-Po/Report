@@ -59,7 +59,14 @@ namespace Report
             dataGridViewCoeff.Columns[0].Width = 50;
             dataGridViewCoeff.Columns["код"].Visible = false;
             dataGridViewCoeff.Columns["Корректирующие_ВК"].Visible = false;
-            dataGridViewCoeff.Rows[0].Selected = false;
+            try
+            {
+                dataGridViewCoeff.Rows[0].Selected = false;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                
+            }
         }
         void FillComponents (bool IsEditingMode)
         {

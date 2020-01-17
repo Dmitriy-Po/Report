@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonImportCSV = new System.Windows.Forms.Button();
             this.textBoxPuth = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonOpen = new System.Windows.Forms.Button();
@@ -37,14 +38,26 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.buttonImportCSV);
             this.panel1.Controls.Add(this.textBoxPuth);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.buttonOpen);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(761, 128);
+            this.panel1.Size = new System.Drawing.Size(761, 193);
             this.panel1.TabIndex = 0;
+            // 
+            // buttonImportCSV
+            // 
+            this.buttonImportCSV.Enabled = false;
+            this.buttonImportCSV.Location = new System.Drawing.Point(12, 143);
+            this.buttonImportCSV.Name = "buttonImportCSV";
+            this.buttonImportCSV.Size = new System.Drawing.Size(737, 38);
+            this.buttonImportCSV.TabIndex = 3;
+            this.buttonImportCSV.Text = "Импортировать данные";
+            this.buttonImportCSV.UseVisualStyleBackColor = true;
+            this.buttonImportCSV.Click += new System.EventHandler(this.buttonImportCSV_Click);
             // 
             // textBoxPuth
             // 
@@ -78,7 +91,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(761, 128);
+            this.ClientSize = new System.Drawing.Size(761, 193);
             this.Controls.Add(this.panel1);
             this.Name = "FormSettingDB";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -96,5 +109,6 @@
         private System.Windows.Forms.TextBox textBoxPuth;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button buttonOpen;
+        private System.Windows.Forms.Button buttonImportCSV;
     }
 }
