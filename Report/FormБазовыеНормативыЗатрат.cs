@@ -43,8 +43,8 @@ namespace Report
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
                     fadd.textBoxDesc.Text       = row.Cells["Наименование"].Value.ToString();
-                    fadd.textBoxFillDesc.Text   = row.Cells["Полное_наименование"].Value.ToString();
-                    fadd.textBoxComment.Text    = row.Cells["Комментарий"].Value.ToString();
+                    //fadd.textBoxFillDesc.Text   = row.Cells["Полное_наименование"].Value.ToString();
+                    //fadd.textBoxComment.Text    = row.Cells["Комментарий"].Value.ToString();
                     fadd.comboBoxYear.SelectedItem = comboBoxYear.SelectedItem;
 
                     if (IsEditingMode)
@@ -120,9 +120,9 @@ namespace Report
             db = new SQliteDB();
             
             string query =
-                            $"SELECT БазовыйНормативЗатрат.код, БазовыйНормативЗатрат.Наименование," +
-                                "БазовыйНормативЗатрат.Полное_наименование,"+
-                                "БазовыйНормативЗатрат.Комментарий "+                            
+                            $"SELECT БазовыйНормативЗатрат.код, БазовыйНормативЗатрат.Наименование " +
+                                //"БазовыйНормативЗатрат.Полное_наименование,"+
+                                //"БазовыйНормативЗатрат.Комментарий "+                            
                                 $"FROM БазовыйНормативЗатрат WHERE БазовыйНормативЗатрат.КалендарныйГод LIKE '{comboBoxYear.SelectedItem.ToString()}%'";
                             //"SELECT DISTINCT(БазовыйНормативЗатрат.код), "+
                             //"БазовыйНормативЗатрат.Наименование, "+
@@ -141,9 +141,15 @@ namespace Report
             dataGridViewNormals.Columns[0].Width = 50;
             dataGridViewNormals.Columns[1].Width = 50;
             dataGridViewNormals.Columns["Наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewNormals.Columns["Полное_наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dataGridViewNormals.Columns["Комментарий"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
+            //dataGridViewNormals.Columns["Полное_наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            //dataGridViewNormals.Columns["Комментарий"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             dataGridViewNormals.Columns["код"].Visible = false;
+
+            dataGridViewNormals.Columns[0].ReadOnly = false;
+            int c = dataGridViewNormals.Columns.Count;
+            for (int i = 1; i < c; i++)
+                dataGridViewNormals.Columns[i].ReadOnly = true;
+
             try
             {
                 dataGridViewNormals.Rows[0].Selected = false;

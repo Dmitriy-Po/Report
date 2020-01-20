@@ -34,11 +34,7 @@
             this.textBoxDesc = new System.Windows.Forms.TextBox();
             this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBoxComment = new System.Windows.Forms.TextBox();
-            this.textBoxFillDesc = new System.Windows.Forms.TextBox();
             this.buttonDeleteKoef = new System.Windows.Forms.Button();
             this.buttonAddKoef = new System.Windows.Forms.Button();
             this.dataGridViewKoef = new System.Windows.Forms.DataGridView();
@@ -75,15 +71,16 @@
             // textBoxDesc
             // 
             this.textBoxDesc.Location = new System.Drawing.Point(150, 70);
+            this.textBoxDesc.Multiline = true;
             this.textBoxDesc.Name = "textBoxDesc";
-            this.textBoxDesc.Size = new System.Drawing.Size(242, 20);
+            this.textBoxDesc.Size = new System.Drawing.Size(242, 94);
             this.textBoxDesc.TabIndex = 3;
             // 
             // comboBoxYear
             // 
             this.comboBoxYear.FormattingEnabled = true;
             this.comboBoxYear.ItemHeight = 13;
-            this.comboBoxYear.Location = new System.Drawing.Point(150, 148);
+            this.comboBoxYear.Location = new System.Drawing.Point(150, 174);
             this.comboBoxYear.Name = "comboBoxYear";
             this.comboBoxYear.Size = new System.Drawing.Size(242, 21);
             this.comboBoxYear.TabIndex = 6;
@@ -97,46 +94,14 @@
             this.label1.TabIndex = 8;
             this.label1.Text = "Наименование:";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 99);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(125, 13);
-            this.label2.TabIndex = 9;
-            this.label2.Text = "Полное наименование:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 125);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 13);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Комментарий:";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 151);
+            this.label4.Location = new System.Drawing.Point(19, 177);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(99, 13);
             this.label4.TabIndex = 11;
             this.label4.Text = "Календарный год:";
-            // 
-            // textBoxComment
-            // 
-            this.textBoxComment.Location = new System.Drawing.Point(150, 122);
-            this.textBoxComment.Name = "textBoxComment";
-            this.textBoxComment.Size = new System.Drawing.Size(242, 20);
-            this.textBoxComment.TabIndex = 5;
-            // 
-            // textBoxFillDesc
-            // 
-            this.textBoxFillDesc.Location = new System.Drawing.Point(150, 96);
-            this.textBoxFillDesc.Name = "textBoxFillDesc";
-            this.textBoxFillDesc.Size = new System.Drawing.Size(242, 20);
-            this.textBoxFillDesc.TabIndex = 4;
             // 
             // buttonDeleteKoef
             // 
@@ -219,7 +184,7 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label8.ForeColor = System.Drawing.Color.Crimson;
-            this.label8.Location = new System.Drawing.Point(130, 146);
+            this.label8.Location = new System.Drawing.Point(130, 174);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(14, 18);
             this.label8.TabIndex = 42;
@@ -229,7 +194,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 466);
+            this.ClientSize = new System.Drawing.Size(404, 461);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
@@ -237,11 +202,7 @@
             this.Controls.Add(this.dataGridViewKoef);
             this.Controls.Add(this.buttonDeleteKoef);
             this.Controls.Add(this.buttonAddKoef);
-            this.Controls.Add(this.textBoxFillDesc);
-            this.Controls.Add(this.textBoxComment);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxYear);
             this.Controls.Add(this.textBoxDesc);
@@ -266,16 +227,12 @@
         private System.Windows.Forms.Button buttonSaveAndClose;
         private System.Windows.Forms.Button buttonSave;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button buttonDeleteKoef;
         private System.Windows.Forms.Button buttonAddKoef;
         private System.Windows.Forms.Label label5;
         public System.Windows.Forms.TextBox textBoxDesc;
         public System.Windows.Forms.ComboBox comboBoxYear;
-        public System.Windows.Forms.TextBox textBoxComment;
-        public System.Windows.Forms.TextBox textBoxFillDesc;
         private System.Windows.Forms.DataGridViewCheckBoxColumn check;
         public System.Windows.Forms.DataGridView dataGridViewKoef;
         private System.Windows.Forms.Label label7;

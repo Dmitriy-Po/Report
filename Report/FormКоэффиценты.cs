@@ -28,11 +28,11 @@ namespace Report
             SQliteDB db = new SQliteDB();
             string query = "SELECT " +
                             "КорректирующиеКоэффиценты.Наименование, " +
-                            "КорректирующиеКоэффиценты.ПолноеНаименование as 'Полное наименование', " +
-                            "КорректирующиеКоэффиценты.Уточнение, " +
+                            //"КорректирующиеКоэффиценты.ПолноеНаименование as 'Полное наименование', " +
+                            //"КорректирующиеКоэффиценты.Уточнение, " +
                             "ЗначениеКоэффицента.Значение as 'Значение коэффицента', " +
                             "SUBSTR(ЗначениеКоэффицента.КаледндарныйГод, 0, 5) as 'Календарный год', " +
-                            "КорректирующиеКоэффиценты.Комментарий,  " +
+                            //"КорректирующиеКоэффиценты.Комментарий,  " +
                             "CASE "+
                                 "WHEN ФормаОбучения.код > 0 THEN ФормаОбучения.полное_наименование "+
                                 "ELSE 'без формы' "+
@@ -59,6 +59,12 @@ namespace Report
             dataGridViewCoeff.Columns[0].Width = 50;
             dataGridViewCoeff.Columns["код"].Visible = false;
             dataGridViewCoeff.Columns["Корректирующие_ВК"].Visible = false;
+
+            dataGridViewCoeff.Columns[0].ReadOnly = false;
+
+            int c = dataGridViewCoeff.Columns.Count;
+            for (int i = 1; i < c; i++)
+                dataGridViewCoeff.Columns[i].ReadOnly = true;
             try
             {
                 dataGridViewCoeff.Rows[0].Selected = false;
@@ -79,9 +85,9 @@ namespace Report
                 if (Convert.ToBoolean(row.Cells[0].Value))
                 {
                     f.textBoxNameCoef.Text  = row.Cells["Наименование"].Value.ToString();
-                    f.textBoxFullDesc.Text  = row.Cells["Полное наименование"].Value.ToString();
-                    f.textBoxComment.Text   = row.Cells["Комментарий"].Value.ToString();
-                    f.textBoxDetail.Text    = row.Cells["Уточнение"].Value.ToString();
+                    //f.textBoxFullDesc.Text  = row.Cells["Полное наименование"].Value.ToString();
+                    //f.textBoxComment.Text   = row.Cells["Комментарий"].Value.ToString();
+                    //f.textBoxDetail.Text    = row.Cells["Уточнение"].Value.ToString();
 
                     f.textBoxCoeff.Text                     = row.Cells["Значение коэффицента"].Value.ToString();
                     f.comboBoxFormEducation.SelectedItem    = row.Cells["Форма обучения"].Value;

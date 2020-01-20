@@ -8,8 +8,6 @@ using System.Windows.Forms;
 using Word = Microsoft.Office.Interop.Word;
 using Report.Classes;
 
-
-
 namespace Report.Forms
 {
     public partial class FormСозданиеОтчёта : Form
@@ -274,24 +272,34 @@ namespace Report.Forms
         }
 
         private void buttonShowReport_Click (object sender, EventArgs e)
-        {            
-            Algorithm2 a2 = new Algorithm2(Convert.ToInt32(comboBoxYear.SelectedItem));            
-            a2.MultiplayKK();
-            a2.MultiplayCountStudent();
-            Result = a2.MultiplayCountStudent();
-
-            GridReport.Rows.Clear();
-            foreach (KeyValuePair<string, decimal[]> line in Result)
+        {
+            
+            try
             {
-                GridReport.Rows.Add(line.Key);
-                GridReport.Rows.Add("Бакалавриат / cпециалитет", line.Value[0]);
-                GridReport.Rows.Add("Магистратура", line.Value[1]);
-                GridReport.Rows.Add("Аспирнтура", line.Value[2]);
-                GridReport.Rows.Add("SPO", line.Value[3]);
-                GridReport.Rows.Add(new string('-', 80), $"Итого: {line.Value.Sum()}");
+                decimal K = Convert.ToDecimal(textBoxCoef.Text);
 
+                Algorithm2 a2 = new Algorithm2(Convert.ToInt32(comboBoxYear.SelectedItem));
+                a2.MultiplayKK();                
+                Result = a2.MultiplayCountStudent(K);
+
+                GridReport.Rows.Clear();
+                foreach (KeyValuePair<string, decimal[]> line in Result)
+                {
+                    GridReport.Rows.Add(line.Key);
+                    GridReport.Rows.Add("Бакалавриат / cпециалитет", line.Value[0] + line.Value[3]);
+                    GridReport.Rows.Add("Магистратура", line.Value[1]);
+                    GridReport.Rows.Add("Аспирнтура", line.Value[2]);
+                    //GridReport.Rows.Add("SPO", line.Value[3]);
+                    GridReport.Rows.Add(new string('-', 80), $"Итого: {line.Value.Sum()}");
+
+                }
             }
-
+            catch (FormatException)
+            {
+                MessageBox.Show(this.Owner, "Введённая строка - значение коэффицента, не является форматом десятичного числа. Введите число.",
+                    "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                textBoxCoef.Focus();
+            }
 
         }
 
@@ -299,9 +307,11 @@ namespace Report.Forms
         {
             try
             {
+                decimal k = Convert.ToDecimal(textBoxCoef.Text);
+
                 Algorithm2 a2 = new Algorithm2(Convert.ToInt32(comboBoxYear.SelectedItem));
                 a2.MultiplayKK();
-                Result = a2.MultiplayCountStudent();
+                Result = a2.MultiplayCountStudent(k);
                 
 
 
@@ -314,8 +324,8 @@ namespace Report.Forms
 
                 _Application WORD = new Word.Application();
                 _Document MyDoc = WORD.Documents.Add(Visible: true);
-                
 
+                
                 // Заголовок.
                 //Paragraph p0;
                 //p0 = MyDoc.Content.Paragraphs.Add(ref oMissing);
@@ -345,14 +355,16 @@ namespace Report.Forms
                 wtable.Rows[1].Cells[2].Range.Text = "Сумма, руб.";
                 wtable.Rows[1].Range.Font.Bold = 0;
                 wtable.Rows.Alignment = WdRowAlignment.wdAlignRowLeft;
-                
+                wtable.Rows[1].Cells[2].Range.Paragraphs.SpaceBefore = 24;
 
                 int rr = 2;
                 foreach (var item in table)
                 {
                     wtable.Rows[rr].Alignment = WdRowAlignment.wdAlignRowLeft;
                     wtable.Rows[rr].Cells[1].Range.Text = item.Key;
+                    wtable.Rows[rr].Cells[1].Range.Paragraphs.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
                     
+
                     for (int i = 0; i < item.Value.Count()-1; i++)
                     {                        
                         wtable.Rows.Add();
@@ -361,7 +373,13 @@ namespace Report.Forms
                         wtable.Rows[rr].Cells[2].Range.Text = item.Value[i].ToString();
 
                         wtable.Rows[rr].Cells[1].Range.Bold = 0;
-                        wtable.Rows[rr].Cells[2].Range.Bold = 0;                       
+                        wtable.Rows[rr].Cells[2].Range.Bold = 0;
+
+
+                        wtable.Rows[rr].Cells[1].Range.Paragraphs.SpaceAfter = 1.2f;
+                        wtable.Rows[rr].Cells[1].Range.Paragraphs.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
+                        
+
                         //wtable.Rows[rr].Alignment = WdRowAlignment.wdAlignRowLeft;
                     }                    
                     rr++;
@@ -384,8 +402,9 @@ namespace Report.Forms
 
                 try
                 {
-                    //MyDoc.SaveAs2($"Затраты на {comboBoxYear.SelectedItem.ToString()} год.docx");
-                    MyDoc.Save();
+                    //MyDoc.SaveAs2("", WdSaveFormat.wdFormatPDF);
+                    MyDoc.SaveAs2($"Затраты на {comboBoxYear.SelectedItem.ToString()} год.docx");
+                    ////MyDoc.Save();
                     MyDoc.Close();
                     
                     
@@ -401,9 +420,11 @@ namespace Report.Forms
                     //MessageBox.Show("Файл сохранён");
                 }
             }
-            catch (FormatException ex)
+            catch (FormatException)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(this.Owner, "Введённая строка - значение коэффицента, не является форматом десятичного числа. Введите число.",
+                    "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                textBoxCoef.Focus();
             }
 
            this.Close();

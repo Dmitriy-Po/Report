@@ -181,7 +181,7 @@ namespace Report
                 connection.Open();
 
                 SQLiteCommand command = new SQLiteCommand($"UPDATE БазовыйНормативЗатрат SET Наименование = '{textBoxDesc.Text}', " +
-                                                            $"Полное_наименование = '{textBoxFillDesc.Text}', Комментарий = '{textBoxComment.Text}', " +
+                                                            //$"Полное_наименование = '{textBoxFillDesc.Text}', Комментарий = '{textBoxComment.Text}', " +
                                                             $"КалендарныйГод = '{DATE}' " +
                                                             $"WHERE БазовыйНормативЗатрат.код = {CurrentDataRow}; "+
                                                             /*добавить update к таблице БНЗСтоимостнойГруппы*/
@@ -209,8 +209,8 @@ namespace Report
                 adapter.Fill(table0);
 
                 new_row[1] = textBoxDesc.Text;
-                new_row[2] = textBoxFillDesc.Text;
-                new_row[3] = textBoxComment.Text;
+                //new_row[2] = textBoxFillDesc.Text;
+                //new_row[3] = textBoxComment.Text;
 
                 string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 

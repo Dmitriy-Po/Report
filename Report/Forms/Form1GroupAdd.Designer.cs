@@ -33,11 +33,7 @@
             this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.buttonDeleteKoef = new System.Windows.Forms.Button();
             this.buttonAddKoef = new System.Windows.Forms.Button();
-            this.textBoxFillDesc = new System.Windows.Forms.TextBox();
-            this.textBoxComment = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.textBoxDesc = new System.Windows.Forms.TextBox();
@@ -68,7 +64,7 @@
             this.dataGridViewБНЗ_Группы.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewБНЗ_Группы.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewБНЗ_Группы.Name = "dataGridViewБНЗ_Группы";
-            this.dataGridViewБНЗ_Группы.Size = new System.Drawing.Size(621, 223);
+            this.dataGridViewБНЗ_Группы.Size = new System.Drawing.Size(621, 268);
             this.dataGridViewБНЗ_Группы.TabIndex = 31;
             this.dataGridViewБНЗ_Группы.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridViewБНЗ_Группы_CellBeginEdit);
             this.dataGridViewБНЗ_Группы.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewБНЗ_Группы_CellEndEdit);
@@ -84,7 +80,7 @@
             // 
             this.buttonDeleteKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonDeleteKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonDeleteKoef.Image")));
-            this.buttonDeleteKoef.Location = new System.Drawing.Point(37, 176);
+            this.buttonDeleteKoef.Location = new System.Drawing.Point(37, 131);
             this.buttonDeleteKoef.Name = "buttonDeleteKoef";
             this.buttonDeleteKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonDeleteKoef.TabIndex = 26;
@@ -95,54 +91,21 @@
             // 
             this.buttonAddKoef.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAddKoef.Image = ((System.Drawing.Image)(resources.GetObject("buttonAddKoef.Image")));
-            this.buttonAddKoef.Location = new System.Drawing.Point(6, 176);
+            this.buttonAddKoef.Location = new System.Drawing.Point(6, 131);
             this.buttonAddKoef.Name = "buttonAddKoef";
             this.buttonAddKoef.Size = new System.Drawing.Size(25, 25);
             this.buttonAddKoef.TabIndex = 25;
             this.buttonAddKoef.UseVisualStyleBackColor = true;
             this.buttonAddKoef.Click += new System.EventHandler(this.buttonAddKoef_Click);
             // 
-            // textBoxFillDesc
-            // 
-            this.textBoxFillDesc.Location = new System.Drawing.Point(150, 88);
-            this.textBoxFillDesc.Multiline = true;
-            this.textBoxFillDesc.Name = "textBoxFillDesc";
-            this.textBoxFillDesc.Size = new System.Drawing.Size(460, 20);
-            this.textBoxFillDesc.TabIndex = 22;
-            // 
-            // textBoxComment
-            // 
-            this.textBoxComment.Location = new System.Drawing.Point(150, 114);
-            this.textBoxComment.Name = "textBoxComment";
-            this.textBoxComment.Size = new System.Drawing.Size(460, 20);
-            this.textBoxComment.TabIndex = 23;
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(19, 143);
+            this.label4.Location = new System.Drawing.Point(19, 95);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(99, 13);
             this.label4.TabIndex = 30;
             this.label4.Text = "Календарный год:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 117);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(80, 13);
-            this.label3.TabIndex = 29;
-            this.label3.Text = "Комментарий:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 91);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(125, 13);
-            this.label2.TabIndex = 28;
-            this.label2.Text = "Полное наименование:";
             // 
             // label1
             // 
@@ -157,7 +120,7 @@
             // 
             this.comboBoxYear.FormattingEnabled = true;
             this.comboBoxYear.ItemHeight = 13;
-            this.comboBoxYear.Location = new System.Drawing.Point(150, 140);
+            this.comboBoxYear.Location = new System.Drawing.Point(150, 88);
             this.comboBoxYear.Name = "comboBoxYear";
             this.comboBoxYear.Size = new System.Drawing.Size(460, 21);
             this.comboBoxYear.TabIndex = 24;
@@ -218,7 +181,7 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label8.ForeColor = System.Drawing.Color.Crimson;
-            this.label8.Location = new System.Drawing.Point(130, 143);
+            this.label8.Location = new System.Drawing.Point(130, 91);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(14, 18);
             this.label8.TabIndex = 44;
@@ -229,10 +192,10 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabControl1.Location = new System.Drawing.Point(0, 207);
+            this.tabControl1.Location = new System.Drawing.Point(0, 162);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(635, 255);
+            this.tabControl1.Size = new System.Drawing.Size(635, 300);
             this.tabControl1.TabIndex = 45;
             // 
             // tabPage1
@@ -241,9 +204,9 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(627, 229);
+            this.tabPage1.Size = new System.Drawing.Size(627, 274);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Базовые нормативы";
+            this.tabPage1.Text = "Статьи затрат";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
@@ -252,7 +215,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(627, 229);
+            this.tabPage2.Size = new System.Drawing.Size(627, 274);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Специальности";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -267,7 +230,7 @@
             this.dataGridViewGroups.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewGroups.Location = new System.Drawing.Point(3, 3);
             this.dataGridViewGroups.Name = "dataGridViewGroups";
-            this.dataGridViewGroups.Size = new System.Drawing.Size(621, 223);
+            this.dataGridViewGroups.Size = new System.Drawing.Size(621, 268);
             this.dataGridViewGroups.TabIndex = 33;
             // 
             // Column1
@@ -286,11 +249,7 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.buttonDeleteKoef);
             this.Controls.Add(this.buttonAddKoef);
-            this.Controls.Add(this.textBoxFillDesc);
-            this.Controls.Add(this.textBoxComment);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxYear);
             this.Controls.Add(this.textBoxDesc);
@@ -317,11 +276,7 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn check;
         private System.Windows.Forms.Button buttonDeleteKoef;
         private System.Windows.Forms.Button buttonAddKoef;
-        public System.Windows.Forms.TextBox textBoxFillDesc;
-        public System.Windows.Forms.TextBox textBoxComment;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.ComboBox comboBoxYear;
         public System.Windows.Forms.TextBox textBoxDesc;

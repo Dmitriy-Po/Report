@@ -42,6 +42,7 @@ namespace Report.Forms
                 dataGridViewBaseNormal.Columns[0].Width = 30;
                 dataGridViewBaseNormal.Columns["код"].Visible = false;
                 dataGridViewBaseNormal.Columns["Наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dataGridViewBaseNormal.Columns["Наименование"].ReadOnly = true;
             }
         }
 

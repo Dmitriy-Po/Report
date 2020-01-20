@@ -305,6 +305,12 @@ namespace Report
             dataGridViewMain.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewMain.Columns[8].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
+            dataGridViewMain.Columns[0].ReadOnly = false;
+
+            int c = dataGridViewMain.Columns.Count;
+            for (int i = 1; i < c; i++)
+                dataGridViewMain.Columns[i].ReadOnly = true;
+
             ListCountStudent.Clear();
             foreach (DataRow row in Table.Rows)
             {

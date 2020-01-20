@@ -233,9 +233,9 @@ namespace Report
                                     
                                     "UPDATE КорректирующиеКоэффиценты SET "+
                                     $"Наименование          = '{textBoxNameCoef.Text}', " +
-                                    $"ПолноеНаименование    = '{textBoxFullDesc.Text}', " +
-                                    $"Уточнение             = '{textBoxDetail.Text}', " +
-                                    $"Комментарий           = '{textBoxComment.Text}', " +
+                                    //$"ПолноеНаименование    = '{textBoxFullDesc.Text}', " +
+                                    //$"Уточнение             = '{textBoxDetail.Text}', " +
+                                    //$"Комментарий           = '{textBoxComment.Text}', " +
                                     $"СтудентИнвалид       = '{checkBoxStdInv.Checked}' " +
                                     $"WHERE КорректирующиеКоэффиценты.код = {CurrentDataRow_id_kk}", connection);
 
@@ -296,9 +296,9 @@ namespace Report
                 string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
                 new_row[1] = textBoxNameCoef.Text;
-                new_row[2] = textBoxFullDesc.Text;
-                new_row[3] = textBoxDetail.Text;
-                new_row[4] = textBoxComment.Text;
+                //new_row[2] = textBoxFullDesc.Text;
+                //new_row[3] = textBoxDetail.Text;
+                //new_row[4] = textBoxComment.Text;
                 new_row[5] = checkBoxStdInv.Checked;               
 
 

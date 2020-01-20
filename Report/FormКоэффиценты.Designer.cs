@@ -31,12 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormКоэффиценты));
             this.comboBoxYear = new System.Windows.Forms.ComboBox();
             this.dataGridViewCoeff = new System.Windows.Forms.DataGridView();
-            this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonDeleteSelected = new System.Windows.Forms.Button();
             this.buttonEditString = new System.Windows.Forms.Button();
             this.buttonAddStingPattern = new System.Windows.Forms.Button();
             this.buttonAddNewString = new System.Windows.Forms.Button();
+            this.check = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCoeff)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,12 +64,6 @@
             this.dataGridViewCoeff.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewCoeff.Size = new System.Drawing.Size(758, 287);
             this.dataGridViewCoeff.TabIndex = 22;
-            // 
-            // check
-            // 
-            this.check.HeaderText = "";
-            this.check.Name = "check";
-            this.check.Width = 50;
             // 
             // label1
             // 
@@ -125,6 +119,12 @@
             this.buttonAddNewString.UseVisualStyleBackColor = true;
             this.buttonAddNewString.Click += new System.EventHandler(this.buttonAddNewString_Click);
             // 
+            // check
+            // 
+            this.check.HeaderText = "";
+            this.check.Name = "check";
+            this.check.Width = 50;
+            // 
             // FormКоэффиценты
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -140,7 +140,6 @@
             this.Name = "FormКоэффиценты";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Корректирующие коэффиценты";
-            
             this.Load += new System.EventHandler(this.FormКоэффиценты_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCoeff)).EndInit();
             this.ResumeLayout(false);

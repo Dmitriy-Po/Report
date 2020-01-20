@@ -43,7 +43,6 @@ namespace Report.Forms
                 Table = new DataTable();
                 Adapter.Fill(Table);
                 DataRow NewRow;
-
                 
                 foreach (var line in Lines)
                 {
@@ -68,6 +67,42 @@ namespace Report.Forms
                 Adapter.Update(Table);
             }
 
+        }
+        void ImportBaseNormal(string[] Lines)
+        {
+            DB = new SQliteDB();
+            using (Connection = new SQLiteConnection(DB.ConnectionDB))
+            {
+                Connection.Open();
+                                
+                string q = "";
+                Adapter = new SQLiteDataAdapter(q, Connection);
+                Table = new DataTable();
+                Adapter.Fill(Table);
+                
+                /*Этот метод должен вернуть данные.*/
+                Method(Lines, Table, Adapter);
+                
+                SQLiteCommandBuilder build = new SQLiteCommandBuilder(Adapter);
+                Adapter.Update(Table);
+            }
+        }
+
+        DataTable Method(string[] lines, DataTable table, SQLiteDataAdapter adapter)
+        {
+            DataRow row;
+            string[] Columns = null;
+
+            foreach (string line in lines)
+            {
+                row = table.NewRow();
+                Columns = line.Split(',');
+
+                row[0] = Columns[0];
+
+                table.Rows.Add(row);
+            }
+            return table;
         }
         private void buttonOpen_Click(object sender, EventArgs e)
         {
@@ -118,6 +153,11 @@ namespace Report.Forms
                         case "ЧисленностьОбучающихся.txt":
                             {
                                 ImportListCountStudent(LinesInFile);
+                            }
+                            break;
+                        case "БНЗСтоимостнойГруппы":
+                            {
+
                             }
                             break;
                         default:

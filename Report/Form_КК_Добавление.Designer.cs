@@ -41,13 +41,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.comboBoxYear = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.textBoxNameCoef = new System.Windows.Forms.TextBox();
-            this.textBoxFullDesc = new System.Windows.Forms.TextBox();
-            this.textBoxDetail = new System.Windows.Forms.TextBox();
-            this.textBoxComment = new System.Windows.Forms.TextBox();
             this.checkBoxStdInv = new System.Windows.Forms.CheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -140,9 +134,11 @@
             this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Location = new System.Drawing.Point(12, 300);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox1.Location = new System.Drawing.Point(0, 203);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(10);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(380, 131);
+            this.groupBox1.Size = new System.Drawing.Size(404, 131);
             this.groupBox1.TabIndex = 30;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Коэффицент";
@@ -178,66 +174,18 @@
             this.comboBoxYear.Size = new System.Drawing.Size(245, 21);
             this.comboBoxYear.TabIndex = 31;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 98);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(125, 13);
-            this.label2.TabIndex = 31;
-            this.label2.Text = "Полное наименование:\r\n";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 207);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 13);
-            this.label3.TabIndex = 32;
-            this.label3.Text = "Уточнение:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 234);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(80, 13);
-            this.label4.TabIndex = 33;
-            this.label4.Text = "Комментарий:";
-            // 
             // textBoxNameCoef
             // 
-            this.textBoxNameCoef.Location = new System.Drawing.Point(141, 68);
+            this.textBoxNameCoef.Location = new System.Drawing.Point(131, 55);
+            this.textBoxNameCoef.Multiline = true;
             this.textBoxNameCoef.Name = "textBoxNameCoef";
-            this.textBoxNameCoef.Size = new System.Drawing.Size(245, 20);
+            this.textBoxNameCoef.Size = new System.Drawing.Size(255, 106);
             this.textBoxNameCoef.TabIndex = 34;
-            // 
-            // textBoxFullDesc
-            // 
-            this.textBoxFullDesc.Location = new System.Drawing.Point(141, 95);
-            this.textBoxFullDesc.Multiline = true;
-            this.textBoxFullDesc.Name = "textBoxFullDesc";
-            this.textBoxFullDesc.Size = new System.Drawing.Size(245, 100);
-            this.textBoxFullDesc.TabIndex = 35;
-            // 
-            // textBoxDetail
-            // 
-            this.textBoxDetail.Location = new System.Drawing.Point(141, 204);
-            this.textBoxDetail.Name = "textBoxDetail";
-            this.textBoxDetail.Size = new System.Drawing.Size(245, 20);
-            this.textBoxDetail.TabIndex = 36;
-            // 
-            // textBoxComment
-            // 
-            this.textBoxComment.Location = new System.Drawing.Point(141, 231);
-            this.textBoxComment.Name = "textBoxComment";
-            this.textBoxComment.Size = new System.Drawing.Size(245, 20);
-            this.textBoxComment.TabIndex = 37;
             // 
             // checkBoxStdInv
             // 
             this.checkBoxStdInv.AutoSize = true;
-            this.checkBoxStdInv.Location = new System.Drawing.Point(275, 257);
+            this.checkBoxStdInv.Location = new System.Drawing.Point(275, 167);
             this.checkBoxStdInv.Name = "checkBoxStdInv";
             this.checkBoxStdInv.Size = new System.Drawing.Size(111, 17);
             this.checkBoxStdInv.TabIndex = 38;
@@ -260,7 +208,7 @@
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label9.ForeColor = System.Drawing.Color.Crimson;
-            this.label9.Location = new System.Drawing.Point(123, 69);
+            this.label9.Location = new System.Drawing.Point(111, 67);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(14, 18);
             this.label9.TabIndex = 40;
@@ -270,17 +218,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 443);
+            this.ClientSize = new System.Drawing.Size(404, 334);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.checkBoxStdInv);
-            this.Controls.Add(this.textBoxComment);
-            this.Controls.Add(this.textBoxDetail);
-            this.Controls.Add(this.textBoxFullDesc);
             this.Controls.Add(this.textBoxNameCoef);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonSaveAndClose);
@@ -308,13 +250,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox1;
         public System.Windows.Forms.ComboBox comboBoxYear;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
         public System.Windows.Forms.TextBox textBoxNameCoef;
-        public System.Windows.Forms.TextBox textBoxFullDesc;
-        public System.Windows.Forms.TextBox textBoxDetail;
-        public System.Windows.Forms.TextBox textBoxComment;
         public System.Windows.Forms.CheckBox checkBoxStdInv;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label13;

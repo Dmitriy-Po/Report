@@ -84,8 +84,8 @@ namespace Report.Forms
                 Adapter.Fill(Table);
 
                 new_row[1] = textBoxDesc.Text;
-                new_row[2] = textBoxFillDesc.Text;
-                new_row[3] = textBoxComment.Text;
+                //new_row[2] = textBoxFillDesc.Text;
+                //new_row[3] = textBoxComment.Text;
                 new_row[4] = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
                                
 
@@ -175,8 +175,8 @@ namespace Report.Forms
             string DATE = Convert.ToDateTime(comboBoxYear.SelectedItem + "-01-01").ToString("yyyy-MM-dd");
 
             string update = "UPDATE СтоимостнаяГруппаКалГода SET " +
-                            $"Наименование = '{textBoxDesc.Text}', ПолноеНаименование = '{textBoxFillDesc.Text}', " +
-                            $"Комментарий = '{textBoxComment.Text}', КалендарныйГод = '{DATE}' " +
+                            $"Наименование = '{textBoxDesc.Text}', " +
+                            $"КалендарныйГод = '{DATE}' " +
                             $"WHERE СтоимостнаяГруппаКалГода.код = {CurrentDataRow_id}; " +
                             $"UPDATE БНЗСтоимостнойГруппы SET КалендарныйГод = '{DATE}' "+
                             $"WHERE БНЗСтоимостнойГруппы.СтоимостнаяГруппаКалГода_ВК = {CurrentDataRow_id}";
@@ -258,7 +258,7 @@ namespace Report.Forms
         {
             DB = new SQliteDB();
             string select = "SELECT БНЗСтоимостнойГруппы.код, " +
-                            "БазовыйНормативЗатрат.Наименование as 'Базовый норматив', "+
+                            "БазовыйНормативЗатрат.Наименование as 'Статья затрат', "+
                             "БНЗСтоимостнойГруппы.Бакалавриат, " +
                             "БНЗСтоимостнойГруппы.Магистратура, " +
                             "БНЗСтоимостнойГруппы.Аспирантура, " +
@@ -295,7 +295,8 @@ namespace Report.Forms
             dataGridViewБНЗ_Группы.Columns["КалендарныйГод"].Visible = false;
             dataGridViewБНЗ_Группы.Columns["БНЗ_ВК"].Visible = false;
             dataGridViewБНЗ_Группы.Columns["СтоимостнаяГруппаКалГода_ВК"].Visible = false;
-            dataGridViewБНЗ_Группы.Columns["Базовый норматив"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewБНЗ_Группы.Columns["Статья затрат"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewБНЗ_Группы.Columns["Статья затрат"].ReadOnly = true;
 
             dataGridViewБНЗ_Группы.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewБНЗ_Группы.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -308,7 +309,7 @@ namespace Report.Forms
 
             dataGridViewGroups.Columns["код"].Visible = false;
             dataGridViewGroups.Columns["наименование"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
+            dataGridViewGroups.Columns["наименование"].ReadOnly = true;
 
 
             ListNormals.Clear();

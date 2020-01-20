@@ -360,7 +360,7 @@ namespace Report.Classes
             }
 #endregion
         }
-        public Dictionary<string, decimal[]> MultiplayCountStudent ()
+        public Dictionary<string, decimal[]> MultiplayCountStudent (decimal koef)
         {            
             // Словарь подразделений со списком затрат по квалификациям.
             Dictionary<string, decimal[]> SummOnFilial = new Dictionary<string, decimal[]>();
@@ -524,6 +524,7 @@ namespace Report.Classes
                 for (int i = 0; i < SummOnSkill.GetLength(0); i++)
                 {
                     SummOnSkill[i] += SummOnSkill_buff[0, i] + SummOnSkill_buff[1, i] + SummOnSkill_buff[2, i];
+                    SummOnSkill[i] *= koef;
                 }
                 // Добавление в коллекцию подразделений.
                 SummOnFilial.Add(filial.FirstOrDefault().Filial, SummOnSkill);

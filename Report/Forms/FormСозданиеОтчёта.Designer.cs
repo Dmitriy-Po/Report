@@ -74,7 +74,6 @@
             // 
             // buttonPrintReport
             // 
-            this.buttonPrintReport.Enabled = false;
             this.buttonPrintReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonPrintReport.Location = new System.Drawing.Point(253, 120);
             this.buttonPrintReport.Name = "buttonPrintReport";
@@ -111,6 +110,7 @@
             this.textBoxCoef.Name = "textBoxCoef";
             this.textBoxCoef.Size = new System.Drawing.Size(263, 20);
             this.textBoxCoef.TabIndex = 6;
+            this.textBoxCoef.Text = "1";
             // 
             // GridReport
             // 
@@ -143,7 +143,7 @@
             this.Value.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             this.Value.DefaultCellStyle = dataGridViewCellStyle2;
-            this.Value.HeaderText = "Сумма, руб.";
+            this.Value.HeaderText = "Сумма, тыс. руб.";
             this.Value.Name = "Value";
             this.Value.ReadOnly = true;
             // 
