@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Word = Microsoft.Office.Interop.Word;
 using Report.Classes;
+using System.Diagnostics;
 
 namespace Report.Forms
 {
@@ -402,23 +403,13 @@ namespace Report.Forms
 
                 try
                 {
-                    //MyDoc.SaveAs2("", WdSaveFormat.wdFormatPDF);
-                    MyDoc.SaveAs2($"Затраты на {comboBoxYear.SelectedItem.ToString()} год.docx");
-                    ////MyDoc.Save();
-                    MyDoc.Close();
-                    
-                    
-
+                    MyDoc.Save();
+                    WORD.Quit();
                 }
                 catch (Exception)
                 {
-                    WORD.Quit();
-                }
-                finally
-                {
-                    WORD.Quit();
-                    //MessageBox.Show("Файл сохранён");
-                }
+                    WORD.Quit();  
+                }                
             }
             catch (FormatException)
             {
@@ -433,6 +424,7 @@ namespace Report.Forms
 
         private void buttonPrintReport_Click (object sender, EventArgs e)
         {
+            
         }
 
         private void FormСозданиеОтчёта_Load (object sender, EventArgs e)

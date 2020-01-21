@@ -74,6 +74,7 @@
             // 
             // buttonPrintReport
             // 
+            this.buttonPrintReport.Enabled = false;
             this.buttonPrintReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonPrintReport.Location = new System.Drawing.Point(253, 120);
             this.buttonPrintReport.Name = "buttonPrintReport";
